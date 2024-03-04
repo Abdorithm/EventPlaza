@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 
 time = "%Y-%m-%dT%H:%M:%S.%f"
 
+
 class BaseModel():
     """The base model class for all coming classes"""
     id = Column(String(60), primary_key=True)
@@ -32,8 +33,21 @@ class BaseModel():
                 self.updated_at = datetime.strptime(kwargs['updated_at'], time)
             else:
                 self.updated_at = datetime.now(timezone.utc)
-            
         else:
             self.id = str(uuid4())
             self.created_at = datetime.now(timezone.utc)
             self.updated_at = datetime.now(timezone.utc)
+
+    def __str__(self):
+        """Return the string representation of the object"""
+        return "[{}] ({}) {}".format(
+            type(self).__name__, self.id, self.__dict__)
+
+    def to_dict(self):
+        """Return a dictionary containing all keys/values of __dict__"""
+        new_dict = self.__dict__.copy()
+        new_dict['__class__'] = type(self).__name__
+        new_dict['created_at'] = self.created_at.strftime(time)
+        new_dict['updated_at'] = self.updated_at.strftime(time)
+        new_dict.pop('_sa_instance_state', None)
+        return new_dict
