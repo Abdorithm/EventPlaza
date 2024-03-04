@@ -37,7 +37,3 @@ class BaseModel():
             self.id = str(uuid4())
             self.created_at = datetime.now(timezone.utc)
             self.updated_at = datetime.now(timezone.utc)
-
-     
-
-
