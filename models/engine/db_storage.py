@@ -4,7 +4,7 @@ Contains the class DBStorage
 """
 
 import models
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base
 import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
