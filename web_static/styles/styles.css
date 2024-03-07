@@ -544,12 +544,36 @@ video {
   --tw-backdrop-sepia:  ;
 }
 
+.col-span-2 {
+  grid-column: span 2 / span 2;
+}
+
+.col-span-3 {
+  grid-column: span 3 / span 3;
+}
+
+.col-span-4 {
+  grid-column: span 4 / span 4;
+}
+
+.col-start-1 {
+  grid-column-start: 1;
+}
+
 .col-start-2 {
   grid-column-start: 2;
 }
 
 .col-start-3 {
   grid-column-start: 3;
+}
+
+.col-start-4 {
+  grid-column-start: 4;
+}
+
+.col-start-5 {
+  grid-column-start: 5;
 }
 
 .col-start-6 {
@@ -576,6 +600,10 @@ video {
   grid-column-end: 9;
 }
 
+.row-start-1 {
+  grid-row-start: 1;
+}
+
 .row-start-2 {
   grid-row-start: 2;
 }
@@ -586,6 +614,10 @@ video {
 
 .row-start-4 {
   grid-row-start: 4;
+}
+
+.row-start-5 {
+  grid-row-start: 5;
 }
 
 .row-start-6 {
@@ -600,10 +632,6 @@ video {
   display: grid;
 }
 
-.list-item {
-  display: list-item;
-}
-
 .h-screen {
   height: 100vh;
 }
@@ -612,40 +640,36 @@ video {
   list-style-position: inside;
 }
 
-.list-outside {
-  list-style-position: outside;
-}
-
 .list-disc {
   list-style-type: disc;
-}
-
-.list-decimal {
-  list-style-type: decimal;
 }
 
 .grid-cols-11 {
   grid-template-columns: repeat(11, minmax(0, 1fr));
 }
 
-.grid-cols-2 {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
 .grid-cols-3 {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.grid-rows-3 {
-  grid-template-rows: repeat(3, minmax(0, 1fr));
+.grid-cols-5 {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
-.grid-rows-6 {
-  grid-template-rows: repeat(6, minmax(0, 1fr));
+.grid-cols-6 {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
 }
 
 .grid-rows-1 {
   grid-template-rows: repeat(1, minmax(0, 1fr));
+}
+
+.grid-rows-5 {
+  grid-template-rows: repeat(5, minmax(0, 1fr));
+}
+
+.grid-rows-6 {
+  grid-template-rows: repeat(6, minmax(0, 1fr));
 }
 
 .items-center {
@@ -693,16 +717,12 @@ video {
   --tw-gradient-to: #0891b2 var(--tw-gradient-to-position);
 }
 
-.p-2 {
-  padding: 0.5rem;
-}
-
-.p-5 {
-  padding: 1.25rem;
-}
-
 .p-10 {
   padding: 2.5rem;
+}
+
+.p-2 {
+  padding: 0.5rem;
 }
 
 .px-3 {
@@ -732,6 +752,11 @@ video {
 .text-2xl {
   font-size: 1.5rem;
   line-height: 2rem;
+}
+
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
 }
 
 .text-4xl {
@@ -796,6 +821,56 @@ video {
     transform: translateX(0%);
     opacity: 100%;
   }
+}
+
+/* Text effect 8 */
+
+.text-effect span {
+  font-family: "Poppins", sans-serif;
+  font-style: italic;
+  font-weight: bold;
+  color: rgba(0, 0, 0, 0);
+  -webkit-text-stroke: 1px rgba(0, 0, 0, 0);
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+
+@keyframes reveal {
+  1% {
+    color: rgba(0, 0, 0, 1);
+  }
+
+  50% {
+    color: rgba(0, 0, 0, 1);
+  }
+
+  51% {
+    color: rgba(0, 0, 0, 0);
+  }
+
+  100% {
+    -webkit-text-stroke: 1px rgba(0, 0, 0, 1);
+  }
+}
+
+.text-effect span:nth-child(1) {
+  animation: reveal 1s 0.2s infinite ;
+}
+
+.text-effect span:nth-child(2) {
+  animation: reveal 1s 0.4s infinite ;
+}
+
+.text-effect span:nth-child(3) {
+  animation: reveal 1s 0.6s infinite;
+}
+
+.text-effect span:nth-child(4) {
+  animation: reveal 1s 0.8s infinite ;
+}
+
+.text-effect span:nth-child(5) {
+  animation: reveal 1s 1s infinite ;
 }
 
 .hover\:text-cyan-600:hover {
