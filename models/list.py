@@ -15,7 +15,4 @@ class List(BaseModel, Base):
     name = Column(String(128), nullable=False)
     description = Column(String(1024), nullable=True)
     cards = relationship('Card', back_populates='list')
-
-    def __init__(self, **kwargs):
-        """Initializes the list"""
-        super().__init__(**kwargs)
+    dashboard = relationship('Dashboard', back_populates='lists')
