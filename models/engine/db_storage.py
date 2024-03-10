@@ -5,11 +5,17 @@ Contains the class DBStorage
 
 from models.base_model import Base
 from models.event import Event
-from models.organizer import Organizer
+from models.user import User
+from models.committee import Committee
+from models.dashboard import Dashboard
+from models.list import List
+from models.card import Card
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from os import getenv
 
+classes = {"Event": Event, "User": User, "Committee": Committee,
+              "Dashboard": Dashboard, "List": List, "Card": Card}
 
 class DBStorage:
     """Interacts with the MySQL database"""
