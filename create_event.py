@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
-from models.event import Event
-from models.user import User
+from models import storage
 
-organizer = User(username="Zoo", first_name="John", last_name="Doe",
-                 email="hazem@gmail.com", password="1234")
-organizer.save()
-event = Event(name="PSED", organizer=[organizer])
-event.save()
+
+for key, value in storage.all('Event').items():
+    print(key, value)
 

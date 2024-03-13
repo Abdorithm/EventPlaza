@@ -20,7 +20,7 @@ class User(BaseModel, Base):
                                     back_populates='organizer')
     attended_events = relationship('Event', secondary=event_attendens,
                                       back_populates='attendees')
-    assigned_cards = relationship('Card', secondary='assign',
+    assigned_cards = relationship('Card', secondary='assigns',
                                     back_populates='assignees')
     member_committees = relationship('Committee', secondary='committee_member',
                                     back_populates='members')

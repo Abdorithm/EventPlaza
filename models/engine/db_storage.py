@@ -36,6 +36,19 @@ class DBStorage:
         if PLAZA_ENV == "test":
             Base.metadata.drop_all(self.__engine)
 
+    def all(self, cls: str = ""):
+        """Queries the current database session based on the class name"""
+        objects = {}
+        if cls in classes:
+            for obj in self.__session.query(classes[cls]).all():
+                objects["{}.{}".format(type(obj).__name__, obj.id)] = obj
+        else:
+            for _, obj in classes.items():
+                for obj in self.__session.query(obj).all():
+                    objects["{}.{}".format(type(obj).__name__, obj.id)] = obj
+        return objects
+
+
     def reload(self):
         """Creates all tables in the database"""
         Base.metadata.create_all(self.__engine)
@@ -52,6 +65,18 @@ class DBStorage:
         """Adds the instance to the current database session"""
         self.__session.add(obj)
 
+    def delete(self, obj=None):
+        """Deletes from the current database session"""
+        if obj:
+            self.__session.delete(obj)
+
     def close(self):
         """Closes the current session"""
         self.__session.close()
+
+    def get(self, cls: str, id: str):
+        """Gets an object from the database"""
+        if cls not in classes or not id:
+            return None
+
+        return self.__session.query(classes[cls]).get(id)
