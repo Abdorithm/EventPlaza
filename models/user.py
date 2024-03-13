@@ -10,12 +10,12 @@ class User(BaseModel, Base):
     """This class defines the User model for EventPlaza"""
     __tablename__ = 'users'
 
-    username = Column(String(128), nullable=False, unique=True)
-    first_name = Column(String(128), nullable=True)
-    last_name = Column(String(128), nullable=True)
+    first_name = Column(String(128), nullable=False)
+    last_name = Column(String(128), nullable=False)
     email = Column(String(128), nullable=False, unique=True)
-    phone = Column(String(128), nullable=True)
     password = Column(String(128), nullable=False)
+    image_file = Column(String(20), nullable=False, default='default.jpg')
+
     organized_events = relationship('Event', secondary=event_organizers,
                                     back_populates='organizer')
     attended_events = relationship('Event', secondary=event_attendens,
