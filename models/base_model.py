@@ -42,8 +42,18 @@ class BaseModel():
 
     def __str__(self):
         """Return the string representation of the object"""
+        new_dict = self.to_dict().copy()
+        new_dict.pop('__class__', None)
+        
         return "[{}] ({}) {}".format(
-            type(self).__name__, self.id, self.__dict__)
+            type(self).__name__, self.id, new_dict)
+
+    def save(self):
+        """Update the updated_at attribute and save the instance"""
+        self.updated_at = datetime.now(timezone.utc)
+        from models import storage
+        storage.new(self)
+        storage.save()
 
     def to_dict(self):
         """Return a dictionary containing all keys/values of __dict__"""
