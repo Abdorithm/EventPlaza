@@ -5,7 +5,7 @@ from sqlalchemy import Column, String, ForeignKey, Table
 from sqlalchemy.orm import relationship
 
 
-assign = Table('assign', Base.metadata,
+assigns = Table('assigns', Base.metadata,
                Column('card_id', String(60),
                       ForeignKey('cards.id', onupdate='CASCADE',
                                  ondelete='CASCADE'),
@@ -23,6 +23,6 @@ class Card(BaseModel, Base):
     list_id = Column(String(60), ForeignKey('lists.id'), nullable=False)
     name = Column(String(128), nullable=False)
     description = Column(String(1024), nullable=True)
-    assignees = relationship('User', secondary=assign,
+    assignees = relationship('User', secondary=assigns,
                             back_populates='assigned_cards')
     list = relationship('List', back_populates='cards')
