@@ -22,7 +22,7 @@ def login():
 def signup():
     """ Renders the signup page """
     form = RegistrationForm()
-    if form.validated_on_submit():
+    if form.validate_on_submit():
         flash('account created for {} {}'.format(form.first_name.data,
                                                  form.last_name.data),
                                                  'success')
