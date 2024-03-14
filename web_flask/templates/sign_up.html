@@ -27,24 +27,32 @@
       <form class="space-y-6" action="#" method="POST">
         {{ form.hidden_tag() }}
         <div>
-          <label for="full-name" class="block text-sm font-medium leading-6 text-slate-200">Full Name</label>
-          <div class="mt-2">
-            <input id="full-name" name="Full Name" type="full-name" autocomplete="Full Name" required
-              class="block w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-slate-200 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6">
-          </div>
+          {{ form.first_name.label(class="block text-sm font-medium leading-6 text-slate-200") }}
+          {{ form.first_name(class="block w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-slate-200 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6") }}
         </div>
         <div>
-          <label for="email" class="block text-sm font-medium leading-6 text-slate-200">Email Address</label>
-          <div class="mt-2">
-            <input id="email" name="email" type="email" autocomplete="email" required
-              class="block w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-slate-200 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6">
-          </div>
+          {{ form.last_name.label(class="block text-sm font-medium leading-6 text-slate-200") }}
+          {{ form.last_name(class="block w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-slate-200 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6") }}
         </div>
-
         <div>
-          <button type="submit"
-            class="flex w-full justify-center rounded-md bg-black px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:text-fuchsia-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Sign
-            Up</button>
+          {{ form.email.label(class="block text-sm font-medium leading-6 text-slate-200") }}
+          {{ form.email(class="block w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-slate-200 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6") }}
+        </div>
+        <div>
+          {{ form.password.label(class="block text-sm font-medium leading-6 text-slate-200") }}
+          {{ form.password(class="block w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-slate-200 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6") }}
+        </div>
+        <div>
+          {{ form.confirm_password.label(class="block text-sm font-medium leading-6 text-slate-200") }}
+          {{ form.confirm_password(class="block w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-slate-200 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6") }}
+        </div>
+        <div>
+          {{ form.submit(class="cursor-pointer flex w-full justify-center rounded-md bg-black px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:text-fuchsia-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600") }}
+        </div>
+        <div>
+          <small>
+            <a href="{{ url_for('login') }}">Already Registered?</a>
+          </small>
         </div>
       </form>
     </div>

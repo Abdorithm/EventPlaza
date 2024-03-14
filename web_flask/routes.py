@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """ Starts a Flask Web Application """
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, flash, redirect
 from forms import RegistrationForm, LoginForm
 app = Flask(__name__)
 
@@ -12,13 +12,13 @@ def landing():
     """ Renders the landing page """
     return render_template('landing.html')
 
-@app.route('/login', strict_slashes=False)
+@app.route('/login', strict_slashes=False, methods=['GET', 'POST'])
 def login():
     """ Renders the log in page """
     form = LoginForm()
     return render_template('log_in.html', form=form)
 
-@app.route('/signup', strict_slashes=False)
+@app.route('/signup', strict_slashes=False, methods=['GET', 'POST'])
 def signup():
     """ Renders the signup page """
     form = RegistrationForm()
