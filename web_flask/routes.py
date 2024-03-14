@@ -45,7 +45,7 @@ def dashboard():
     return render_template('dashboard.html')
 
 @app.route('/team', strict_slashes=False)
-def dashboard():
+def team():
     """ Renders the dashboard page """
     return render_template('team.html')
 
