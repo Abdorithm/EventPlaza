@@ -44,6 +44,11 @@ def dashboard():
     """ Renders the dashboard page """
     return render_template('dashboard.html')
 
+@app.route('/team', strict_slashes=False)
+def dashboard():
+    """ Renders the dashboard page """
+    return render_template('team.html')
+
 
 if __name__ == "__main__":
     """ Main Function """
