@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """ Flask forms """
-from flask-wtf import FlaskForm
+from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo
 

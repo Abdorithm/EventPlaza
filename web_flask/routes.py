@@ -15,13 +15,13 @@ def landing():
 @app.route('/login', strict_slashes=False)
 def login():
     """ Renders the log in page """
-    form = LoginForm
+    form = LoginForm()
     return render_template('log_in.html', form=form)
 
 @app.route('/signup', strict_slashes=False)
 def signup():
     """ Renders the signup page """
-    form = RegistrationForm
+    form = RegistrationForm()
     return render_template('sign_up.html', form=form)
 
 @app.route('/events', strict_slashes=False)
