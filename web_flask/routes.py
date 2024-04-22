@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ Starts a Flask Web Application """
 from flask import Flask, render_template, url_for, flash, redirect
-from forms import RegistrationForm, LoginForm
+from .forms import RegistrationForm, LoginForm
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'd685ddbe85e8fa0e7fb24d5aeb994e8f'
