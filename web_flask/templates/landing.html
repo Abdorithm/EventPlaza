@@ -32,23 +32,23 @@
     <header class="bg-slate-200">
         <nav class="flex justify-between items-center p-2">
             <div class="font-[Poppins] text-2xl" style="font-size: 600;font-style: italic;">
-                <a href="index.html">
+                <a href="{{ url_for ('landing') }}">
                     EventPlaza
                 </a>
             </div>
             <div id="nav-container" class="flex items-center duration-200 nav-container-no gap-x-6">
                 <button class="nav-item hover:text-cyan-600 bg-transparent text-black py-1 px-3 rounded-full">
-                    <a href="events.html">
+                    <a href="{{ url_for('events') }}">
                         Attend An Event
                     </a>
                 </button>
                 <button class="nav-item hover:text-cyan-600 bg-transparent text-black py-1 px-3 rounded-full">
-                    <a href="/login">
+                    <a href="{{ url_for('login') }}">
                         Login For Organizers
                     </a>
                 </button>
                 <button class="nav-item hover:text-cyan-600 bg-black text-slate-200 py-1 px-3 rounded-full">
-                    <a href="/signup">
+                    <a href="{{ url_for('signup') }}">
                         Sign Up
                     </a>
                 </button>
@@ -85,7 +85,7 @@
             </div>
             <div id="landing-button" class="row-start-6 col-start-6 col-end-9">
                 <button class="hover:text-fuchsia-600 bg-black text-slate-200 py-4 px-5 rounded-full">
-                    <a href="/signup">
+                    <a href="{{ url_for('signup') }}">
                         Get Started
                     </a>
                 </button>
@@ -142,18 +142,8 @@
 
     <footer id="landing-footer" class="bg-black grid grid-cols-3 grid-rows-1">
         <button class="hover:text-fuchsia-600 bg-transparent text-slate-200 py-4 px-5 rounded-full">
-            <a href="/about">
-                About Us
-            </a>
-        </button>
-        <button class="hover:text-fuchsia-600 bg-transparent text-slate-200 py-4 px-5 rounded-full">
-            <a href="/team">
+            <a href="{{ url_for('team') }}">
                 Meet The Team
-            </a>
-        </button>
-        <button class="hover:text-fuchsia-600 bg-transparent text-slate-200 py-4 px-5 rounded-full">
-            <a href="/bugreport">
-                Report A Bug
             </a>
         </button>
     </footer>
