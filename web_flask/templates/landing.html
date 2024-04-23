@@ -19,7 +19,7 @@
     {% if category == "error" %}
     <div id="flash-body" class="bg-fuchsia-600 text-slate-200 px-4 py-3 rounded relative" role="alert">
         <strong class="font-bold">
-            {{ message }}
+            {{ message }} {{category}}
         </strong>
         <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
             <svg id="close-flash" class="fill-current h-6 w-6 text-slate-200" role="button"
@@ -33,7 +33,7 @@
     {% elif category == "success" %}
     <div id="flash-body" class="bg-cyan-600 text-slate-200 px-4 py-3 rounded relative" role="alert">
         <strong class="font-bold">
-            {{ message }}
+            {{ message }} {{category}}
         </strong>
         <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
             <svg id="close-flash" class="fill-current h-6 w-6 text-slate-200" role="button"
