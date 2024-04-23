@@ -16,6 +16,11 @@ def landing():
 def login():
     """ Renders the log in page """
     form = LoginForm()
+    if form.validate_on_submit():
+        flash('You are logged in!', 'success')
+        return redirect(url_for('dashboard'))
+    else:
+        flash('Login unsuccessful, please check email and password', 'danger')
     return render_template('log_in.html', form=form)
 
 @app.route('/signup', strict_slashes=False, methods=['GET', 'POST'])
