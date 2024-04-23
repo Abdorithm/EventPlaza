@@ -1377,6 +1377,11 @@ select {
   --tw-ring-color: rgb(0 0 0 / var(--tw-ring-opacity));
 }
 
+.ring-fuchsia-600 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(192 38 211 / var(--tw-ring-opacity));
+}
+
 .ring-slate-200 {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(226 232 240 / var(--tw-ring-opacity));
@@ -1688,11 +1693,6 @@ select {
 .focus\:ring-cyan-600:focus {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(8 145 178 / var(--tw-ring-opacity));
-}
-
-.focus\:ring-fuchsia-600:focus {
-  --tw-ring-opacity: 1;
-  --tw-ring-color: rgb(192 38 211 / var(--tw-ring-opacity));
 }
 
 .focus\:ring-white:focus {
