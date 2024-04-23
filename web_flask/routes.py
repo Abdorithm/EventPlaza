@@ -17,10 +17,10 @@ def login():
     """ Renders the log in page """
     form = LoginForm()
     if form.validate_on_submit():
-        flash('You are logged in!', 'success')
+        flash('You are logged in!', 'bg-cyan-600')
         return redirect(url_for('dashboard'))
     else:
-        flash('Login unsuccessful, please check email and password', 'error')
+        flash('Login unsuccessful, please check email and password', 'bg-fuchsia-600')
     return render_template('log_in.html', form=form)
 
 @app.route('/signup', strict_slashes=False, methods=['GET', 'POST'])
@@ -30,7 +30,7 @@ def signup():
     if form.validate_on_submit():
         flash('Account created for {} {}!'.format(form.first_name.data,
                                                  form.last_name.data),
-                                                 'success')
+                                                 'bg-cyan-600')
         return redirect(url_for('landing'))
     return render_template('sign_up.html', form=form)
 
