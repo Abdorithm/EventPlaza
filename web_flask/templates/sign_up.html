@@ -48,7 +48,7 @@
         {% endif %}        </div>
         <div>
           {{ form.password.label(class="block text-sm font-medium leading-6 text-slate-200") }}
-          {% if form.passworrd.errors %}
+          {% if form.password.errors %}
           {{ form.password(class="block w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-slate-200 text-pink-600 focus:ring-1 focus:ring-inset border-pink-600 sm:text-sm sm:leading-6") }}
           <div>
             {% for error in form.password.errors %}
