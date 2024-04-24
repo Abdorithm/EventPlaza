@@ -54,6 +54,15 @@
                 <div class="flex h-16 items-center justify-between">
                     <div class="flex text-2xl text-slate-200 font-bold items-center">
                         Your Events
+                        <div class="hidden md:block">
+                            <div class="ml-10 flex items-baseline space-x-4">
+                                <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+                                <a href="{{ url_for('events') }}"
+                                    class="text-slate-200 hover:bg-cyan-800 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
+                                    Create Event
+                                </a>
+                            </div>
+                        </div>
                     </div>
                     <div class="hidden md:block">
                         <div class="ml-4 flex items-center md:ml-6">
@@ -75,8 +84,9 @@
                                     role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button"
                                     tabindex="-1">
                                     <!-- Active: "bg-gray-100", Not Active: "" -->
-                                    <a href="{{ url_for('profile') }}" target="_blank" class="block px-4 py-2 text-sm text-gray-900" role="menuitem"
-                                        tabindex="-1" id="user-menu-item-0">Your Profile</a>
+                                    <a href="{{ url_for('profile') }}" target="_blank"
+                                        class="block px-4 py-2 text-sm text-gray-900" role="menuitem" tabindex="-1"
+                                        id="user-menu-item-0">Your Profile</a>
                                     <a href="{{ url_for('landing') }}" class="block px-4 py-2 text-sm text-gray-900"
                                         role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
                                 </div>
@@ -133,7 +143,8 @@
         </nav>
         <main>
             <div class="place-self-center grid xl:grid-cols-3 mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-                <div class="my-2 flex flex-col mx-auto xl:max-w-sm max-w-md rounded overflow-hidden shadow-lg bg-slate-200">
+                <div
+                    class="my-2 flex flex-col mx-auto xl:max-w-sm max-w-md rounded overflow-hidden shadow-lg bg-slate-200">
                     <img class="w-full" src="https://v1.tailwindcss.com/img/card-top.jpg">
                     <div class="px-6 py-4">
                         <div class="font-bold text-xl mb-2">The Coldest Sunset</div>
