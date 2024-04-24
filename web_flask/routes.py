@@ -55,6 +55,11 @@ def team():
     """ Renders the dashboard page """
     return render_template('team.html')
 
+@app.route('/profile', strict_slashes=False)
+def team():
+    """ Renders the dashboard page """
+    return render_template('profile.html')
+
 
 if __name__ == "__main__":
     """ Main Function """
