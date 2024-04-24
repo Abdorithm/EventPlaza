@@ -19,7 +19,7 @@ def login():
     if form.validate_on_submit():
         if form.email.data == 'test@test.com' and form.password.data == 'passwd':
             flash('You are logged in!', 'success')
-            return redirect(url_for('dashboard'))
+            return redirect(url_for('events'))
         else:
             flash('Login unsuccessful, please check email and password', 'error')
     return render_template('log_in.html', form=form)
@@ -38,7 +38,7 @@ def signup():
 @app.route('/events', strict_slashes=False)
 def events():
     """ Renders the events' page """
-    return render_template('events.html')
+    return render_template('your_events.html')
 
 @app.route('/about', strict_slashes=False)
 def about():
