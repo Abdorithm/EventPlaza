@@ -12,7 +12,7 @@
   <link href="../static/styles/styles.css" rel="stylesheet">
 </head>
 
-<body class="font-[Poppins] bg-slate-200 h-screen">
+<body class="font-[Poppins] bg-slate-300 h-screen">
   {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
   {% for category, message in messages %}
@@ -91,7 +91,7 @@
                         To: "transform opacity-0 scale-95"
                     -->
                 <div id="user-profile-menu"
-                  class="profile-menu-leave absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                  class="profile-menu-leave absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-slate-200 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                   role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
                   <!-- Active: "bg-gray-100", Not Active: "" -->
                   <a href="#" class="block px-4 py-2 text-sm text-gray-900" role="menuitem" tabindex="-1"
@@ -159,7 +159,7 @@
       </div>
     </nav>
 
-    <header class="bg-white shadow">
+    <header class="bg-slate-200 shadow">
       <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <h1 class="text-3xl font-bold tracking-tight text-gray-900">Tasks</h1>
       </div>
