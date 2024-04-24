@@ -12,7 +12,7 @@
     <link href="../static/styles/styles.css" rel="stylesheet">
 </head>
 
-<body class="font-[Poppins] bg-slate-300 h-screen">
+<body class="font-[Poppins] bg-slate-300 h-full">
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
     {% for category, message in messages %}
@@ -133,7 +133,7 @@
         </nav>
         <main>
             <div class="place-self-center grid xl:grid-cols-3 mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-                <div class="my-2 mx-auto xl:max-w-sm max-w-md rounded overflow-hidden shadow-lg bg-slate-200">
+                <div class="my-2 flex flex-col mx-auto xl:max-w-sm max-w-md rounded overflow-hidden shadow-lg bg-slate-200">
                     <img class="w-full" src="https://v1.tailwindcss.com/img/card-top.jpg">
                     <div class="px-6 py-4">
                         <div class="font-bold text-xl mb-2">The Coldest Sunset</div>
@@ -142,82 +142,7 @@
                             et perferendis eaque, exercitationem praesentium nihil.
                         </p>
                     </div>
-                    <div class="px-6 py-2">
-                        <span
-                            class="inline-block bg-slate-300 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Manager</span>
-                    </div>
-                    <div class="px-6 py-2">
-                        <a href="#"
-                            class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-cyan-600 rounded-lg hover:bg-cyan-800 focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800">
-                            Dashboard
-                            <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-                <div class="my-2 mx-auto xl:max-w-sm max-w-md rounded overflow-hidden shadow-lg bg-slate-200">
-                    <img class="w-full" src="https://v1.tailwindcss.com/img/card-top.jpg">
-                    <div class="px-6 py-4">
-                        <div class="font-bold text-xl mb-2">The Coldest Sunset</div>
-                        <p class="text-gray-700 text-base">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores
-                            et perferendis eaque, exercitationem praesentium nihil.
-                        </p>
-                    </div>
-                    <div class="px-6 py-2">
-                        <span
-                            class="inline-block bg-slate-300 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Manager</span>
-                    </div>
-                    <div class="px-6 py-2">
-                        <a href="#"
-                            class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-cyan-600 rounded-lg hover:bg-cyan-800 focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800">
-                            Dashboard
-                            <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-                <div class="my-2 mx-auto xl:max-w-sm max-w-md rounded overflow-hidden shadow-lg bg-slate-200">
-                    <img class="w-full" src="https://v1.tailwindcss.com/img/card-top.jpg">
-                    <div class="px-6 py-4">
-                        <div class="font-bold text-xl mb-2">The Coldest Sunset</div>
-                        <p class="text-gray-700 text-base">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores
-                            et perferendis eaque, exercitationem praesentium nihil.
-                        </p>
-                    </div>
-                    <div class="px-6 py-2">
-                        <span
-                            class="inline-block bg-slate-300 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Manager</span>
-                    </div>
-                    <div class="px-6 py-2">
-                        <a href="#"
-                            class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-cyan-600 rounded-lg hover:bg-cyan-800 focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800">
-                            Dashboard
-                            <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-                <div class="my-2 mx-auto xl:max-w-sm max-w-md rounded overflow-hidden shadow-lg bg-slate-200">
-                    <img class="w-full" src="https://v1.tailwindcss.com/img/card-top.jpg">
-                    <div class="px-6 py-4">
-                        <div class="font-bold text-xl mb-2">The Coldest Sunset</div>
-                        <p class="text-gray-700 text-base">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores
-                            et perferendis eaque, exercitationem praesentium nihil.
-                        </p>
-                    </div>
-                    <div class="px-6 py-2">
+                    <div class="px-6 py-2 mb-auto">
                         <span
                             class="inline-block bg-slate-300 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Manager</span>
                     </div>

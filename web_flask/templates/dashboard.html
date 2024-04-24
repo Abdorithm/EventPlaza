@@ -12,36 +12,37 @@
   <link href="../static/styles/styles.css" rel="stylesheet">
 </head>
 
-<body class="font-[Poppins] bg-slate-300 h-screen">
+<body class="font-[Poppins] bg-slate-300 h-full">
   {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
   {% for category, message in messages %}
   {% if category == "error" %}
   <div id="flash-body" class="bg-fuchsia-600 text-slate-200 px-4 py-3 relative" role="alert">
-      <strong class="font-bold">
-          {{ message }}
-      </strong>
-      <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
-          <svg id="close-flash" class="fill-current h-6 w-6 text-slate-200" role="button"
-              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-              <title>Close</title>
-              <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/>
-          </svg>
-      </span>
+    <strong class="font-bold">
+      {{ message }}
+    </strong>
+    <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+      <svg id="close-flash" class="fill-current h-6 w-6 text-slate-200" role="button" xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 20 20">
+        <title>Close</title>
+        <path
+          d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
+      </svg>
+    </span>
   </div>
   {% elif category == "success" %}
   <div id="flash-body" class="bg-cyan-600 text-slate-200 px-4 py-3 relative" role="alert">
-      <strong class="font-bold">
-          {{ message }}
-      </strong>
-      <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
-          <svg id="close-flash" class="fill-current h-6 w-6 text-slate-200" role="button"
-              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-              <title>Close</title>
-              <path
-                  d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
-          </svg>
-      </span>
+    <strong class="font-bold">
+      {{ message }}
+    </strong>
+    <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+      <svg id="close-flash" class="fill-current h-6 w-6 text-slate-200" role="button" xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 20 20">
+        <title>Close</title>
+        <path
+          d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
+      </svg>
+    </span>
   </div>
   {% endif %}
   {% endfor %}
@@ -58,7 +59,8 @@
                 <a href="#" class="bg-cyan-950 text-white rounded-md px-3 py-2 text-sm font-medium"
                   aria-current="page">Tasks</a>
                 <a href="#"
-                  class="text-slate-200 hover:bg-cyan-800 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Pending Review</a>
+                  class="text-slate-200 hover:bg-cyan-800 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Pending
+                  Review</a>
                 <a href="#"
                   class="text-slate-200 hover:bg-cyan-800 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Done</a>
               </div>
@@ -131,7 +133,8 @@
           <a href="#" class="bg-cyan-950 text-white block rounded-md px-3 py-2 text-base font-medium"
             aria-current="page">Tasks</a>
           <a href="#"
-            class="text-slate-200 hover:bg-cyan-800 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Pending Review</a>
+            class="text-slate-200 hover:bg-cyan-800 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Pending
+            Review</a>
           <a href="#"
             class="text-slate-200 hover:bg-cyan-800 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Done</a>
         </div>
@@ -165,8 +168,37 @@
       </div>
     </header>
     <main>
-      <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-        <!-- Content goes here -->
+      <div class="place-self-center grid xl:grid-cols-3 mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+        <div class="my-2 flex flex-col mx-auto xl:max-w-sm max-w-md rounded overflow-hidden shadow-lg bg-slate-200">
+          <div class="px-6 py-4">
+            <div class="font-bold text-xl mb-2">Need More Info About Registered Projects</div>
+            <p class="text-gray-700 text-base">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores
+              et perferendis eaq...
+            </p>
+          </div>
+          <div class="px-6 py-2">
+            <span class="inline-block bg-slate-300 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+              Assigned by Abdo for Projects Team on 2024-04-24
+            </span>
+          </div>
+          <div class="px-6 py-2 mb-auto">
+            <span class="inline-block bg-slate-300 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+              2 Attachments
+            </span>
+          </div>
+          <div class="px-6 py-2">
+            <a href="#"
+              class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-cyan-600 rounded-lg hover:bg-cyan-800 focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800">
+              Details
+              <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                fill="none" viewBox="0 0 14 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M1 5h12m0 0L9 1m4 4L9 9" />
+              </svg>
+            </a>
+          </div>
+        </div>
       </div>
     </main>
   </div>
