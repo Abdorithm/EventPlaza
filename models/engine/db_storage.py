@@ -27,12 +27,11 @@ class DBStorage:
         PLAZA_MYSQL_HOST = getenv('PLAZA_MYSQL_HOST')
         PLAZA_MYSQL_DB = getenv('PLAZA_MYSQL_DB')
         PLAZA_ENV = getenv('PLAZA_ENV')
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
-                                      .format(PLAZA_MYSQL_USER,
-                                              PLAZA_MYSQL_PWD,
-                                              PLAZA_MYSQL_HOST,
-                                              PLAZA_MYSQL_DB),
-                                      pool_pre_ping=True)
+        connection = 'mysql+mysqldb://{}:{}@{}/{}' .format(PLAZA_MYSQL_USER,
+                                                           PLAZA_MYSQL_PWD,
+                                                           PLAZA_MYSQL_HOST,
+                                                           PLAZA_MYSQL_DB)
+        self.__engine = create_engine(connection, pool_pre_ping=True)
         if PLAZA_ENV == "test":
             Base.metadata.drop_all(self.__engine)
 

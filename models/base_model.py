@@ -5,7 +5,7 @@ from sqlalchemy import Column, String, DateTime
 from sqlalchemy.orm import declarative_base
 from datetime import datetime, timezone
 
-time = "%Y-%m-%dT%H:%M:%S.%f"
+time = "%Y-%m-%dT%H:%M:%S"
 Base = declarative_base()
 
 
@@ -62,4 +62,5 @@ class BaseModel():
         new_dict['created_at'] = self.created_at.strftime(time)
         new_dict['updated_at'] = self.updated_at.strftime(time)
         new_dict.pop('_sa_instance_state', None)
+
         return new_dict
