@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ Starts a Flask Web Application """
 from flask import Flask, render_template, url_for, flash, redirect
+from models.engine.db_storage import DBStorage
 from .forms import RegistrationForm, LoginForm
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
@@ -8,9 +9,10 @@ from flask_login import LoginManager
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'd685ddbe85e8fa0e7fb24d5aeb994e8f'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqldb:///plaza.db'
 bcrypt =  Bcrypt(app)
 login_manager = LoginManager(app)
-
+db = DBStorage(app)
 
 @app.route('/', strict_slashes=False)
 def landing():
