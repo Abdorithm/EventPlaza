@@ -2,9 +2,14 @@
 """ Starts a Flask Web Application """
 from flask import Flask, render_template, url_for, flash, redirect
 from .forms import RegistrationForm, LoginForm
-app = Flask(__name__)
+from flask_bcrypt import Bcrypt
+from flask_login import LoginManager
 
+
+app = Flask(__name__)
 app.config['SECRET_KEY'] = 'd685ddbe85e8fa0e7fb24d5aeb994e8f'
+bcrypt =  Bcrypt(app)
+login_manager = LoginManager(app)
 
 
 @app.route('/', strict_slashes=False)
@@ -29,6 +34,11 @@ def signup():
     """ Renders the signup page """
     form = RegistrationForm()
     if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user = User(first_name=form.first_name.data, last_name=form.last_name.data,
+                    email=form.email.data, password=hashed_password)
+        db.session.add(user)
+        db.session.commit()
         flash('Account created for {} {}!'.format(form.first_name.data,
                                                  form.last_name.data),
                                                  'success')
