@@ -1,16 +1,17 @@
 from sqlalchemy import Table, Column, String, ForeignKey
-from models.base_model import Base
+from sqlalchemy.orm import relationship
+from event_plaza import db
 
 event_organizers = Table(
         'event_organizers',
-        Base.metadata,
+        db.Model.metadata,
         Column('event_id', String(60), ForeignKey('events.id', onupdate='CASCADE', ondelete='CASCADE'), primary_key=True),
         Column('user_id', String(60), ForeignKey('users.id', onupdate='CASCADE', ondelete='CASCADE'), primary_key=True)
         )
 
 event_attendens = Table(
         'event_attendens',
-        Base.metadata,
+        db.Model.metadata,
         Column('event_id', String(60), ForeignKey('events.id', onupdate='CASCADE', ondelete='CASCADE'), primary_key=True),
         Column('user_id', String(60), ForeignKey('users.id', onupdate='CASCADE', ondelete='CASCADE'), primary_key=True)
         )

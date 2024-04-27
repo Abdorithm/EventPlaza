@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """This module contains the Dashboard class"""
-from models.base_model import BaseModel, Base
+from .base_model import BaseModel
+from event_plaza import db
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
 
 
-class Dashboard(BaseModel, Base):
+class Dashboard(BaseModel, db.Model):
     """This class represents the dashboard table"""
     __tablename__ = 'dashboards'
 

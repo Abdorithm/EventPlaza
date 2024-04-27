@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 """This module contains the Committee class"""
-from models.base_model import BaseModel, Base
+from .base_model import BaseModel
 from sqlalchemy import Column, String, ForeignKey, Table
 from sqlalchemy.orm import relationship
+from event_plaza import db
 
-committee_member = Table('committee_member', Base.metadata,
+
+committee_member = Table('committee_member', db.Model.metadata,
                          Column('committee_id', String(60),
                                 ForeignKey('committees.id', onupdate='CASCADE',
                                            ondelete='CASCADE'),
@@ -15,7 +17,7 @@ committee_member = Table('committee_member', Base.metadata,
                                 primary_key=True))
 
 
-committee_vice = Table('committee_vice', Base.metadata,
+committee_vice = Table('committee_vice', db.Model.metadata,
                        Column('committee_id', String(60),
                               ForeignKey('committees.id', onupdate='CASCADE',
                                          ondelete='CASCADE'),
@@ -26,7 +28,7 @@ committee_vice = Table('committee_vice', Base.metadata,
                               primary_key=True))
 
 
-committee_head = Table('committee_head', Base.metadata,
+committee_head = Table('committee_head', db.Model.metadata,
                        Column('committee_id', String(60),
                               ForeignKey('committees.id', onupdate='CASCADE',
                                          ondelete='CASCADE'),
@@ -37,7 +39,8 @@ committee_head = Table('committee_head', Base.metadata,
                               primary_key=True))
 
 
-class Committee(BaseModel, Base):
+
+class Committee(BaseModel, db.Model):
     """This class represents the committee table"""
     __tablename__ = 'committees'
 
@@ -45,11 +48,11 @@ class Committee(BaseModel, Base):
     name = Column(String(128), nullable=False)
     description = Column(String(1024), nullable=True)
 
-    members = relationship('User', secondary=committee_member,
-                           back_populates='member_committees')
-    vices = relationship('User', secondary=committee_vice,
-                         back_populates='vice_committees')
-    heads = relationship('User', secondary=committee_head,
-                         back_populates='head_committees')
-    dashboard = relationship('Dashboard', back_populates='committee')
-    event = relationship('Event', back_populates='committees')
+    members = relationship('User', secondary='committee_member',
+                           back_populates='member_committees', lazy=True)
+    vices = relationship('User', secondary='committee_vice',
+                         back_populates='vice_committees', lazy=True)
+    heads = relationship('User', secondary='committee_head',
+                         back_populates='head_committees', lazy=True)
+    dashboard = relationship('Dashboard', back_populates='committee', lazy=True)
+    event = relationship('Event', back_populates='committees', lazy=True)

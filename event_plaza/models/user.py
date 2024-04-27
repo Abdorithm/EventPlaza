@@ -1,0 +1,34 @@
+#!/usr/bin/env python3
+"""This module defines the User model for EventPlaza"""
+from .base_model import BaseModel
+from .event_tables import event_organizers, event_attendens
+from event_plaza import login_manager, db
+from sqlalchemy import Column, String
+from sqlalchemy.orm import relationship
+
+@login_manager.user_loader
+def load_user(user_id):
+    with app.app_context():
+        return User.query.get(user_id)
+
+class User(BaseModel, db.Model):
+    """This class defines the User model for EventPlaza"""
+    __tablename__ = 'users'
+
+    first_name = Column(String(128), nullable=True)
+    last_name = Column(String(128), nullable=True)
+    email = Column(String(128), nullable=False, unique=True)
+    password = Column(String(128), nullable=False)
+    organized_events = relationship('Event', secondary='event_organizers',
+                                    back_populates='organizer', lazy=True)
+    attended_events = relationship('Event', secondary='event_attendens',
+                                   back_populates='attendees', lazy=True)
+    assigned_cards = relationship('Card', secondary='assigns', 
+                                  back_populates='assignees',
+                                  lazy=True)
+    member_committees = relationship('Committee', secondary='committee_member',
+                                     back_populates='members', lazy=True)
+    vice_committees = relationship('Committee', secondary='committee_vice',
+                                   back_populates='vices', lazy=True)
+    head_committees = relationship('Committee', secondary='committee_head',
+                                   back_populates='heads', lazy=True)

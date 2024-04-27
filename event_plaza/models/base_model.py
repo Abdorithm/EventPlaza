@@ -2,11 +2,10 @@
 """Define the Base Module"""
 from uuid import uuid4
 from sqlalchemy import Column, String, DateTime
-from sqlalchemy.orm import declarative_base
+from event_plaza import db
 from datetime import datetime, timezone
 
-time = "%Y-%m-%dT%H:%M:%S.%f"
-Base = declarative_base()
+time = "%Y-%m-%dT%H:%M:%S"
 
 
 class BaseModel():

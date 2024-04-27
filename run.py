@@ -1,4 +1,4 @@
-from web_flask import app, db
+from event_plaza import app, db
 
 
 if __name__ == '__main__':
