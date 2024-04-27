@@ -5,16 +5,13 @@ from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 from models.event_tables import event_organizers, event_attendens
 
-
 class User(BaseModel, Base):
     """This class defines the User model for EventPlaza"""
     __tablename__ = 'users'
 
-    username = Column(String(128), nullable=False, unique=True)
     first_name = Column(String(128), nullable=True)
     last_name = Column(String(128), nullable=True)
     email = Column(String(128), nullable=False, unique=True)
-    phone = Column(String(128), nullable=True)
     password = Column(String(128), nullable=False)
     organized_events = relationship('Event', secondary=event_organizers,
                                     back_populates='organizer')
