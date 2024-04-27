@@ -1,31 +1,15 @@
 #!/usr/bin/python3
 """ Starts a Flask Web Application """
-from flask import Flask, render_template, url_for, flash, redirect
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import DeclarativeBase
-from .forms import RegistrationForm, LoginForm
-from flask_bcrypt import Bcrypt
-from flask_login import LoginManager
-from .models import BaseModel, User
+from flask import render_template, url_for, flash, redirect
+from web_flask import app
+from web_flask.forms import RegistrationForm, LoginForm
+from web_flask.models import BaseModel, User
 
-class Base(DeclarativeBase):
-    pass
-db = SQLAlchemy(model_class=Base)
-
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'd685ddbe85e8fa0e7fb24d5aeb994e8f'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://plaza_dev:plaza_dev_pass@localhost/plaza_dev_db'
-db.init_app(app)
-bcrypt =  Bcrypt(app)
-login_manager = LoginManager(app)
-
-with app.app_context():
-    db.create_all()
 
 @app.route("/users")
 def user_list():
     users = db.session.execute(db.select(User).order_by(User.username)).scalars()
-    return render_template("user/list.html", users=users)
+    return render_template("list.html", users=users)
 
 @app.route("/users/create", methods=["GET", "POST"])
 def user_create():
