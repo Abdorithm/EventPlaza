@@ -1,10 +1,13 @@
 #!/usr/bin/python3
 """ Starts a Flask Web Application """
 from flask import render_template, url_for, flash, redirect
-from web_flask import app
+from web_flask import app, bcrypt, db
 from web_flask.forms import RegistrationForm, LoginForm
-from web_flask.models import BaseModel, User
+from web_flask.models import User
 
+
+with app.app_context():
+    db.create_all()
 
 @app.route("/users")
 def user_list():
@@ -53,7 +56,7 @@ def signup():
         flash('Account created for {} {}!'.format(form.first_name.data,
                                                  form.last_name.data),
                                                  'success')
-        return redirect(url_for('landing'))
+        return redirect(url_for('login'))
     return render_template('sign_up.html', form=form)
 
 @app.route('/events', strict_slashes=False)
@@ -80,8 +83,3 @@ def team():
 def profile():
     """ Renders the dashboard page """
     return render_template('profile.html')
-
-
-if __name__ == "__main__":
-    """ Main Function """
-    app.run(host='0.0.0.0', port=5000)

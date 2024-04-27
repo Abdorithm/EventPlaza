@@ -58,7 +58,7 @@ class BaseModel(db.Model):
         new_dict.pop('_sa_instance_state', None)
         return new_dict
 
-class User(BaseModel):
+class User(BaseModel, db.Model):
     """User class table"""
     first_name = db.Column(db.String(20), nullable=True)
     last_name = db.Column(db.String(20), nullable=True)
