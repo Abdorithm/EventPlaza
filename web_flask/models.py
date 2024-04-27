@@ -1,5 +1,6 @@
 from datetime import datetime
 from web_flask import db, login_manager
+from flask_login import UserMixin
 from uuid import uuid4
 from datetime import datetime, timezone
 
@@ -8,7 +9,7 @@ time = "%Y-%m-%dT%H:%M:%S.%f"
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.get(user_id)
+    return User.query.get(user_id)
 
 class BaseModel(db.Model):
     """The base model class for all coming classes"""
@@ -58,7 +59,7 @@ class BaseModel(db.Model):
         new_dict.pop('_sa_instance_state', None)
         return new_dict
 
-class User(BaseModel, db.Model):
+class User(BaseModel, db.Model, UserMixin):
     """User class table"""
     first_name = db.Column(db.String(20), nullable=True)
     last_name = db.Column(db.String(20), nullable=True)
