@@ -12,9 +12,9 @@ def load_user(user_id):
 
 class BaseModel(db.Model):
     """The base model class for all coming classes"""
-    id = db.Column(String(60), primary_key=True)
-    created_at = db.Column(DateTime, default=datetime.now(timezone.utc))
-    updated_at = db.Column(DateTime, default=datetime.now(timezone.utc))
+    id = db.Column(db.String(60), primary_key=True)
+    created_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
+    updated_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
 
     def __init__(self, **kwargs):
         """Initialization of the base model"""
@@ -40,6 +40,7 @@ class BaseModel(db.Model):
             self.id = str(uuid4())
             self.created_at = datetime.now(timezone.utc)
             self.updated_at = datetime.now(timezone.utc)
+
     def __str__(self):
         """Return the string representation of the object"""
         new_dict = self.to_dict().copy()
@@ -47,13 +48,6 @@ class BaseModel(db.Model):
 
         return "[{}] ({}) {}".format(
             type(self).__name__, self.id, new_dict)
-
-    def save(self):
-        """Update the updated_at attribute and save the instance"""
-        self.updated_at = datetime.now(timezone.utc)
-        from models import storage
-        storage.new(self)
-        storage.save()
 
     def to_dict(self):
         """Return a dictionary containing all keys/values of __dict__"""
@@ -66,8 +60,7 @@ class BaseModel(db.Model):
 
 class User(BaseModel):
     """User class table"""
-    first_name = db.Column(String(20), nullable=True)
-    last_name = db.Column(String(20), nullable=True)
-    email = db.Column(String(128), nullable=False, unique=True)
-    password = db.Column(String(128), nullable=False)
-
+    first_name = db.Column(db.String(20), nullable=True)
+    last_name = db.Column(db.String(20), nullable=True)
+    email = db.Column(db.String(60), nullable=False, unique=True)
+    password = db.Column(db.String(60), nullable=False)
