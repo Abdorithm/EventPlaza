@@ -17,7 +17,7 @@
     {% if messages %}
     {% for category, message in messages %}
     {% if category == "error" %}
-    <div id="flash-body" class="bg-fuchsia-600 text-slate-200 px-4 py-3 relative" role="alert">
+    <div id="flash-body" class="bg-fuchsia-600 border-2 border-slate-200 text-slate-200 px-4 py-3 relative" role="alert">
         <strong class="font-bold">
             {{ message }}
         </strong>
@@ -30,7 +30,7 @@
         </span>
     </div>
     {% elif category == "success" %}
-    <div id="flash-body" class="bg-cyan-600 text-slate-200 px-4 py-3 relative" role="alert">
+    <div id="flash-body" class="bg-cyan-600 border-2 border-slate-200 text-slate-200 px-4 py-3 relative" role="alert">
         <strong class="font-bold">
             {{ message }}
         </strong>
@@ -70,34 +70,19 @@
         </nav>
     </header>
     <div class="grid">
-        <section id="landing-section-1" class="grid grid-cols-11 grid-rows-6">
-            <div id="landing-text-1" class="col-start-2 row-start-2 animate-custom-left">
+        <section id="landing-section-1" class="grid grid-rows-6">
+            <div id="landing-text-1" class="row-start-2 flex items-center justify-center animate-custom-left">
                 <span class="text-slate-300 font-extrabold font-[Poppins] text-4xl">
                     Event Planning
                 </span>
             </div>
-            <div id="landing-text-2" class="col-start-3 row-start-4 animate-custom-left-delay">
+            <div id="landing-text-2" class="row-start-3 flex items-center justify-center animate-custom-left-delay">
                 <span class="text-slate-300 font-extrabold font-[Poppins] text-4xl">
                     Done Right.
                 </span>
             </div>
-            <div id="landing-text-3" class="col-start-7 row-start-2 animate-custom-right">
-                <span class="text-slate-300 font-extrabold font-[Poppins] text-4xl">
-                    Manage,
-                </span>
-            </div>
-            <div id="landing-text-4" class="col-start-8 row-start-3 col-end-12 animate-custom-right">
-                <span class="text-slate-300 font-extrabold font-[Poppins] text-4xl">
-                    Present,
-                </span>
-            </div>
-            <div id="landing-text-5" class="col-start-9 row-start-4 col-end-12 animate-custom-right">
-                <span class="text-slate-300 font-extrabold font-[Poppins] text-4xl">
-                    & Upscale!
-                </span>
-            </div>
-            <div id="landing-button" class="row-start-6 col-start-6 col-end-9">
-                <button class="hover:text-fuchsia-600 bg-black text-slate-300 py-4 px-5 rounded-full">
+            <div id="landing-button" class="row-start-6 flex items-center justify-center content-center ">
+                <button class="hover:text-fuchsia-600 bg-black text-slate-300 mb-4 py-4 px-5 rounded-full">
                     <a href="{{ url_for('signup') }}">
                         Get Started
                     </a>
@@ -127,18 +112,7 @@
                 </ul>
                 <br>
                 <p>
-                    Our platform is tailored to serve:
-                </p>
-                <ul class="list-disc list-inside">
-                    <li>Event Planners</li>
-                    <li>Speakers</li>
-                    <li>Sponsors</li>
-                    <li>Exhibitors</li>
-                    <li>Attendees</li>
-                </ul>
-                <br>
-                <p>
-                    Whether you're organizing a small-scale local event or a
+                    Our platform is tailored to serve event planners. Whether you're organizing a small-scale local event or a
                     large-scale international conference, EventPlaza offers scalability
                     and flexibility to meet your unique event management needs.
                 </p>

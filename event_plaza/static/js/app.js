@@ -45,6 +45,23 @@ if (flash_button && flash_div) {
             }
     
         });
+
+        doc.addEventListener('click', event => {
+    
+            // close the menu when the user clicks outside
+    
+            const outsideClick = (!flash_div.contains(event.target)
+                && !flash_button.contains(event.target));
+    
+            if (outsideClick === true) {
+    
+                if (!flash_div.classList.contains('hidden')) {
+                    flash_div.classList.add('hidden');
+                }
+    
+            }
+    
+        });
     
     };
     close_flash_message();

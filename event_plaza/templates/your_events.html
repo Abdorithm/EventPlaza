@@ -17,7 +17,7 @@
     {% if messages %}
     {% for category, message in messages %}
     {% if category == "error" %}
-    <div id="flash-body" class="bg-fuchsia-600 text-slate-200 px-4 py-3 relative" role="alert">
+    <div id="flash-body" class="bg-fuchsia-600 border-2 border-slate-200 text-slate-200 px-4 py-3 relative" role="alert">
         <strong class="font-bold">
             {{ message }}
         </strong>
@@ -31,7 +31,7 @@
         </span>
     </div>
     {% elif category == "success" %}
-    <div id="flash-body" class="bg-cyan-600 text-slate-200 px-4 py-3 relative" role="alert">
+    <div id="flash-body" class="bg-cyan-600 border-2 border-slate-200 text-slate-200 px-4 py-3 relative" role="alert">
         <strong class="font-bold">
             {{ message }}
         </strong>
