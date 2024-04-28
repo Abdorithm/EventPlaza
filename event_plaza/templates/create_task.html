@@ -169,9 +169,10 @@
         <main>
             <div
                 class="editor my-4 mx-auto w-10/12 bg-slate-200 flex flex-col text-gray-800 border border-slate-300 p-4 shadow-lg max-w-2xl">
-                <input class="title focus:border-cyan-600 bg-slate-300 border border-slate-300 p-2 mb-4 outline-none" spellcheck="false"
-                    placeholder="Title" type="text">
-                <textarea class="description focus:border-cyan-600 bg-slate-300 sec p-3 h-60 border border-slate-300 outline-none"
+                <input class="title focus:border-cyan-600 bg-slate-300 border border-slate-300 p-2 mb-4 outline-none"
+                    spellcheck="false" placeholder="Title" type="text">
+                <textarea
+                    class="description focus:border-cyan-600 bg-slate-300 sec p-3 h-60 border border-slate-300 outline-none"
                     spellcheck="false" placeholder="Describe everything about this task here"></textarea>
 
                 <!-- icons -->
@@ -196,12 +197,15 @@
                     <div class="count ml-auto text-gray-400 text-xs font-semibold">0/300</div>
                 </div>
                 <!-- buttons -->
-                <div class="buttons flex">
-                    <div class="btn border border-gray-300 p-1 px-4 font-semibold cursor-pointer text-gray-500 ml-auto">
-                        Cancel</div>
-                    <div
-                        class="btn border border-cyan-600 p-1 px-4 font-semibold cursor-pointer text-gray-200 ml-2 bg-cyan-600">
-                        Create</div>
+                <div class="buttons flex flex-row-reverse">
+                    <a href="#"
+                        class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-cyan-600 rounded-lg hover:bg-cyan-800 focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800">
+                        Create
+                    </a>
+                    <a href="#"
+                        class="inline-flex mx-2 items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:bg-fuchsia-600 dark:hover:bg-fuchsia-700 dark:focus:ring-fuchsia-800">
+                        Cancel
+                    </a>
                 </div>
             </div>
         </main>
