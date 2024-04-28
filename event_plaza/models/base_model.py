@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Define the Base Module"""
 from uuid import uuid4
-from sqlalchemy import Column, String, DateTime
 from event_plaza import db
 from datetime import datetime, timezone
 
@@ -10,9 +9,9 @@ time = "%Y-%m-%dT%H:%M:%S"
 
 class BaseModel():
     """The base model class for all coming classes"""
-    id = Column(String(60), primary_key=True)
-    created_at = Column(DateTime, default=datetime.now(timezone.utc))
-    updated_at = Column(DateTime, default=datetime.now(timezone.utc))
+    id = db.Column(db.String(60), primary_key=True)
+    created_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
+    updated_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
 
     def __init__(self, **kwargs):
         """Initialization of the base model"""
@@ -46,13 +45,6 @@ class BaseModel():
         
         return "[{}] ({}) {}".format(
             type(self).__name__, self.id, new_dict)
-
-    def save(self):
-        """Update the updated_at attribute and save the instance"""
-        self.updated_at = datetime.now(timezone.utc)
-        from models import storage
-        storage.new(self)
-        storage.save()
 
     def to_dict(self):
         """Return a dictionary containing all keys/values of __dict__"""
