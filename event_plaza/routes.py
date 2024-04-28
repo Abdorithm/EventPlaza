@@ -78,11 +78,6 @@ def dashboard():
     """ Renders the dashboard page """
     return render_template('dashboard.html')
 
-@app.route('/team', strict_slashes=False)
-def team():
-    """ Renders the dashboard page """
-    return render_template('team.html')
-
 @app.route('/profile', strict_slashes=False)
 @login_required
 def profile():
