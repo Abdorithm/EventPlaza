@@ -78,6 +78,13 @@ def dashboard():
     """ Renders the dashboard page """
     return render_template('dashboard.html')
 
+
+@app.route('/dashboard/create_task', strict_slashes=False)
+@login_required
+def create_task():
+    """ Renders the dashboard page """
+    return render_template('create_task.html')
+
 @app.route('/profile', strict_slashes=False)
 @login_required
 def profile():
