@@ -98,6 +98,9 @@ def profile():
         db.session.commit()
         flash('Your profile has been updated!')
         return redirect(url_for('profile'))
-
+    elif request.method == 'GET':
+        form.first_name = current_user.first_name
+        form.last_name = current_user.last_name
+        form.email = current_user.email
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     return render_template('profile.html', image_file=image_file, form=form)
