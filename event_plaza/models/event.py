@@ -13,6 +13,7 @@ class Event(BaseModel, db.Model):
     description = db.Column(db.String(1024), nullable=True)
     location = db.Column(db.String(128), nullable=True)
     start_time = db.Column(db.String(128), nullable=True)
+    image_file = db.Column(db.String(32), nullable=False, default='default.jpg')
     end_time = db.Column(db.String(128), nullable=True)
     organizer = db.relationship('User', secondary='event_organizers',
                              back_populates='organized_events', lazy=True)
