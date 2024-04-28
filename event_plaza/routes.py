@@ -100,5 +100,4 @@ def profile():
         return redirect(url_for('profile'))
 
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
-    return render_template('profile.html', image_file=image_file)
-
+    return render_template('profile.html', image_file=image_file, form=form)
