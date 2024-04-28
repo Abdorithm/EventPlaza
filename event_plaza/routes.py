@@ -89,5 +89,6 @@ def create_task():
 @login_required
 def profile():
     """ Renders the dashboard page """
-    return render_template('profile.html')
+    image_file = url_for('static', filename='/profile_pics' + current_user.image_file)
+    return render_template('profile.html', image_file=image_file)
 

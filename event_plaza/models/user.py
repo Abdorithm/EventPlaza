@@ -17,6 +17,7 @@ class User(BaseModel, db.Model, UserMixin):
     first_name = db.Column(db.String(128), nullable=True)
     last_name = db.Column(db.String(128), nullable=True)
     email = db.Column(db.String(128), nullable=False, unique=True)
+    image_file = db.Column(db.String(32), nullable=False, default='default.jpg')
     password = db.Column(db.String(128), nullable=False)
     organized_events = db.relationship('Event', secondary='event_organizers',
                                     back_populates='organizer', lazy=True)
