@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ Flask forms """
 from flask_wtf import FlaskForm
+from flask_login import current_user
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from event_plaza import app
@@ -24,12 +25,8 @@ class RegistrationForm(FlaskForm):
         """ validate that the email is unique """
         with app.app_context():
             user = User.query.filter_by(email=email.data).first()
-
         if user:
             raise ValidationError('That email is already Registered.')
-
-        
-
 
 class LoginForm(FlaskForm):
     """ Class for the log in form """                 
@@ -38,3 +35,21 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     remember = BooleanField('Remember Me')
     submit = SubmitField('Log In')
+
+class UpdateProfileForm(FlaskForm):
+    """ Class for the Sign Up form"""
+    first_name = StringField('First Name',
+                             validators=[DataRequired(), Length(min=2, max=20)])
+    last_name = StringField('Last Name',
+                            validators=[DataRequired(), Length(min=2, max=20)])                      
+    email = StringField('Email',
+                        validators=[DataRequired(), Email()])
+    submit = SubmitField('Update')
+
+    def validate_email(self, email):
+        """ validate that the email is unique """
+        if email.data != current_user.email:
+            with app.app_context():
+                user = User.query.filter_by(email=email.data).first()
+            if user:
+                raise ValidationError('That email is already Registered.')
