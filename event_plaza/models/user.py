@@ -6,9 +6,8 @@ from event_plaza import login_manager, db, app
 from flask_login import UserMixin
 
 @login_manager.user_loader
-def load_user(user_id):
-    with app.app_context():
-        return User.query.get(user_id)
+def load_user(user_id: str):
+    return User.query.get(user_id)
 
 class User(BaseModel, db.Model, UserMixin):
     """This class defines the User model for EventPlaza"""

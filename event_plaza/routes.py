@@ -92,9 +92,9 @@ def profile():
     """ Renders the dashboard page """
     form = UpdateProfileForm()
     if form.validate_on_submit():
-        current_user.first_name = form.data.first_name
-        current_user.last_name = form.data.last_name
-        current_user.email = form.data.email
+        current_user.first_name = form.first_name.data
+        current_user.last_name = form.last_name.data
+        current_user.email = form.email.data
         db.session.commit()
         flash('Your profile has been updated!')
         return redirect(url_for('profile'))
