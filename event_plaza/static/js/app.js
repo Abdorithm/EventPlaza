@@ -81,6 +81,7 @@ if (button_menu && profile_menu) {
     
             profile_menu.classList.toggle('profile-menu-enter');
             profile_menu.classList.toggle('profile-menu-leave');
+            profile_menu.classList.toggle('hidden');
     
         });
     
@@ -95,6 +96,7 @@ if (button_menu && profile_menu) {
     
                 profile_menu.classList.remove('profile-menu-enter');
                 profile_menu.classList.add('profile-menu-leave');
+                profile_menu.classList.add('hidden');
     
             }
     

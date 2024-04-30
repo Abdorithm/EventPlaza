@@ -66,7 +66,8 @@ def logout():
 @login_required
 def home():
     """ Renders the home page that contains the user's events"""
-    return render_template('your_events.html')
+    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+    return render_template('your_events.html', image_file=image_file)
 
 @app.route('/about', strict_slashes=False)
 def about():
@@ -77,14 +78,16 @@ def about():
 @login_required
 def dashboard():
     """ Renders the dashboard page """
-    return render_template('dashboard.html')
+    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+    return render_template('dashboard.html', image_file=image_file)
 
 
 @app.route('/dashboard/create_task', strict_slashes=False)
 @login_required
 def create_task():
     """ Renders the dashboard page """
-    return render_template('create_task.html')
+    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+    return render_template('create_task.html', image_file=image_file)
 
 @app.route('/profile', strict_slashes=False, methods=['GET', 'POST'])
 @login_required
