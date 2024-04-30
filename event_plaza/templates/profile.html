@@ -113,7 +113,7 @@
           </h1>
         </div>
         <hr class="my-3" />
-        <form action="#" method="POST">
+        <form action="#" method="POST" enctype="multipart/form-data">
           {{ form.hidden_tag() }}
           <div>
             {{ form.first_name.label(class="") }}
@@ -123,7 +123,7 @@
             outline-none", placeholder=current_user.first_name) }}
             <div>
               {% for error in form.first_name.errors %}
-              <span class="">
+              <span class="text-sm text-fuchsia-800">
                 {{ error }}
               </span>
               {% endfor %}
@@ -142,7 +142,7 @@
             outline-none", placeholder=current_user.last_name) }}
             <div>
               {% for error in form.last_name.errors %}
-              <span class="">
+              <span class="text-sm text-fuchsia-800">
                 {{ error }}
               </span>
               {% endfor %}
@@ -162,7 +162,7 @@
             }}
             <div>
               {% for error in form.email.errors %}
-              <span class="">
+              <span class="text-sm text-fuchsia-800">
                 {{ error }}
               </span>
               {% endfor %}
@@ -179,7 +179,7 @@
             {{ form.password(class="w-full ring-2 ring-fuchsia-600 bg-slate-300 border border-slate-300 p-2 mb-4") }}
             <div>
               {% for error in form.password.errors %}
-              <span class="">
+              <span class="text-sm text-fuchsia-800">
                 {{ error }}
               </span>
               {% endfor %}
@@ -197,7 +197,7 @@
             mb-4") }}
             <div>
               {% for error in form.confirm_password.errors %}
-              <span class="">
+              <span class="text-sm text-fuchsia-800">
                 {{ error }}
               </span>
               {% endfor %}
@@ -205,6 +205,20 @@
             {% else %}
             {{ form.confirm_password(class="w-full focus:border-cyan-600 bg-slate-300 border border-slate-300 p-2 mb-4
             outline-none") }}
+            {% endif %}
+          </div>
+          <div>
+            {{ form.picture.label(class="") }}
+            <br>
+            {{ form.picture(class="mt-2") }}
+            {% if form.picture.errors %}
+            <div>
+              {% for error in form.picture.errors %}
+              <span class="text-sm text-fuchsia-800">
+                {{ error }}
+              </span>
+              {% endfor %}
+            </div>
             {% endif %}
           </div>
 
