@@ -95,11 +95,14 @@ def profile():
     """ Renders the dashboard page """
     form = UpdateProfileForm()
     if form.validate_on_submit():
-        current_user.first_name = form.first_name.data
-        current_user.last_name = form.last_name.data
-        current_user.email = form.email.data
-        db.session.commit()
-        flash('Your profile has been updated!')
+        if bcrypt.check_password_hash(current_user.password, form.password.data):
+            current_user.first_name = form.first_name.data
+            current_user.last_name = form.last_name.data
+            current_user.email = form.email.data
+            db.session.commit()
+            flash('Your profile has been updated!', 'success')
+        else:
+            flash('Incorrect password', 'error')
         return redirect(url_for('profile'))
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     return render_template('profile.html', image_file=image_file, form=form)
