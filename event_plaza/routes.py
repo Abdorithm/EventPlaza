@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """ Starts a Flask Web Application """
+import secrets, os
 from flask import render_template, url_for, flash, redirect, request
 from event_plaza import app, bcrypt, db
 from event_plaza.forms import RegistrationForm, LoginForm, UpdateProfileForm
@@ -89,6 +90,15 @@ def create_task():
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     return render_template('create_task.html', image_file=image_file)
 
+def save_picture(form_picture):
+    random_hex = secrets.token_hex(8)
+    _, f_ext = os.path.splitext(form_picture.filename)
+    picture_fn = random_hex + f_ext
+    picture_path = os.path.join(app.root_path, 'static/profile_pics', picture_fn)
+    form_picture.save(picture_path)
+
+    return picture_fn
+
 @app.route('/profile', strict_slashes=False, methods=['GET', 'POST'])
 @login_required
 def profile():
@@ -96,6 +106,9 @@ def profile():
     form = UpdateProfileForm()
     if form.validate_on_submit():
         if bcrypt.check_password_hash(current_user.password, form.password.data):
+            if form.picture.data:
+                picture_file = save_picture(form.picture.data)
+                current_user.image_file = picture_file
             current_user.first_name = form.first_name.data
             current_user.last_name = form.last_name.data
             current_user.email = form.email.data
