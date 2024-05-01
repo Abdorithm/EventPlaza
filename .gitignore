@@ -161,3 +161,6 @@ cython_debug/
 
 # tailwindcss src
 **/src/
+
+# Profile Picture
+*.png *.jpg
