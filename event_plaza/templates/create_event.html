@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Create New Event</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;1,800&display=swap"
+			rel="stylesheet">
+		<link href="../static/styles/styles.css" rel="stylesheet">
+	</head>
+
+	<body class="font-[Poppins] bg-slate-300 h-full">
+		{% with messages = get_flashed_messages(with_categories=true) %}
+		{% if messages %}
+		{% for category, message in messages %}
+		{% if category == "error" %}
+		<div id="flash-body" class="bg-fuchsia-600 border-2 border-slate-200 text-slate-200 px-4 py-3 relative" role="alert">
+			<strong class="font-bold">
+				{{ message }}
+			</strong>
+			<span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+				<svg id="close-flash" class="fill-current h-6 w-6 text-slate-200" role="button" xmlns="http://www.w3.org/2000/svg"
+					viewBox="0 0 20 20">
+					<title>Close</title>
+					<path
+						d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
+				</svg>
+			</span>
+		</div>
+		{% elif category == "success" %}
+		<div id="flash-body" class="bg-cyan-600 border-2 border-slate-200 text-slate-200 px-4 py-3 relative" role="alert">
+			<strong class="font-bold">
+				{{ message }}
+			</strong>
+			<span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+				<svg id="close-flash" class="fill-current h-6 w-6 text-slate-200" role="button" xmlns="http://www.w3.org/2000/svg"
+					viewBox="0 0 20 20">
+					<title>Close</title>
+					<path
+						d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
+				</svg>
+			</span>
+		</div>
+		{% endif %}
+		{% endfor %}
+		{% endif %}
+		{% endwith %}
+		<div class="min-h-full">
+			<nav class="bg-cyan-600">
+				<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+					<div class="flex h-16 items-center justify-between">
+						<div class="flex text-2xl text-slate-200 font-bold items-center">
+							New Event
+							<div class="hidden md:block">
+								<div class="ml-10 flex items-baseline space-x-4">
+									<!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+									<a href="{{ url_for('home') }}"
+										class="text-slate-200 hover:bg-cyan-800 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
+										Your Events
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="hidden md:block">
+							<div class="ml-4 flex items-center md:ml-6">
+								<!-- Profile dropdown -->
+								<div class="relative ml-3">
+									<div>
+										<button type="button"
+											class="relative flex max-w-xs items-center rounded-full bg-cyan-950 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+											id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+											<span class="absolute -inset-1.5"></span>
+											<span class="sr-only">Open user menu</span>
+											<img class="h-8 w-8 rounded-full object-cover"
+												src="{{ image_file }}"
+												alt="">
+										</button>
+									</div>
+									<div id="user-profile-menu"
+										class="hidden profile-menu-leave absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-slate-200 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+										role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+										<!-- Active: "bg-gray-100", Not Active: "" -->
+										<a href="{{ url_for('profile') }}" target="_self" class="block px-4 py-2 text-sm text-gray-900"
+											role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
+										<a href="{{ url_for('logout') }}" class="block px-4 py-2 text-sm text-gray-900" role="menuitem"
+											tabindex="-1" id="user-menu-item-2">Sign out</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="-mr-2 flex md:hidden">
+							<!-- Mobile menu button -->
+							<button id="mobile-menu-button" type="button"
+								class="relative inline-flex items-center justify-center rounded-md bg-cyan-950 p-2 text-slate-200 hover:bg-cyan-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+								aria-controls="mobile-menu" aria-expanded="false">
+								<span class="absolute -inset-0.5"></span>
+								<span class="sr-only">Open main menu</span>
+								<!-- Menu open: "hidden", Menu closed: "block" -->
+								<svg class="menu-dash block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+									stroke="currentColor" aria-hidden="true">
+									<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+								</svg>
+								<!-- Menu open: "block", Menu closed: "hidden" -->
+								<svg class="menu-dash hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+									stroke="currentColor" aria-hidden="true">
+									<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+								</svg>
+							</button>
+						</div>
+					</div>
+				</div>
+
+				<!-- Mobile menu, show/hide based on menu state. -->
+				<div class="md:hidden hidden" id="mobile-menu">
+					<div class="border-t border-gray-700 pb-3 pt-4">
+						<div class="flex items-center px-5">
+							<div class="flex-shrink-0">
+								<img class="h-10 w-10 rounded-full"
+									src="{{ image_file }}"
+									alt="">
+							</div>
+							<div class="ml-3">
+								<div class="text-base font-medium leading-none text-white">
+									{{ current_user.first_name }} {{ current_user.last_name }}
+								</div>
+								<div class="text-sm font-medium leading-none text-slate-200">
+									{{ current_user.email }}
+								</div>
+							</div>
+						</div>
+						<div class="mt-3 space-y-1 px-2">
+							<a href="{{ url_for('profile') }}" target="_blank"
+								class="block rounded-md px-3 py-2 text-base font-medium text-slate-200 hover:bg-cyan-800 hover:text-white">Your
+								Profile</a>
+							<a href="{{ url_for('logout') }}"
+								class="block rounded-md px-3 py-2 text-base font-medium text-slate-200 hover:bg-cyan-800 hover:text-white">Sign
+								out</a>
+						</div>
+					</div>
+				</div>
+			</nav>
+			<main>
+				<div class="rounded-xl editor my-4 mx-auto w-10/20 bg-slate-200 flex flex-col text-gray-800 border border-slate-300 p-4 shadow-lg max-w-2xl">
+					<hr class="my-3" />
+					<form action="#" method="POST" enctype="multipart/form-data">
+						{{ form.hidden_tag() }}
+						<div class="relative rounded-lg col-span-full overflow-hidden mb-4" id="dropzone">
+							<label for="file-upload" class="relative cursor-pointer rounded-md font-semibold text-cyan-600 hover:text-indigo-500">
+								{{ form.picture(class="mt-2 sr-only", id="file-upload") }}
+								<img class="absolute inset-0 w-full h-full object-cover hidden" src="" id="preview">
+								<label for="cover-photo" class="block text-sm font-medium leading-6 text-gray-900 mb-1">Event Cover</label>
+								<div class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
+									<div class="text-center">
+										<svg class="mx-auto h-12 w-12 text-gray-300" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+											<path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clip-rule="evenodd" />
+										</svg>
+										<div class="mt-4 flex text-sm leading-6 text-gray-600">
+											{% if form.picture.errors %}
+											<div>
+												{% for error in form.picture.errors %}
+												<span class="text-sm text-fuchsia-800">
+													{{ error }}
+												</span>
+												{% endfor %}
+											</div>
+											{% else %}
+											<p class="pl-1">Upload a file or drag and drop</p>
+											{% endif %}
+										</div>
+									</div>
+								</div>
+								{% if not form.picture.errors %}
+								<p id="image-text" class="text-xs leading-5 text-gray-600">PNG, JPG up to 10MB</p>
+								{% endif %}
+							</label>
+						</div>
+						<div class="">
+							{{ form.name.label(class="") }}
+							<br>
+								{% if form.name.errors %}
+								{{ form.name(class="w-full ring-2 ring-fuchsia-600 bg-slate-300 border border-slate-300 p-2 mb-4
+								outline-none") }}
+							<div>
+								{% for error in form.name.errors %}
+								<span class="text-sm text-fuchsia-800">
+									{{ error }}
+								</span>
+								{% endfor %}
+							</div>
+							{% else %}
+							{{ form.name(class="w-full focus:border-cyan-600 bg-slate-300 border border-slate-300 p-2 mb-4
+							outline-none")
+							}}
+							{% endif %}
+						</div>
+						<div>
+							{{ form.date.label(class="") }}
+							<br>
+								{% if form.date.errors %}
+								{{ form.date(class="w-full ring-2 ring-fuchsia-600 bg-slate-300 border border-slate-300 p-2 mb-4
+								outline-none") }}
+							<div>
+								{% for error in form.date.errors %}
+								<span class="text-sm text-fuchsia-800">
+									{{ error }}
+								</span>
+								{% endfor %}
+							</div>
+							{% else %}
+							{{ form.date(class="w-full focus:border-cyan-600 bg-slate-300 border border-slate-300 p-2 mb-4
+							outline-none")
+							}}
+							{% endif %}
+						</div>
+						<div>
+							{{ form.time.label(class="") }}
+							<br>
+								{% if form.time.errors %}
+								{{ form.time(class="w-full ring-2 ring-fuchsia-600 bg-slate-300 border border-slate-300 p-2 mb-4
+								outline-none") }}
+							<div>
+								{% for error in form.time.errors %}
+								<span class="text-sm text-fuchsia-800">
+									{{ error }}
+								</span>
+								{% endfor %}
+							</div>
+							{% else %}
+							{{ form.time(class="w-full focus:border-cyan-600 bg-slate-300 border border-slate-300 p-2 mb-4
+							outline-none")
+							}}
+							{% endif %}
+						</div>
+						<div>
+							{{ form.location.label(class="") }}
+							<br>
+								{% if form.location.errors %}
+								{{ form.location(class="w-full ring-2 ring-fuchsia-600 bg-slate-300 border border-slate-300 p-2 mb-4")
+								}}
+							<div>
+								{% for error in form.location.errors %}
+								<span class="text-sm text-fuchsia-800">
+									{{ error }}
+								</span>
+								{% endfor %}
+							</div>
+							{% else %}
+							{{ form.location(class="w-full focus:border-cyan-600 bg-slate-300 border border-slate-300 p-2 mb-4
+							outline-none") }}
+							{% endif %}
+						</div>
+						<div>
+							{{ form.description.label(class="") }}
+							<br>
+								{% if form.description.errors %}
+								{{ form.description(class="w-full ring-2 ring-fuchsia-600 bg-slate-300 border border-slate-300 p-2 mb-4") }}
+							<div>
+								{% for error in form.description.errors %}
+								<span class="text-sm text-fuchsia-800">
+									{{ error }}
+								</span>
+								{% endfor %}
+							</div>
+							{% else %}
+							{{ form.description(class="w-full focus:border-cyan-600 bg-slate-300 border border-slate-300 p-2 mb-4
+							outline-none") }}
+							{% endif %}
+						</div>
+						<div class="flex flex-row-reverse">
+							{{ form.submit(class="cursor-pointer inline-flex items-center px-3 py-2 text-sm font-medium text-center
+							text-white bg-cyan-600 rounded-lg hover:bg-cyan-800 focus:ring-4 focus:outline-none focus:ring-cyan-300
+							dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800") }}
+						</div>
+					</form>
+				</div>
+			</main>
+		</div>
+		<script src="../static/js/app.js"></script>
+		<script>
+		var dropzone = document.getElementById('dropzone');
+		var imageTypes = ['image/png', 'image/jpeg'];
+
+		dropzone.addEventListener('dragover', e => {
+			e.preventDefault();
+			dropzone.classList.add('border-indigo-600');
+		});
+
+		dropzone.addEventListener('dragleave', e => {
+			e.preventDefault();
+			dropzone.classList.remove('border-indigo-600');
+		});
+
+		dropzone.addEventListener('drop', e => {
+			e.preventDefault();
+			dropzone.classList.remove('border-indigo-600');
+			var file = e.dataTransfer.files[0];
+
+			if (!imageTypes.includes(file.type)) {
+				var text = document.getElementById('image-text');
+				text.textContent = "Invalid file type. Please upload a PNG or JPEG file.";
+				text.classList.remove('text-gray-600');
+				text.classList.add('text-fuchsia-600');
+				return;
+			}
+			displayPreview(file);
+		});
+
+		var input = document.getElementById('file-upload');
+
+		input.addEventListener('change', e => {
+			var file = e.target.files[0];
+			if (!imageTypes.includes(file.type)) {
+				var text = document.getElementById('image-text');
+				text.textContent = "Invalid file type. Please upload a PNG or JPEG file.";
+				text.classList.remove('text-gray-600');
+				text.classList.add('text-fuchsia-600');
+				return;
+			}
+			displayPreview(file);
+		});
+
+		function displayPreview(file) {
+			var reader = new FileReader();
+			reader.readAsDataURL(file);
+			reader.onload = () => {
+				var preview = document.getElementById('preview');
+				preview.src = reader.result;
+				preview.classList.remove('hidden');
+				preview.textContent = "";
+			};
+		}
+		</script>
+	</body>
+</html>
