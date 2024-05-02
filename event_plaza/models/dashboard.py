@@ -14,6 +14,6 @@ class Dashboard(BaseModel, db.Model):
 
     name = db.Column(db.String(128), nullable=False)
     description = db.Column(db.String(1024), nullable=True)
-    lists = db.relationship('List', back_populates='dashboard')
+    cards = db.relationship('Card', back_populates='dashboard')
     event = db.relationship('Event', back_populates='dashboards')
     committee = db.relationship('Committee', back_populates='dashboard')

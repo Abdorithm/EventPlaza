@@ -130,3 +130,57 @@ if (mobile_menu && mobile_menu_button && menu_dashes) {
     };
     mobile_menu_drop();
 }
+
+    var dropzone = document.getElementById('dropzone');
+    var imageTypes = ['image/png', 'image/jpeg'];
+
+    dropzone.addEventListener('dragover', e => {
+      e.preventDefault();
+      dropzone.classList.add('border-indigo-600');
+    });
+
+    dropzone.addEventListener('dragleave', e => {
+      e.preventDefault();
+      dropzone.classList.remove('border-indigo-600');
+    });
+
+    dropzone.addEventListener('drop', e => {
+      e.preventDefault();
+      dropzone.classList.remove('border-indigo-600');
+      var file = e.dataTransfer.files[0];
+
+      if (!imageTypes.includes(file.type)) {
+        var text = document.getElementById('image-text');
+        text.textContent = "Invalid file type. Please upload a PNG or JPEG file.";
+        text.classList.remove('text-gray-600');
+        text.classList.add('text-fuchsia-600');
+        return;
+      }
+      displayPreview(file);
+    });
+
+    var input = document.getElementById('file-upload');
+
+    input.addEventListener('change', e => {
+      var file = e.target.files[0];
+      if (!imageTypes.includes(file.type)) {
+        var text = document.getElementById('image-text');
+        text.textContent = "Invalid file type. Please upload a PNG or JPEG file.";
+        text.classList.remove('text-gray-600');
+        text.classList.add('text-fuchsia-600');
+        return;
+      }
+      displayPreview(file);
+    });
+
+    function displayPreview(file) {
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        var preview = document.getElementById('preview');
+        preview.src = reader.result;
+        preview.classList.remove('hidden');
+        preview.textContent = "";
+      };
+    }
+

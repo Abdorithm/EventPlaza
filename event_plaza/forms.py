@@ -7,7 +7,6 @@ from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextA
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from event_plaza import app
 from event_plaza.models import User, Event
-from flask_restcountries import CountriesAPI
 
 
 class RegistrationForm(FlaskForm):
@@ -59,13 +58,20 @@ class UpdateProfileForm(FlaskForm):
 
 class CreateEventForm(FlaskForm):
     """" Class for creating an event form """
-    all_countries = CountriesAPI().get_all()
+    import csv
+    with open('cities.csv', newline='') as csvfile:
+        spamreader = csv.reader(csvfile, delimiter=',', quotechar='"')
+        all_cities = [city[3] for city in spamreader]
+        all_cities.pop(0)
+
+    
     name = StringField('Name', validators=[DataRequired()])
-    description = TextAreaField('Description', validators=[DataRequired()])
+    # Description limit is 1024 
+    description = TextAreaField('Description', validators=[DataRequired(), Length(min=2, max=1024)])
     date = DateField('Date', format='%Y-%m-%d', validators=[DataRequired()])
     time = TimeField('Time', format='%H:%M', validators=[DataRequired()])
     location = StringField('Location', validators=[DataRequired()])
-    location = SelectField('Location', choices=[country.name for country in all_countries])
+    location = SelectField('Location', choices=all_cities)
     picture = FileField('Event thumbnail', validators=[FileAllowed(['jpg', 'png'])])
     submit = SubmitField('Create Event')
 

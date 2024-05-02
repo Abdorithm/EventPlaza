@@ -81,7 +81,17 @@ def about():
 def dashboard():
     """ Renders the dashboard page """
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+    event_name = request.args.get('event_name')
+    event = Event.query.filter_by(name=event_name).first()
+
+    if not event:
+        flash('Event not found', 'error')
+        return redirect(url_for('home'))
+    if current_user not in event.organizer:
+        flash('You are not authorized to view this page', 'error')
+        return redirect(url_for('home'))
     return render_template('dashboard.html', image_file=image_file)
+
 
 
 @app.route('/create_event', strict_slashes=False, methods=['GET', 'POST'])
@@ -113,7 +123,7 @@ def create_task():
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     return render_template('create_task.html', image_file=image_file)
 
-def save_picture(form_picture, event=False):
+def save_picture(form_picture, event=False, new_width=800, new_height=800):
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_picture.filename)
     picture_fn = random_hex + f_ext
