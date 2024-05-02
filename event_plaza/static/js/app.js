@@ -146,6 +146,7 @@ if (mobile_menu && mobile_menu_button && menu_dashes) {
 
     dropzone.addEventListener('drop', e => {
       e.preventDefault();
+      preview.classList.add('hidden');
       dropzone.classList.remove('border-indigo-600');
       var file = e.dataTransfer.files[0];
 
@@ -153,7 +154,7 @@ if (mobile_menu && mobile_menu_button && menu_dashes) {
         var text = document.getElementById('image-text');
         text.textContent = "Invalid file type. Please upload a PNG or JPEG file.";
         text.classList.remove('text-gray-600');
-        text.classList.add('text-fuchsia-600');
+        text.classList.add('text-cyan-600');
         return;
       }
       displayPreview(file);
@@ -163,11 +164,12 @@ if (mobile_menu && mobile_menu_button && menu_dashes) {
 
     input.addEventListener('change', e => {
       var file = e.target.files[0];
+      preview.classList.add('hidden');
       if (!imageTypes.includes(file.type)) {
         var text = document.getElementById('image-text');
         text.textContent = "Invalid file type. Please upload a PNG or JPEG file.";
         text.classList.remove('text-gray-600');
-        text.classList.add('text-fuchsia-600');
+        text.classList.add('text-cyan-600');
         return;
       }
       displayPreview(file);

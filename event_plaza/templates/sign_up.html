@@ -12,7 +12,7 @@
   <link href="../static/styles/styles.css" rel="stylesheet">
 </head>
 
-<body class="font-[Poppins] bg-gradient-to-t from-fuchsia-600 to-cyan-600 max-h-fit">
+<body class="font-[Poppins] bg-gradient-to-t from-green-600 to-cyan-600 max-h-fit h-screen">
   <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
       <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-slate-200">
@@ -31,7 +31,7 @@
         <div>
           {{ form.first_name.label(class="block text-sm font-medium leading-6 text-slate-200") }}
           {% if form.first_name.errors %}
-            {{ form.first_name(class="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-fuchsia-600 text-fuchsia-600 focus:ring-1 focus:ring-inset sm:text-sm sm:leading-6") }}
+            {{ form.first_name(class="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-green-600 text-green-600 focus:ring-1 focus:ring-inset sm:text-sm sm:leading-6") }}
             <div>
               {% for error in form.first_name.errors %}
                 <span class="block text-sm font-medium leading-6 text-slate-200"> 
@@ -46,7 +46,7 @@
         <div>
           {{ form.last_name.label(class="block text-sm font-medium leading-6 text-slate-200") }}
           {% if form.last_name.errors %}
-            {{ form.last_name(class="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-fuchsia-600 text-fuchsia-600 focus:ring-1 focus:ring-inset sm:text-sm sm:leading-6") }}
+            {{ form.last_name(class="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-green-600 text-green-600 focus:ring-1 focus:ring-inset sm:text-sm sm:leading-6") }}
             <div>
               {% for error in form.first_name.errors %}
                 <span class="block text-sm font-medium leading-6 text-slate-200"> 
@@ -61,7 +61,7 @@
         <div>
           {{ form.email.label(class="block text-sm font-medium leading-6 text-slate-200") }}
           {% if form.email.errors %}
-            {{ form.email(class="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-fuchsia-600 text-fuchsia-600 focus:ring-1 focus:ring-inset sm:text-sm sm:leading-6") }}
+            {{ form.email(class="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-green-600 text-green-600 focus:ring-1 focus:ring-inset sm:text-sm sm:leading-6") }}
               <div>
                 {% for error in form.email.errors %}
                   <span class="block text-sm font-medium leading-6 text-slate-200"> 
@@ -76,7 +76,7 @@
         <div>
           {{ form.password.label(class="block text-sm font-medium leading-6 text-slate-200") }}
           {% if form.password.errors %}
-            {{ form.password(class="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-fuchsia-600 text-fuchsia-600 focus:ring-1 focus:ring-inset sm:text-sm sm:leading-6") }}
+            {{ form.password(class="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-green-600 text-green-600 focus:ring-1 focus:ring-inset sm:text-sm sm:leading-6") }}
               <div>
                 {% for error in form.password.errors %}
                   <span class="block text-sm font-medium leading-6 text-slate-200"> 
@@ -91,7 +91,7 @@
         <div>
           {{ form.confirm_password.label(class="block text-sm font-medium leading-6 text-slate-200") }}
           {% if form.confirm_password.errors %}
-            {{ form.confirm_password(class="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-fuchsia-600 text-fuchsia-600 focus:ring-1 focus:ring-inset sm:text-sm sm:leading-6") }}
+            {{ form.confirm_password(class="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-green-600 text-green-600 focus:ring-1 focus:ring-inset sm:text-sm sm:leading-6") }}
               <div>
                 {% for error in form.confirm_password.errors %}
                   <span class="block text-sm font-medium leading-6 text-slate-200"> 
@@ -104,7 +104,7 @@
           {% endif %}  
         </div>
         <div>
-          {{ form.submit(class="cursor-pointer flex w-full justify-center rounded-md bg-black px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:text-fuchsia-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600") }}
+          {{ form.submit(class="cursor-pointer flex w-full justify-center rounded-md bg-black px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:text-green-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600") }}
         </div>
         <div>
           <small>
