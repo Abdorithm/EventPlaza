@@ -157,7 +157,7 @@
             <br>
             {% if form.first_name.errors %}
             {{ form.first_name(class="w-full ring-2 ring-fuchsia-600 bg-slate-300 border border-slate-300 p-2 mb-4
-            outline-none", placeholder=current_user.first_name) }}
+            outline-none rounded-lg", placeholder=current_user.first_name) }}
             <div>
               {% for error in form.first_name.errors %}
               <span class="text-sm text-fuchsia-800">
@@ -167,7 +167,7 @@
             </div>
             {% else %}
             {{ form.first_name(class="w-full focus:border-cyan-600 bg-slate-300 border border-slate-300 p-2 mb-4
-            outline-none", placeholder=current_user.first_name)
+            outline-none rounded-lg", placeholder=current_user.first_name)
             }}
             {% endif %}
           </div>
@@ -176,7 +176,7 @@
             <br>
             {% if form.last_name.errors %}
             {{ form.last_name(class="w-full ring-2 ring-fuchsia-600 bg-slate-300 border border-slate-300 p-2 mb-4
-            outline-none", placeholder=current_user.last_name) }}
+            outline-none rounded-lg", placeholder=current_user.last_name) }}
             <div>
               {% for error in form.last_name.errors %}
               <span class="text-sm text-fuchsia-800">
@@ -186,7 +186,7 @@
             </div>
             {% else %}
             {{ form.last_name(class="w-full focus:border-cyan-600 bg-slate-300 border border-slate-300 p-2 mb-4
-            outline-none", placeholder=current_user.last_name)
+            outline-none rounded-lg", placeholder=current_user.last_name)
             }}
             {% endif %}
           </div>
@@ -194,7 +194,7 @@
             {{ form.email.label(class="") }}
             <br>
             {% if form.email.errors %}
-            {{ form.email(class="w-full ring-2 ring-fuchsia-600 bg-slate-300 border border-slate-300 p-2 mb-4",
+            {{ form.email(class="w-full ring-2 ring-fuchsia-600 bg-slate-300 border border-slate-300 p-2 mb-4 rounded-lg",
             placeholder=current_user.email)
             }}
             <div>
@@ -206,7 +206,7 @@
             </div>
             {% else %}
             {{ form.email(class="w-full focus:border-cyan-600 bg-slate-300 border border-slate-300 p-2 mb-4
-            outline-none", placeholder=current_user.email) }}
+            outline-none rounded-lg ", placeholder=current_user.email) }}
             {% endif %}
           </div>
           <div>
