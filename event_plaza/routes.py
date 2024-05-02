@@ -69,8 +69,6 @@ def home():
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     events = Event.query.filter(Event.organizer.any(id=current_user.id)).all()
 
-    for event in events:
-        print(organizer.name for organizer in event.organizer)
     return render_template('your_events.html', image_file=image_file, events=events, current_user=current_user)
 
 @app.route('/about', strict_slashes=False)

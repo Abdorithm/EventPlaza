@@ -3,10 +3,11 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, DateField, TimeField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, DateField, TimeField, SelectField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from event_plaza import app
 from event_plaza.models import User, Event
+from flask_restcountries import CountriesAPI
 
 
 class RegistrationForm(FlaskForm):
@@ -58,11 +59,13 @@ class UpdateProfileForm(FlaskForm):
 
 class CreateEventForm(FlaskForm):
     """" Class for creating an event form """
+    all_countries = CountriesAPI().get_all()
     name = StringField('Name', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
     date = DateField('Date', format='%Y-%m-%d', validators=[DataRequired()])
     time = TimeField('Time', format='%H:%M', validators=[DataRequired()])
     location = StringField('Location', validators=[DataRequired()])
+    location = SelectField('Location', choices=[country.name for country in all_countries])
     picture = FileField('Event thumbnail', validators=[FileAllowed(['jpg', 'png'])])
     submit = SubmitField('Create Event')
 
