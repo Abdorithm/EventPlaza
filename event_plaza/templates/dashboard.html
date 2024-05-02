@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;1,800&display=swap"
     rel="stylesheet">
-  <link href="../static/styles/styles.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/styles.css') }}">
 </head>
 
 <body class="font-[Poppins] bg-slate-300 h-full">
@@ -207,5 +207,5 @@
       </div>
     </main>
   </div>
-  <script src="../static/js/app.js"></script>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
