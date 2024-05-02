@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EventPlaza</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;1,800&display=swap"
+    rel="stylesheet">
+  <link href="../static/styles/styles.css" rel="stylesheet">
+</head>
+
+<body class="font-[Poppins] bg-gradient-to-t from-green-600 to-cyan-600 h-screen">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  {% for category, message in messages %}
+  {% if category == "error" %}
+  <div id="flash-body" class="bg-cyan-600 border-slate-200 text-slate-200 px-4 py-3 relative" role="alert">
+    <strong class="font-bold">
+      {{ message }}
+    </strong>
+    <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+      <svg id="close-flash" class="fill-current h-6 w-6 text-slate-200" role="button" xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 20 20">
+        <title>Close</title>
+        <path
+          d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
+      </svg>
+    </span>
+  </div>
+  {% elif category == "success" %}
+  <div id="flash-body" class="bg-cyan-600 border-slate-200 text-slate-200 px-4 py-3 relative" role="alert">
+    <strong class="font-bold">
+      {{ message }}
+    </strong>
+    <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+      <svg id="close-flash" class="fill-current h-6 w-6 text-slate-200" role="button" xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 20 20">
+        <title>Close</title>
+        <path
+          d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
+      </svg>
+    </span>
+  </div>
+  {% endif %}
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
+  <header class="bg-slate-300">
+    <nav class="flex justify-between items-center p-2">
+      <div class="font-[Poppins] text-2xl" style="font-size: 600;font-style: italic;">
+        <a href="{{ url_for ('landing') }}">
+          EventPlaza
+        </a>
+      </div>
+      <div id="nav-container" class="flex items-center duration-200 nav-container-no gap-x-6">
+        <button class="nav-item hover:text-cyan-600 bg-transparent text-black py-1 px-3 rounded-full">
+          <a href="{{ url_for('login') }}">
+            Login For Organizers
+          </a>
+        </button>
+        <button class="nav-item hover:text-cyan-600 bg-black text-slate-300 py-1 px-3 rounded-full">
+          <a href="{{ url_for('signup') }}">
+            Sign Up
+          </a>
+        </button>
+      </div>
+      <ion-icon class="custom-nav-icon text-2xl cursor-pointer px-3" name="chevron-down-outline"></ion-icon>
+    </nav>
+  </header>
+  <div class="grid">
+    <section id="landing-section-1" class="grid grid-rows-6">
+      <div id="landing-text-1" class="row-start-2 flex items-center justify-center animate-custom-left">
+        <span class="text-slate-300 font-extrabold font-[Poppins] text-4xl">
+          Event Planning
+        </span>
+      </div>
+      <div id="landing-text-2" class="row-start-3 flex items-center justify-center animate-custom-left-delay">
+        <span class="text-slate-300 font-extrabold font-[Poppins] text-4xl">
+          Done Right.
+        </span>
+      </div>
+      <div id="landing-button" class="row-start-6 flex items-center justify-center content-center ">
+        <button class="hover:text-green-600 bg-black text-slate-300 mb-4 py-4 px-5 rounded-full">
+          <a href="{{ url_for('signup') }}">
+            Get Started
+          </a>
+        </button>
+      </div>
+    </section>
+    <section id="landing-section-2" class="grid grid-cols-8 grid-rows-1 bg-slate-300">
+      <div id="section-2-text" class="col-span-6 p-10">
+        <h1 class="text-2xl">
+          Why
+          <span class="font-[Poppins] text-2xl" style="font-size: 600;font-style: italic;">
+            EventPlaza
+          </span>
+          ?
+        </h1>
+        <br>
+        <p>
+          EventPlaza is designed to assist a wide range of
+          event organizers across diverse domains, including:
+        </p>
+        <ul class="list-disc list-inside">
+          <li>Conferences</li>
+          <li>Workshops</li>
+          <li>Festivals</li>
+          <li>Seminars</li>
+          <li>Community Gatherings</li>
+        </ul>
+        <br>
+        <p>
+          Our platform is tailored to serve event planners. Whether you're organizing a small-scale local event or a
+          large-scale international conference, EventPlaza offers scalability
+          and flexibility to meet your unique event management needs.
+        </p>
+      </div>
+      <div id="landing-effect-1" class="grid grid-cols-8 grid-rows-5 col-span-2 text-effect effect p-10">
+        <span class="row-start-1 col-start-1">Plan,</span>
+        <span class="row-start-2 col-start-2">Execute,</span>
+        <span class="row-start-3 col-start-3">Get</span>
+        <span class="row-start-4 col-start-4">It</span>
+        <span class="row-start-5 col-start-5">Done!</span>
+      </div>
+    </section>
+  </div>
+
+  <footer id="landing-footer" class="bg-black grid grid-cols-1 grid-rows-1">
+    <button class="hover:text-green-600 bg-transparent text-slate-200 py-4 px-5 rounded-full">
+      <a href="#">
+        Meet The Team
+      </a>
+    </button>
+  </footer>
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  <script src="../static/js/app.js"></script>
+</body>
+
+</html>
