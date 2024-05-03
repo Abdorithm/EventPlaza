@@ -8,8 +8,7 @@ from flask_login import UserMixin
 
 @login_manager.user_loader
 def load_user(user_id: str):
-    with app.app_context():
-        return User.query.get(user_id)
+    return User.query.get(user_id)
 
 class User(BaseModel, db.Model, UserMixin):
     """This class defines the User model for EventPlaza"""
@@ -46,5 +45,4 @@ class User(BaseModel, db.Model, UserMixin):
             user_id = s.loads(token, 300)['user_id']
         except:
             return None
-        with app.app_context():
-            return User.query.get(user_id)
+        return User.query.get(user_id)

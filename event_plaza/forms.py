@@ -34,7 +34,7 @@ class LoginForm(FlaskForm):
     email = StringField('Email',
                         validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
-    remember = BooleanField('Remember Me')
+    remember = BooleanField('Remember me for 30 days')
     submit = SubmitField('Log In')
 
 class UpdateProfileForm(FlaskForm):

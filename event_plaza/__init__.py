@@ -6,6 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
+from datetime import timedelta
 
 
 class Base(DeclarativeBase):
@@ -15,6 +16,7 @@ db = SQLAlchemy(model_class=Base)
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'd685ddbe85e8fa0e7fb24d5aeb994e8f'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqldb://plaza_dev:plaza_dev_pwd@localhost/plaza_dev_db'
+app.config['REMEMBER_COOKIE_DURATION'] = timedelta(days=30)
 db.init_app(app)
 bcrypt =  Bcrypt(app)
 login_manager = LoginManager(app)

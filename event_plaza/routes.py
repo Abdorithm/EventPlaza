@@ -31,7 +31,7 @@ def login():
         with app.app_context():
             user = User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
-            login_user(user, remember=False)
+            login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('home'))
         else:
@@ -217,17 +217,15 @@ def reset_token(token):
     if current_user.is_authenticated:
         flash('You are already logged in. Log out to reset your password.', 'success')
         return redirect(url_for('home'))
-    with app.app_context():
-        user = User.verify_reset_token(token)
+    user = User.verify_reset_token(token)
     if user is None:
         flash('That is an invalid or expired token', 'error')
         return redirect(url_for('reset_request'))
     form = ResetPasswordForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        with app.app_context():
-            user.password = hashed_password
-            db.session.commit()
+        user.password = hashed_password
+        db.session.commit()
         flash('Your password has been updated! You are now able to log in', 'success')
         return redirect(url_for('login'))
     return render_template('reset_token.html', form=form)
