@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ Starts a Flask Web Application """
 import secrets, os
+from PIL import Image
 from flask import render_template, url_for, flash, redirect, request
 from event_plaza import app, bcrypt, db
 from event_plaza.forms import RegistrationForm, LoginForm, UpdateProfileForm, CreateEventForm, CreateTaskForm
@@ -144,7 +145,10 @@ def save_picture(form_picture, event=False, new_width=800, new_height=800):
     picture_fn = random_hex + f_ext
     path = 'static/profile_pics' if not event else 'static/event_pics'
     picture_path = os.path.join(app.root_path, path, picture_fn)
-    form_picture.save(picture_path)
+    output_size = (512, 512)
+    i = Image.open(form_picture)
+    i.thumbnail(output_size)
+    i.save(picture_path)
 
     return picture_fn
 
