@@ -12,12 +12,12 @@
   <link href="../static/styles/styles.css" rel="stylesheet">
 </head>
 
-<body class="font-[Poppins] bg-gradient-to-t from-green-600 to-cyan-600 h-screen">
+<body class="font-[Poppins] bg-gradient-to-t from-gray-900 to-cyan-600 h-screen">
   {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
   {% for category, message in messages %}
   {% if category == "error" %}
-  <div id="flash-body" class="bg-cyan-600 border-slate-200 text-slate-200 px-4 py-3 relative" role="alert">
+  <div id="flash-body" class="bg-cyan-800 border-slate-200 text-slate-200 px-4 py-3 relative" role="alert">
     <strong class="font-bold">
       {{ message }}
     </strong>
@@ -31,7 +31,7 @@
     </span>
   </div>
   {% elif category == "success" %}
-  <div id="flash-body" class="bg-cyan-600 border-slate-200 text-slate-200 px-4 py-3 relative" role="alert">
+  <div id="flash-body" class="bg-cyan-800 border-slate-200 text-slate-200 px-4 py-3 relative" role="alert">
     <strong class="font-bold">
       {{ message }}
     </strong>
@@ -58,7 +58,7 @@
       <div id="nav-container" class="flex items-center duration-200 nav-container-no gap-x-6">
         <button class="nav-item hover:text-cyan-600 bg-transparent text-black py-1 px-3 rounded-full">
           <a href="{{ url_for('login') }}">
-            Login For Organizers
+            Login
           </a>
         </button>
         <button class="nav-item hover:text-cyan-600 bg-black text-slate-300 py-1 px-3 rounded-full">
@@ -83,7 +83,7 @@
         </span>
       </div>
       <div id="landing-button" class="row-start-6 flex items-center justify-center content-center ">
-        <button class="hover:text-green-600 bg-black text-slate-300 mb-4 py-4 px-5 rounded-full">
+        <button class="hover:text-cyan-600 bg-black text-slate-300 mb-4 py-4 px-5 rounded-full">
           <a href="{{ url_for('signup') }}">
             Get Started
           </a>
@@ -129,7 +129,7 @@
   </div>
 
   <footer id="landing-footer" class="bg-black grid grid-cols-1 grid-rows-1">
-    <button class="hover:text-green-600 bg-transparent text-slate-200 py-4 px-5 rounded-full">
+    <button class="hover:text-cyan-600 bg-transparent text-slate-200 py-4 px-5 rounded-full">
       <a href="#">
         Meet The Team
       </a>

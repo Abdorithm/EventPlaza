@@ -4,8 +4,8 @@ import secrets, os
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request
 from event_plaza import app, bcrypt, db
-from event_plaza.forms import RegistrationForm, LoginForm, UpdateProfileForm, CreateEventForm
-from event_plaza.models import User, Event
+from event_plaza.forms import RegistrationForm, LoginForm, UpdateProfileForm, CreateEventForm, CreateTaskForm, RequestResetForm, ResetPasswordForm
+from event_plaza.models import User, Event, Task
 from flask_login import login_user, current_user, logout_user, login_required
 
 
@@ -90,7 +90,30 @@ def dashboard(event_name: str):
     if current_user not in event.organizer:
         flash('You are not authorized to view this page', 'error')
         return redirect(url_for('home'))
-    return render_template('dashboard.html', image_file=image_file, event=event)
+    tasks = Task.query.filter_by(event_id=event.id).all()
+    return render_template('dashboard.html', image_file=image_file, event=event, tasks=tasks)
+
+@app.route('/<event_name>/dashboard/create_task', strict_slashes=False , methods=['GET', 'POST'])
+@login_required
+def create_task(event_name):
+    """ Renders the dashboard page """
+    form = CreateTaskForm()
+    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+    event = Event.query.filter_by(name=event_name).first()
+    if not event:
+        flash('Event not found', 'error')
+        return redirect(url_for('home'))
+    if current_user not in event.organizer:
+        flash('You are not authorized to view this page', 'error')
+        return redirect(url_for('home'))
+    if form.validate_on_submit():
+        task = Task(name=form.name.data, description=form.description.data, event_id=event.id)
+        db.session.add(task)
+        db.session.commit()
+        flash('Task created successfully', 'success')
+        return redirect(url_for('dashboard', event_name=event_name))
+
+    return render_template('create_task.html', image_file=image_file, event=event, form=form)
 
 
 
@@ -115,20 +138,6 @@ def create_event():
     event_image_file = url_for('static', filename='event_pics/' + current_user.image_file)
     return render_template('create_event.html', image_file=image_file, event_image_file=event_image_file, form=form)
 
-
-@app.route('/<event_name>/dashboard/create_task', strict_slashes=False)
-@login_required
-def create_task(event_name):
-    """ Renders the dashboard page """
-    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
-    event = Event.query.filter_by(name=event_name).first()
-    if not event:
-        flash('Event not found', 'error')
-        return redirect(url_for('home'))
-    if current_user not in event.organizer:
-        flash('You are not authorized to view this page', 'error')
-        return redirect(url_for('home'))
-    return render_template('create_task.html', image_file=image_file, event=event)
 
 def save_picture(form_picture, event=False, new_width=800, new_height=800):
     random_hex = secrets.token_hex(8)

@@ -26,9 +26,8 @@ class User(BaseModel, db.Model, UserMixin):
                                     back_populates='organizer', lazy=True)
     attended_events = db.relationship('Event', secondary='event_attendens',
                                    back_populates='attendees', lazy=True)
-    assigned_cards = db.relationship('Card', secondary='assigns', 
-                                  back_populates='assignees',
-                                  lazy=True)
+    assigned_tasks = db.relationship('Task', secondary='assigns',
+                                    back_populates='assignees', lazy=True)
     member_committees = db.relationship('Committee', secondary='committee_member',
                                      back_populates='members', lazy=True)
     vice_committees = db.relationship('Committee', secondary='committee_vice',

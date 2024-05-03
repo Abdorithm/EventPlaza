@@ -52,5 +52,4 @@ class Committee(BaseModel, db.Model):
                          back_populates='vice_committees', lazy=True)
     heads = db.relationship('User', secondary='committee_head',
                          back_populates='head_committees', lazy=True)
-    dashboard = db.relationship('Dashboard', back_populates='committee', lazy=True)
     event = db.relationship('Event', back_populates='committees', lazy=True)
