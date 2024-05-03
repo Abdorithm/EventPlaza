@@ -82,3 +82,8 @@ class CreateEventForm(FlaskForm):
         if event:
             raise ValidationError('That event name is already taken.')
 
+class CreateTaskForm(FlaskForm):
+    """ Class for creating a task form """
+    name = StringField('Title', validators=[DataRequired(), Length(min=2, max=128)], render_kw={"placeholder": "Title", "spellcheck": "false"})
+    description = TextAreaField('Description', validators=[DataRequired(), Length(min=2, max=1024)], render_kw={"placeholder": "Describe everything about this task here", "spellcheck": "false"})
+    submit = SubmitField('Create')

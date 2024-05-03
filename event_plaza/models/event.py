@@ -21,6 +21,4 @@ class Event(BaseModel, db.Model):
                              back_populates='organized_events', lazy=True)
     attendees = db.relationship('User', secondary='event_attendens',
                             back_populates='attended_events', lazy=True)
-    dashboards = db.relationship('Dashboard', back_populates='event',
-                              cascade='all, delete-orphan', lazy=True)
     committees = db.relationship('Committee', back_populates='event', lazy=True)

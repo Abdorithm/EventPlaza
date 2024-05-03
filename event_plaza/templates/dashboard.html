@@ -17,7 +17,7 @@
   {% if messages %}
   {% for category, message in messages %}
   {% if category == "error" %}
-  <div id="flash-body" class="bg-cyan-600 border-slate-200 text-slate-200 px-4 py-3 relative" role="alert">
+  <div id="flash-body" class="bg-cyan-800 border-slate-200 text-slate-200 px-4 py-3 relative" role="alert">
     <strong class="font-bold">
       {{ message }}
     </strong>
@@ -31,7 +31,7 @@
     </span>
   </div>
   {% elif category == "success" %}
-  <div id="flash-body" class="bg-cyan-600 border-slate-200 text-slate-200 px-4 py-3 relative" role="alert">
+  <div id="flash-body" class="bg-cyan-800 border-slate-200 text-slate-200 px-4 py-3 relative" role="alert">
     <strong class="font-bold">
       {{ message }}
     </strong>
@@ -49,13 +49,15 @@
   {% endif %}
   {% endwith %}
   <div class="min-h-full">
-    <nav class="bg-cyan-600">
+    <nav class="bg-cyan-800">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="flex h-16 items-center justify-between">
           <div class="flex items-center">
             <div class="hidden md:block">
               <div class="ml-10 flex items-baseline space-x-4">
                 <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+                  <a href="{{ url_for('home', event_name=event.name) }}"
+                  class="text-slate-200 hover:bg-cyan-800 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Your Events</a>
                 <a href="#" class="bg-cyan-950 text-white rounded-md px-3 py-2 text-sm font-medium"
                   aria-current="page">Tasks</a>
                 <a href="#"
@@ -172,18 +174,18 @@
     </header>
     <main>
       <div class="place-self-center grid xl:grid-cols-3 mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+      {% for task in tasks %}
         <div class="my-2 flex flex-col mx-auto xl:max-w-sm max-w-md rounded-xl overflow-hidden shadow-lg bg-slate-200">
           <div class="px-6 py-4">
-            <div class="font-bold text-xl mb-2">Need More Info About Registered Projects</div>
+              <div class="font-bold text-xl mb-2">{{ task.name }}</div>
             <p class="text-gray-700 text-base">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores
-              et perferendis eaq...
+                {{ task.description }}
             </p>
           </div>
           <div class="px-6 py-2">
             <span
               class="inline-block bg-slate-300 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-              Assigned by Abdo for Projects Team on 2024-04-24
+              Assigned by  for Projects Team on 2024-04-24
             </span>
           </div>
           <div class="px-6 py-2 mb-auto">
@@ -194,7 +196,7 @@
           </div>
           <div class="px-6 py-2">
             <a href="#"
-              class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-cyan-600 rounded-lg hover:bg-cyan-800 focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800">
+              class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-cyan-800 rounded-lg hover:bg-cyan-800 focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:bg-cyan-800 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800">
               Details
               <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                 fill="none" viewBox="0 0 14 10">
@@ -204,6 +206,7 @@
             </a>
           </div>
         </div>
+      {% endfor %}
       </div>
     </main>
   </div>
