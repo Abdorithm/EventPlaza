@@ -4,7 +4,7 @@ import secrets, os
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request
 from event_plaza import app, bcrypt, db
-from event_plaza.forms import RegistrationForm, LoginForm, UpdateProfileForm, CreateEventForm, CreateTaskForm
+from event_plaza.forms import RegistrationForm, LoginForm, UpdateProfileForm, CreateEventForm, CreateTaskForm, RequestResetForm, ResetPasswordForm
 from event_plaza.models import User, Event, Task
 from flask_login import login_user, current_user, logout_user, login_required
 
