@@ -25,7 +25,7 @@ def landing():
 @app.route('/login', strict_slashes=False, methods=['GET', 'POST'])
 def login():
     """ Renders the log in page """
-    if current_user.is_authenticated:
+    if current_user.is_authenticated and current_user.is_confirmed:
         flash('Already logged in.', 'success')
         return redirect(url_for('home'))
     form = LoginForm()
@@ -177,8 +177,9 @@ def profile():
             current_user.image_file = picture_file
         current_user.first_name = form.first_name.data
         current_user.last_name = form.last_name.data
-        current_user.email = form.email.data
-        current_user.is_confirmed = False
+        if current_user.email != form.email.data: 
+            current_user.email = form.email.data
+            current_user.is_confirmed = False
         db.session.commit()
         flash('Your profile has been updated!', 'success')
         return redirect(url_for('profile'))
@@ -264,6 +265,9 @@ def reset_token(token):
 
 @app.route("/verify/<token>", methods=['GET', 'POST'], strict_slashes=False)
 def verify_email(token):
+    if current_user.is_confirmed:
+        flash('Your email is already verified.', 'success')
+        return redirect(url_for('home'))
     user = User.verify_reset_token(token)
     if user is None:
         flash('That is an invalid or expired token. Please log in again to verify your email.', 'error')
