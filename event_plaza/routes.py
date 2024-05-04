@@ -25,7 +25,7 @@ def landing():
 @app.route('/login', strict_slashes=False, methods=['GET', 'POST'])
 def login():
     """ Renders the log in page """
-    if current_user.is_authenticated and current_user.is_confirmed:
+    if current_user.is_authenticated:
         flash('Already logged in.', 'success')
         return redirect(url_for('home'))
     form = LoginForm()
@@ -231,6 +231,8 @@ def send_verify_email(user):
 
 @app.route("/reset_password", methods=['GET', 'POST'], strict_slashes=False)
 def reset_request():
+    if current_user.is_confirmed is False:
+        return redirect(url_for('verify_required'))
     if current_user.is_authenticated:
         flash('You are already logged in. Log out to reset your password.', 'success')
         return redirect(url_for('home'))
@@ -246,6 +248,8 @@ def reset_request():
 
 @app.route("/reset_password/<token>", methods=['GET', 'POST'], strict_slashes=False)
 def reset_token(token):
+    if current_user.is_confirmed is False:
+        return redirect(url_for('verify_required'))
     if current_user.is_authenticated:
         flash('You are already logged in. Log out to reset your password.', 'success')
         return redirect(url_for('home'))

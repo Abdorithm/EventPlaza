@@ -51,7 +51,7 @@
   <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
       <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-slate-200">
-        You need to verify your email to access your
+        Logged in, but you need to verify your email to access your
         <span class="font-[Poppins] text-2xl" style="font-size: 600;font-style: italic;">
           <a href="{{ url_for ('landing') }}">
             EventPlaza
@@ -87,6 +87,14 @@
           text-sm font-semibold leading-6 text-white shadow-sm
           hover:text-cyan-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
           focus-visible:outline-indigo-600") }}
+        </div>
+        <div>
+          <a class="cursor-pointer flex w-full justify-center rounded-md bg-black px-3 py-1.5
+          text-sm font-semibold leading-6 text-white shadow-sm
+          hover:text-cyan-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
+          focus-visible:outline-indigo-600" href="{{ url_for ('logout') }}">
+            Panic & log out now
+          </a>
         </div>
       </form>
     </div>
