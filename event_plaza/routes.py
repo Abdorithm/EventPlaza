@@ -178,6 +178,7 @@ def profile():
         current_user.first_name = form.first_name.data
         current_user.last_name = form.last_name.data
         current_user.email = form.email.data
+        current_user.is_confirmed = False
         db.session.commit()
         flash('Your profile has been updated!', 'success')
         return redirect(url_for('profile'))
@@ -201,7 +202,7 @@ from event_plaza.send_email import SendEmail
 
 def send_reset_email(user):
     token = user.get_reset_token()
-    subject = 'Password Reset Request'
+    subject = 'EventPlaza - Password Reset Request'
     sender = 'noreply@demo.com'
     recipient = user.email
     body = f'''<strong>To reset your password, visit the following link:</strong>
@@ -214,7 +215,7 @@ def send_reset_email(user):
 
 def send_verify_email(user):
     token = user.get_reset_token()
-    subject = 'Password Reset Request'
+    subject = 'EventPlaza - Email Verification'
     sender = 'noreply@demo.com'
     recipient = user.email
     body = f'''<h2>Hi {user.first_name}!</h2>
@@ -270,17 +271,23 @@ def verify_email(token):
     user.is_confirmed = True
     db.session.commit()
     flash('Your email is now verified! You can log in.', 'success')
-    return redirect(url_for('login'))
+    return redirect(url_for('landing'))
 
 
 @app.route("/verify", methods=['GET', 'POST'], strict_slashes=False)
 @login_required
-def verify_required(token):
+def verify_required():
     if current_user.is_confirmed:
         flash('Your email is already verified.', 'success')
         return redirect(url_for('home'))
     form = VerifyEmailForm()
     if form.validate_on_submit():
+        if form.email.data != current_user.email:
+            current_user.email = form.email.data
+            db.session.commit()
         send_verify_email(current_user)
         flash('We sent a verification link to your email.', 'success')
-    return render_template('reset_token.html', form=form)
+        return redirect(url_for('landing'))
+    elif request.method == 'GET':
+        form.email.data = current_user.email
+    return render_template('verify_email.html', form=form)

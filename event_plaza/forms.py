@@ -108,4 +108,5 @@ class ResetPasswordForm(FlaskForm):
     
 
 class VerifyEmailForm(FlaskForm):
-    submit = SubmitField('Send Email')
+    email = StringField('Email', validators=[Email()])
+    submit = SubmitField('Send Email With Verification Link')
