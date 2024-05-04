@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EventPlaza - Log In</title>
+  <title>Reset Password</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;1,800&display=swap"
@@ -50,12 +50,13 @@
   <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
       <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-slate-200">
-        Log in to
+        Request a password reset for your
         <span class="font-[Poppins] text-2xl" style="font-size: 600;font-style: italic;">
           <a href="{{ url_for ('landing') }}">
             EventPlaza
           </a>
         </span>
+        account
       </h2>
     </div>
 
@@ -81,39 +82,8 @@
           {% endif %}
         </div>
         <div>
-          {{ form.password.label(class="block text-sm font-medium leading-6 text-slate-200") }}
-          {% if form.password.errors %}
-          {{ form.password(class="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-fuchsia-600
-          text-fuchsia-600 focus:ring-1 focus:ring-inset sm:text-sm sm:leading-6") }}
-          <div>
-            {% for error in form.password.errors %}
-            <span class="block text-sm font-medium leading-6 text-slate-200">
-              {{ error }}
-            </span>
-            {% endfor %}
-          </div>
-          {% else %}
-          {{ form.password(class="block w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset
-          ring-slate-200 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-cyan-600 sm:text-sm
-          sm:leading-6") }}
-          {% endif %}
-        </div>
-        <div>
-          {{ form.remember(class="") }}
-          {{ form.remember.label(class="text-sm font-medium leading-6 text-slate-200") }}
-        </div>
-        <div>
           {{ form.submit(class="cursor-pointer flex w-full justify-center rounded-md bg-black px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm 
             hover:text-cyan-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600") }}
-        </div>
-        <div class="text-white">
-          <small>
-            <a href="{{ url_for('reset_request') }}">Forgot password?</a>
-          </small>
-          <br>
-          <small>
-            <a href="{{ url_for('signup') }}">Don't have an account?</a>
-          </small>
         </div>
       </form>
     </div>

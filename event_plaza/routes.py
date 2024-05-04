@@ -4,7 +4,9 @@ import secrets, os
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request
 from event_plaza import app, bcrypt, db
-from event_plaza.forms import RegistrationForm, LoginForm, UpdateProfileForm, CreateEventForm, CreateTaskForm, RequestResetForm, ResetPasswordForm
+from event_plaza.forms import (RegistrationForm, LoginForm, UpdateProfileForm,
+                               CreateEventForm, CreateTaskForm, RequestResetForm,
+                               ResetPasswordForm, VerifyEmailForm)
 from event_plaza.models import User, Event, Task
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -13,10 +15,12 @@ with app.app_context():
     """ The database will work in the app context """
     db.create_all()
 
+
 @app.route('/', strict_slashes=False)
 def landing():
     """ Renders the landing page """
     return render_template('landing.html')
+
 
 @app.route('/login', strict_slashes=False, methods=['GET', 'POST'])
 def login():
@@ -29,13 +33,14 @@ def login():
         with app.app_context():
             user = User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
-            login_user(user, remember=False)
+            login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('home'))
         else:
             flash('Login unsuccessful, please check email and password', 'error')
             return redirect(url_for('login'))
     return render_template('log_in.html', form=form)
+
 
 @app.route('/signup', strict_slashes=False, methods=['GET', 'POST'])
 def signup():
@@ -57,30 +62,32 @@ def signup():
         return redirect(url_for('login'))
     return render_template('sign_up.html', form=form)
 
+
 @app.route('/signout', strict_slashes=False)
 def logout():
     """ logs the user outs"""
     logout_user()
     return redirect(url_for('landing'))
 
+
 @app.route('/home', strict_slashes=False)
 @login_required
 def home():
     """ Renders the home page that contains the user's events"""
+    if current_user.is_confirmed is False:
+        return redirect(url_for('verify_required'))
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     events = Event.query.filter(Event.organizer.any(id=current_user.id)).all()
 
     return render_template('your_events.html', image_file=image_file, events=events, current_user=current_user)
 
-@app.route('/about', strict_slashes=False)
-def about():
-    """ Renders the dashboard page """
-    return render_template('about.html')
 
 @app.route('/<event_name>/dashboard', strict_slashes=False)
 @login_required
 def dashboard(event_name: str):
     """ Renders the dashboard page """
+    if current_user.is_confirmed is False:
+        return redirect(url_for('verify_required'))
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     event = Event.query.filter_by(name=event_name).first()
 
@@ -93,10 +100,13 @@ def dashboard(event_name: str):
     tasks = Task.query.filter_by(event_id=event.id).all()
     return render_template('dashboard.html', image_file=image_file, event=event, tasks=tasks)
 
+
 @app.route('/<event_name>/dashboard/create_task', strict_slashes=False , methods=['GET', 'POST'])
 @login_required
 def create_task(event_name):
     """ Renders the dashboard page """
+    if current_user.is_confirmed is False:
+        return redirect(url_for('verify_required'))
     form = CreateTaskForm()
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     event = Event.query.filter_by(name=event_name).first()
@@ -116,10 +126,11 @@ def create_task(event_name):
     return render_template('create_task.html', image_file=image_file, event=event, form=form)
 
 
-
 @app.route('/create_event', strict_slashes=False, methods=['GET', 'POST'])
 @login_required
 def create_event():
+    if current_user.is_confirmed is False:
+        return redirect(url_for('verify_required'))
     form = CreateEventForm()
     if form.validate_on_submit():
         event = Event(name=form.name.data, description=form.description.data,
@@ -152,10 +163,13 @@ def save_picture(form_picture, event=False, new_width=800, new_height=800):
 
     return picture_fn
 
+
 @app.route('/profile', strict_slashes=False, methods=['GET', 'POST'])
 @login_required
 def profile():
     """ Renders the dashboard page """
+    if current_user.is_confirmed is False:
+        return redirect(url_for('verify_required'))
     form = UpdateProfileForm()
     if form.validate_on_submit():
         if form.picture.data:
@@ -164,6 +178,7 @@ def profile():
         current_user.first_name = form.first_name.data
         current_user.last_name = form.last_name.data
         current_user.email = form.email.data
+        current_user.is_confirmed = False
         db.session.commit()
         flash('Your profile has been updated!', 'success')
         return redirect(url_for('profile'))
@@ -175,7 +190,104 @@ def profile():
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     return render_template('profile.html', image_file=image_file, form=form)
 
+
 @app.route('/test', strict_slashes=False)
 def test():
     """ Renders the dashboard page """
     return render_template('test.html')
+
+
+from event_plaza.send_email import SendEmail
+
+
+def send_reset_email(user):
+    token = user.get_reset_token()
+    subject = 'EventPlaza - Password Reset Request'
+    sender = 'noreply@demo.com'
+    recipient = user.email
+    body = f'''<strong>To reset your password, visit the following link:</strong>
+    <br>
+    {url_for('reset_token', token=token, _external=True)}
+    <br>
+    If you did not make this request, ignore this email and no changes will be made.'''
+    SendEmail(sender, recipient, subject, body)
+
+
+def send_verify_email(user):
+    token = user.get_reset_token()
+    subject = 'EventPlaza - Email Verification'
+    sender = 'noreply@demo.com'
+    recipient = user.email
+    body = f'''<h2>Hi {user.first_name}!</h2>
+    <br>
+    <strong>To verify your account, visit the following link:</strong>
+    <br>
+    {url_for('verify_email', token=token, _external=True)}
+    <br>
+    If you did not make this request, please ignore this email.'''
+    SendEmail(sender, recipient, subject, body)
+
+
+@app.route("/reset_password", methods=['GET', 'POST'], strict_slashes=False)
+def reset_request():
+    if current_user.is_authenticated:
+        flash('You are already logged in. Log out to reset your password.', 'success')
+        return redirect(url_for('home'))
+    form = RequestResetForm()
+    if form.validate_on_submit():
+        with app.app_context():
+            user = User.query.filter_by(email=form.email.data).first()
+        send_reset_email(user)
+        flash('An email has been sent with the link to reset your password.', 'success')
+        return redirect(url_for('login'))
+    return render_template('reset_request.html', form=form)
+
+
+@app.route("/reset_password/<token>", methods=['GET', 'POST'], strict_slashes=False)
+def reset_token(token):
+    if current_user.is_authenticated:
+        flash('You are already logged in. Log out to reset your password.', 'success')
+        return redirect(url_for('home'))
+    user = User.verify_reset_token(token)
+    if user is None:
+        flash('That is an invalid or expired token', 'error')
+        return redirect(url_for('reset_request'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user.password = hashed_password
+        db.session.commit()
+        flash('Your password has been updated! You are now able to log in', 'success')
+        return redirect(url_for('login'))
+    return render_template('reset_token.html', form=form)
+
+
+@app.route("/verify/<token>", methods=['GET', 'POST'], strict_slashes=False)
+def verify_email(token):
+    user = User.verify_reset_token(token)
+    if user is None:
+        flash('That is an invalid or expired token. Please log in again to verify your email.', 'error')
+        return redirect(url_for('login'))
+    user.is_confirmed = True
+    db.session.commit()
+    flash('Your email is now verified! You can log in.', 'success')
+    return redirect(url_for('landing'))
+
+
+@app.route("/verify", methods=['GET', 'POST'], strict_slashes=False)
+@login_required
+def verify_required():
+    if current_user.is_confirmed:
+        flash('Your email is already verified.', 'success')
+        return redirect(url_for('home'))
+    form = VerifyEmailForm()
+    if form.validate_on_submit():
+        if form.email.data != current_user.email:
+            current_user.email = form.email.data
+            db.session.commit()
+        send_verify_email(current_user)
+        flash('We sent a verification link to your email.', 'success')
+        return redirect(url_for('landing'))
+    elif request.method == 'GET':
+        form.email.data = current_user.email
+    return render_template('verify_email.html', form=form)

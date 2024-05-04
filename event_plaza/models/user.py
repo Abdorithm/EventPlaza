@@ -8,8 +8,7 @@ from flask_login import UserMixin
 
 @login_manager.user_loader
 def load_user(user_id: str):
-    with app.app_context():
-        return User.query.get(user_id)
+    return User.query.get(user_id)
 
 class User(BaseModel, db.Model, UserMixin):
     """This class defines the User model for EventPlaza"""
@@ -20,6 +19,7 @@ class User(BaseModel, db.Model, UserMixin):
     email = db.Column(db.String(128), nullable=False, unique=True)
     image_file = db.Column(db.String(32), nullable=False, default='default.jpg')
     password = db.Column(db.String(128), nullable=False)
+    is_confirmed = db.Column(db.Boolean, nullable=False, default=False)
     managed_events = db.relationship('Event', secondary='event_managers',
                                      back_populates='managers', lazy=True)
     organized_events = db.relationship('Event', secondary='event_organizers',
@@ -35,16 +35,15 @@ class User(BaseModel, db.Model, UserMixin):
     head_committees = db.relationship('Committee', secondary='committee_head',
                                    back_populates='heads', lazy=True)
 
-    def get_reset_token(self, expires_sec=900):
-        s = Serializer(app.config['SECRET_KEY'], expires_sec)
-        return s.dumps({'user_id': self.id}).decode('utf-8')
+    def get_reset_token(self):
+        s = Serializer(app.config['SECRET_KEY'])
+        return s.dumps({'user_id': self.id})
 
     @staticmethod
     def verify_reset_token(token):
         s = Serializer(app.config['SECRET_KEY'])
         try:
-            user_id = s.loads(token)['user_id']
+            user_id = s.loads(token, 300)['user_id']
         except:
             return None
-        with app.app_context():
-            return User.query.get(user_id)
+        return User.query.get(user_id)

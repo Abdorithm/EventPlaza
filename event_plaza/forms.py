@@ -34,7 +34,7 @@ class LoginForm(FlaskForm):
     email = StringField('Email',
                         validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
-    remember = BooleanField('Remember Me')
+    remember = BooleanField('Remember me for 30 days')
     submit = SubmitField('Log In')
 
 class UpdateProfileForm(FlaskForm):
@@ -101,7 +101,12 @@ class RequestResetForm(FlaskForm):
 
 
 class ResetPasswordForm(FlaskForm):
-    password = PasswordField('Password', validators=[DataRequired()])
+    password = PasswordField('New Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password',
                                      validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Reset Password')
+    
+
+class VerifyEmailForm(FlaskForm):
+    email = StringField('Email', validators=[Email()])
+    submit = SubmitField('Send Email With Verification Link')
