@@ -53,15 +53,6 @@
           <div class="flex h-16 items-center justify-between">
             <div class="flex text-2xl text-slate-200 font-bold items-center">
               Your Events
-              <div class="hidden md:block">
-                <div class="ml-10 flex items-baseline space-x-4">
-                  <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                  <a href="{{ url_for('create_event') }}"
-                    class="text-slate-200 hover:bg-cyan-800 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
-                    Create Event
-                  </a>
-                </div>
-              </div>
             </div>
             <div class="hidden md:block">
               <div class="ml-4 flex items-center md:ml-6">
@@ -144,6 +135,21 @@
       <main>
 
         <div class="place-self-center grid xl:grid-cols-3 mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+
+          <div class="min-h-96 my-2 flex flex-col mx-auto xl:max-w-sm max-w-md bg-slate-200 rounded overflow-hidden shadow-lg border-gray-700 border-dashed border-2 w-11/12 justify-center items-center">
+          <svg class="w-16 h-16 text-gray-800 mb-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M18 2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2ZM2 18V7h6.7l.4-.409A4.309 4.309 0 0 1 15.753 7H18v11H2Z"></path>
+            <path d="M8.139 10.411 5.289 13.3A1 1 0 0 0 5 14v2a1 1 0 0 0 1 1h2a1 1 0 0 0 .7-.288l2.886-2.851-3.447-3.45ZM14 8a2.463 2.463 0 0 0-3.484 0l-.971.983 3.468 3.468.987-.971A2.463 2.463 0 0 0 14 8Z"></path>
+          </svg>
+            <div class="px-4 pb-4  mx-auto">
+              <a href="{{ url_for('create_event') }}"
+                class="inline-flex justify-center items-center px-3 py-2 text-2xl font-medium text-center text-white bg-cyan-800 rounded-lg
+                hover:bg-cyan-800 focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:bg-cyan-800 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800">
+                New Event
+              </a>
+            </div>
+          </div>
+
           {% for event in events %}
           <div class="my-2 flex flex-col mx-auto xl:max-w-sm max-w-md rounded overflow-hidden shadow-lg bg-slate-200 w-11/12">
             <img class="h-60 object-cover" src="{{ url_for('static', filename='event_pics/' + event.image_file) }}">
