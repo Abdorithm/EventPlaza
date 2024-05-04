@@ -177,8 +177,9 @@ def profile():
             current_user.image_file = picture_file
         current_user.first_name = form.first_name.data
         current_user.last_name = form.last_name.data
-        current_user.email = form.email.data
-        current_user.is_confirmed = False
+        if current_user.email != form.email.data: 
+            current_user.email = form.email.data
+            current_user.is_confirmed = False
         db.session.commit()
         flash('Your profile has been updated!', 'success')
         return redirect(url_for('profile'))
@@ -230,6 +231,8 @@ def send_verify_email(user):
 
 @app.route("/reset_password", methods=['GET', 'POST'], strict_slashes=False)
 def reset_request():
+    if current_user.is_confirmed is False:
+        return redirect(url_for('verify_required'))
     if current_user.is_authenticated:
         flash('You are already logged in. Log out to reset your password.', 'success')
         return redirect(url_for('home'))
@@ -245,6 +248,8 @@ def reset_request():
 
 @app.route("/reset_password/<token>", methods=['GET', 'POST'], strict_slashes=False)
 def reset_token(token):
+    if current_user.is_confirmed is False:
+        return redirect(url_for('verify_required'))
     if current_user.is_authenticated:
         flash('You are already logged in. Log out to reset your password.', 'success')
         return redirect(url_for('home'))
@@ -264,6 +269,9 @@ def reset_token(token):
 
 @app.route("/verify/<token>", methods=['GET', 'POST'], strict_slashes=False)
 def verify_email(token):
+    if current_user.is_confirmed:
+        flash('Your email is already verified.', 'success')
+        return redirect(url_for('home'))
     user = User.verify_reset_token(token)
     if user is None:
         flash('That is an invalid or expired token. Please log in again to verify your email.', 'error')
