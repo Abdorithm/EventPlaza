@@ -184,11 +184,7 @@ Dropdown menu, show/hide based on menu state.
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
               </svg>
             </button>
-            {% if form.errors %}
-              <div id="add_people_dropdown" class="py-2 space-y-2 rounded-lg my-2">
-            {% else %}
-              <div id="add_people_dropdown" class="hidden py-2 space-y-2 rounded-lg my-2">
-            {% endif %}
+            <div id="add_people_dropdown" class="{% if not form.errors %} hidden {% endif %} py-2 space-y-2 rounded-lg my-2">
                 <form action="#" method="POST" enctype="multipart/form-data">
                   {{ form.hidden_tag() }}
                 <div class="max-w-sm mx-auto space-y-3 f-fit">
