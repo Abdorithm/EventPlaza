@@ -6,7 +6,8 @@ from flask import render_template, url_for, flash, redirect, request
 from event_plaza import app, bcrypt, db
 from event_plaza.forms import (RegistrationForm, LoginForm, UpdateProfileForm,
                                CreateEventForm, CreateTaskForm, RequestResetForm,
-                               ResetPasswordForm, VerifyEmailForm)
+                               ResetPasswordForm, VerifyEmailForm,
+                               AddUserToEventForm)
 from event_plaza.models import User, Event, Task
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -82,7 +83,7 @@ def home():
     return render_template('your_events.html', image_file=image_file, events=events, current_user=current_user)
 
 
-@app.route('/<event_name>/dashboard', strict_slashes=False)
+@app.route('/<event_name>/dashboard', strict_slashes=False, methods=['GET', 'POST'])
 @login_required
 def dashboard(event_name: str):
     """ Renders the dashboard page """
@@ -91,6 +92,7 @@ def dashboard(event_name: str):
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     event = Event.query.filter_by(name=event_name).first()
 
+
     if not event:
         flash('Event not found', 'error')
         return redirect(url_for('home'))
@@ -98,7 +100,25 @@ def dashboard(event_name: str):
         flash('You are not authorized to view this page', 'error')
         return redirect(url_for('home'))
     tasks = Task.query.filter_by(event_id=event.id).all()
-    return render_template('dashboard.html', image_file=image_file, event=event, tasks=tasks)
+
+    form = AddUserToEventForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        organizers = event.organizer
+
+        if user not in organizers:
+            event.organizer.append(user)
+            if form.role.data == 'organizer':
+                db.session.commit()
+                flash('User added as an organizer', 'success')
+            elif form.role.data == 'manager':
+                event.managers.append(user)
+                db.session.commit()
+                flash('User added as a manager', 'success')
+        else:
+            flash('User is already in the event', 'error')
+
+    return render_template('dashboard.html', image_file=image_file, event=event, tasks=tasks, form=form)
 
 
 @app.route('/<event_name>/dashboard/create_task', strict_slashes=False , methods=['GET', 'POST'])

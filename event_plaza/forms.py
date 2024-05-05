@@ -82,6 +82,19 @@ class CreateEventForm(FlaskForm):
         if event:
             raise ValidationError('That event name is already taken.')
 
+class AddUserToEventForm(FlaskForm):
+    """ Class for adding a user to an event form """
+    email = StringField('Email', validators=[DataRequired(), Email()], render_kw={"placeholder": "friend@mail.com"})
+    role = SelectField('Role', choices=[('organizer', 'Organizer'), ('manager', 'Manager')])
+    submit = SubmitField('Add User')
+
+    def validate_email(self, email):
+        with app.app_context():
+            user = User.query.filter_by(email=email.data).first()
+        if user is None:
+            raise ValidationError('There is no account with that email.')
+
+
 class CreateTaskForm(FlaskForm):
     """ Class for creating a task form """
     name = StringField('Title', validators=[DataRequired(), Length(min=2, max=128)], render_kw={"placeholder": "Title", "spellcheck": "false"})
