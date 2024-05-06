@@ -10,7 +10,7 @@ from event_plaza.forms import (RegistrationForm, LoginForm, UpdateProfileForm,
                                AddUserToEventForm)
 from event_plaza.models import User, Event, Task
 from flask_login import login_user, current_user, logout_user, login_required
-from datetime import datetime, timezone
+from datetime import datetime
 
 
 with app.app_context():
@@ -238,7 +238,7 @@ def review_task(event_name, task_id):
         flash('There is no such task', 'error')
         return redirect(url_for('dashboard'))
     task.status = 'review'
-    task.updated_at = datetime.now(timezone.utc)
+    task.updated_at = datetime.now()
     db.session.commit()
     return redirect(url_for('dashboard_review', event_name=event.name))
 
@@ -261,9 +261,10 @@ def done_task(event_name, task_id):
         flash('There is no such task', 'error')
         return redirect(url_for('dashboard'))
     task.status = 'done'
-    task.updated_at = datetime.now(timezone.utc)
+    review_date = task.updated_at
+    task.updated_at = datetime.now()
     db.session.commit()
-    return redirect(url_for('dashboard_done', event_name=event.name))
+    return redirect(url_for('dashboard_done', event_name=event.name, review_date=review_date))
 
 
 @app.route('/<event_name>/dashboard/<task_id>/delete', strict_slashes=False)
@@ -283,7 +284,7 @@ def delete_task(event_name, task_id):
     if task is None:
         flash('There is no such task', 'error')
         return redirect(url_for('dashboard'))
-    db.session.remove(task)
+    Task.query.filter_by(id=task_id).delete()
     db.session.commit()
     return redirect(url_for('dashboard_done', event_name=event.name))
 
