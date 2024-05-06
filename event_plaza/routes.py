@@ -238,7 +238,7 @@ def review_task(event_name, task_id):
         flash('There is no such task', 'error')
         return redirect(url_for('dashboard'))
     task.status = 'review'
-    task.updated_at = datetime.now()
+    task.updated_at = task.reviewed_at = datetime.now()
     db.session.commit()
     return redirect(url_for('dashboard_review', event_name=event.name))
 
@@ -261,10 +261,9 @@ def done_task(event_name, task_id):
         flash('There is no such task', 'error')
         return redirect(url_for('dashboard'))
     task.status = 'done'
-    review_date = task.updated_at
     task.updated_at = datetime.now()
     db.session.commit()
-    return redirect(url_for('dashboard_done', event_name=event.name, review_date=review_date))
+    return redirect(url_for('dashboard_done', event_name=event.name))
 
 
 @app.route('/<event_name>/dashboard/<task_id>/delete', strict_slashes=False)

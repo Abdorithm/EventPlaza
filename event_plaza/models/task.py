@@ -2,6 +2,7 @@
 """This module contains the Task class"""
 from .base_model import BaseModel
 from event_plaza import db
+from datetime import datetime
 
 
 assigns = db.Table('assigns', db.Model.metadata,
@@ -36,6 +37,8 @@ class Task(BaseModel, db.Model):
     attachments = db.relationship('Attachment', secondary='task_attachments',
                                   back_populates='task', lazy=True)
     status = db.Column(db.String(128), nullable=False, default='new')
+    reviewed_at = db.Column(db.DateTime, default=datetime.now())
+
 
 class Attachment(BaseModel, db.Model):
     """This class represents an Attachment object"""
