@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Run the application"""
-from event_plaza import app, db
+from event_plaza import app
 
 
 if __name__ == '__main__':

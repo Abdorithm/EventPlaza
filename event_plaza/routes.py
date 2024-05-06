@@ -10,6 +10,7 @@ from event_plaza.forms import (RegistrationForm, LoginForm, UpdateProfileForm,
                                AddUserToEventForm)
 from event_plaza.models import User, Event, Task
 from flask_login import login_user, current_user, logout_user, login_required
+from datetime import datetime, timezone
 
 
 with app.app_context():
@@ -86,12 +87,11 @@ def home():
 @app.route('/<event_name>/dashboard', strict_slashes=False, methods=['GET', 'POST'])
 @login_required
 def dashboard(event_name: str):
-    """ Renders the event dashboard page """
+    """ Renders the event dashboard page, showing new tasks """
     if current_user.is_confirmed is False:
         return redirect(url_for('verify_required'))
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     event = Event.query.filter_by(name=event_name).first()
-
 
     if not event:
         flash('Event not found', 'error')
@@ -99,7 +99,7 @@ def dashboard(event_name: str):
     if current_user not in event.organizer:
         flash('You are not authorized to view this page', 'error')
         return redirect(url_for('home'))
-    tasks = Task.query.filter_by(event_id=event.id).all()
+    tasks = Task.query.filter_by(event_id=event.id, status='new').all()
 
     form = AddUserToEventForm()
     if form.validate_on_submit():
@@ -119,6 +119,80 @@ def dashboard(event_name: str):
             flash('User is already in the event', 'error')
 
     return render_template('dashboard.html', image_file=image_file, event=event, tasks=tasks, form=form)
+
+
+@app.route('/<event_name>/dashboard/pendingreview', strict_slashes=False, methods=['GET', 'POST'])
+@login_required
+def dashboard_review(event_name: str):
+    """ Renders the event dashboard page, showing new tasks """
+    if current_user.is_confirmed is False:
+        return redirect(url_for('verify_required'))
+    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+    event = Event.query.filter_by(name=event_name).first()
+
+    if not event:
+        flash('Event not found', 'error')
+        return redirect(url_for('home'))
+    if current_user not in event.organizer:
+        flash('You are not authorized to view this page', 'error')
+        return redirect(url_for('home'))
+    tasks = Task.query.filter_by(event_id=event.id, status='review').all()
+
+    form = AddUserToEventForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        organizers = event.organizer
+
+        if user not in organizers:
+            event.organizer.append(user)
+            if form.role.data == 'organizer':
+                db.session.commit()
+                flash('User added as an organizer', 'success')
+            elif form.role.data == 'manager':
+                event.managers.append(user)
+                db.session.commit()
+                flash('User added as a manager', 'success')
+        else:
+            flash('User is already in the event', 'error')
+
+    return render_template('pending_review.html', image_file=image_file, event=event, tasks=tasks, form=form)
+
+
+@app.route('/<event_name>/dashboard/done', strict_slashes=False, methods=['GET', 'POST'])
+@login_required
+def dashboard_done(event_name: str):
+    """ Renders the event dashboard page, showing new tasks """
+    if current_user.is_confirmed is False:
+        return redirect(url_for('verify_required'))
+    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+    event = Event.query.filter_by(name=event_name).first()
+
+    if not event:
+        flash('Event not found', 'error')
+        return redirect(url_for('home'))
+    if current_user not in event.organizer:
+        flash('You are not authorized to view this page', 'error')
+        return redirect(url_for('home'))
+    tasks = Task.query.filter_by(event_id=event.id, status='done').all()
+
+    form = AddUserToEventForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        organizers = event.organizer
+
+        if user not in organizers:
+            event.organizer.append(user)
+            if form.role.data == 'organizer':
+                db.session.commit()
+                flash('User added as an organizer', 'success')
+            elif form.role.data == 'manager':
+                event.managers.append(user)
+                db.session.commit()
+                flash('User added as a manager', 'success')
+        else:
+            flash('User is already in the event', 'error')
+
+    return render_template('done.html', image_file=image_file, event=event, tasks=tasks, form=form)
 
 
 @app.route('/<event_name>/dashboard/create_task', strict_slashes=False , methods=['GET', 'POST'])
@@ -144,6 +218,74 @@ def create_task(event_name):
         return redirect(url_for('dashboard', event_name=event_name))
 
     return render_template('create_task.html', image_file=image_file, event=event, form=form)
+
+
+@app.route('/<event_name>/dashboard/<task_id>/review', strict_slashes=False)
+@login_required
+def review_task(event_name, task_id):
+    """ Move task to pending review """
+    if current_user.is_confirmed is False:
+        return redirect(url_for('verify_required'))
+    event = Event.query.filter_by(name=event_name).first()
+    if not event:
+        flash('Event not found', 'error')
+        return redirect(url_for('home'))
+    if current_user not in event.organizer:
+        flash('You are not authorized to do this action', 'error')
+        return redirect(url_for('home'))
+    task = Task.query.filter_by(id=task_id).first()
+    if task is None:
+        flash('There is no such task', 'error')
+        return redirect(url_for('dashboard'))
+    task.status = 'review'
+    task.updated_at = datetime.now(timezone.utc)
+    db.session.commit()
+    return redirect(url_for('dashboard_review', event_name=event.name))
+
+
+@app.route('/<event_name>/dashboard/<task_id>/done', strict_slashes=False)
+@login_required
+def done_task(event_name, task_id):
+    """ Mark task as done """
+    if current_user.is_confirmed is False:
+        return redirect(url_for('verify_required'))
+    event = Event.query.filter_by(name=event_name).first()
+    if not event:
+        flash('Event not found', 'error')
+        return redirect(url_for('home'))
+    if current_user not in event.organizer:
+        flash('You are not authorized to do this action', 'error')
+        return redirect(url_for('home'))
+    task = Task.query.filter_by(id=task_id).first()
+    if task is None:
+        flash('There is no such task', 'error')
+        return redirect(url_for('dashboard'))
+    task.status = 'done'
+    task.updated_at = datetime.now(timezone.utc)
+    db.session.commit()
+    return redirect(url_for('dashboard_done', event_name=event.name))
+
+
+@app.route('/<event_name>/dashboard/<task_id>/delete', strict_slashes=False)
+@login_required
+def delete_task(event_name, task_id):
+    """ Mark task as done """
+    if current_user.is_confirmed is False:
+        return redirect(url_for('verify_required'))
+    event = Event.query.filter_by(name=event_name).first()
+    if not event:
+        flash('Event not found', 'error')
+        return redirect(url_for('home'))
+    if current_user not in event.organizer:
+        flash('You are not authorized to do this action', 'error')
+        return redirect(url_for('home'))
+    task = Task.query.filter_by(id=task_id).first()
+    if task is None:
+        flash('There is no such task', 'error')
+        return redirect(url_for('dashboard'))
+    db.session.remove(task)
+    db.session.commit()
+    return redirect(url_for('dashboard_done', event_name=event.name))
 
 
 @app.route('/create_event', strict_slashes=False, methods=['GET', 'POST'])

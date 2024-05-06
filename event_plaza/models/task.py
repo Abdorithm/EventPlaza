@@ -35,7 +35,7 @@ class Task(BaseModel, db.Model):
                                 back_populates='assigned_tasks', lazy=True)
     attachments = db.relationship('Attachment', secondary='task_attachments',
                                   back_populates='task', lazy=True)
-    status = db.Column(db.String(128), nullable=False, default='To Do')
+    status = db.Column(db.String(128), nullable=False, default='new')
 
 class Attachment(BaseModel, db.Model):
     """This class represents an Attachment object"""
