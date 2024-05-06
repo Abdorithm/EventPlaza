@@ -255,7 +255,15 @@ def send_verify_email(user):
 
 @app.route("/reset_password", methods=['GET', 'POST'], strict_slashes=False)
 def reset_request():
-    """ Request a password reset """
+    """ Request a password reset.
+    
+        PASSWORD RESET LOGIC:
+        A token that contains the user_id (serialized) is generated and
+        sent to the user's email address.
+        When the user clicks on the link with the token. The application
+        checks which user_id was serialized into this token and gives access
+        to update the password accordingly.    
+    """
     if current_user.is_authenticated:
         if current_user.is_confirmed is False:
             return redirect(url_for('verify_required'))
@@ -323,6 +331,15 @@ def verify_required():
         application functionality. This route will always get rendered
         when the user attempt to access application functionality until
         he verifies his email.
+        
+        EMAIL VERIFICATION LOGIC:
+        Every user has an attribute $(email_token), that gets updated
+        to a random 32-byte hex token every time the user needs to verify
+        his email.
+        Whenever the user sign up for the first time or change his email
+        address in profile settings, he should verify the new email address.
+        The token is sent to his address. Every time the user's email changes
+        the token gets regenerated.
     """
     if current_user.is_confirmed:
         flash('Your email is already verified.', 'success')
