@@ -90,7 +90,7 @@
                     <!-- Active: "bg-gray-100", Not Active: "" -->
                     <a href="{{ url_for('profile') }}" target="_self" class="block px-4 py-2 text-sm text-gray-900"
                       role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
-                    <a href="{{ url_for('landing') }}" class="block px-4 py-2 text-sm text-gray-900" role="menuitem"
+                    <a href="{{ url_for('logout') }}" class="block px-4 py-2 text-sm text-gray-900" role="menuitem"
                       tabindex="-1" id="user-menu-item-2">Sign out</a>
                   </div>
                 </div>
@@ -153,7 +153,7 @@
               <a href="{{ url_for('profile') }}" target="_self"
                 class="block rounded-md px-3 py-2 text-base font-medium text-slate-200 hover:bg-cyan-800 hover:text-white">Your
                 Profile</a>
-              <a href="{{ url_for('landing') }}"
+              <a href="{{ url_for('logout') }}"
                 class="block rounded-md px-3 py-2 text-base font-medium text-slate-200 hover:bg-cyan-800 hover:text-white">Sign
                 out</a>
             </div>
@@ -167,7 +167,7 @@
         </div>
       </header>
       <main>
-      <form class="space-y-6" action="#" method="POST">
+      <form class="mb-10 space-y-6" action="#" method="POST">
         {{ form.hidden_tag() }}
         <div
           class="rounded-xl editor my-4 mx-auto w-10/12 bg-slate-200 flex flex-col text-gray-800 border border-slate-300 p-4 shadow-lg max-w-2xl">
@@ -187,8 +187,6 @@
             }}
             {% endif %}
           </div>
-
-
           <div class="">
               {% if form.description.errors %}
               {{ form.description(class="description focus:border-cyan-800 bg-slate-300 border border-slate-300 p-2 mb-4 outline-none") }}
@@ -204,27 +202,6 @@
             }}
             {% endif %}
           </div>
-          <!-- icons -->
-          <div class="icons flex text-gray-500 m-2">
-            <svg class="mr-2 cursor-pointer hover:text-gray-700 border rounded-full p-1 h-7"
-              xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-            <svg class="mr-2 cursor-pointer hover:text-gray-700 border rounded-full p-1 h-7"
-              xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <svg class="mr-2 cursor-pointer hover:text-gray-700 border rounded-full p-1 h-7"
-              xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
-            </svg>
-            <div class="count ml-auto text-gray-400 text-xs font-semibold">0/1024</div>
-          </div>
           <!-- buttons -->
           <div class="buttons flex flex-row-reverse">
               {{ form.submit(class="cursor-pointer inline-flex items-center px-3 py-2 text-sm font-medium text-center
@@ -238,7 +215,6 @@
           </div>
         </div>
       </form>
-
       </main>
     </div>
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
