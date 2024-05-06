@@ -86,7 +86,7 @@ def home():
 @app.route('/<event_name>/dashboard', strict_slashes=False, methods=['GET', 'POST'])
 @login_required
 def dashboard(event_name: str):
-    """ Renders the dashboard page """
+    """ Renders the event dashboard page """
     if current_user.is_confirmed is False:
         return redirect(url_for('verify_required'))
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
@@ -124,7 +124,7 @@ def dashboard(event_name: str):
 @app.route('/<event_name>/dashboard/create_task', strict_slashes=False , methods=['GET', 'POST'])
 @login_required
 def create_task(event_name):
-    """ Renders the dashboard page """
+    """ Renders the Create Task form """
     if current_user.is_confirmed is False:
         return redirect(url_for('verify_required'))
     form = CreateTaskForm()
@@ -149,6 +149,7 @@ def create_task(event_name):
 @app.route('/create_event', strict_slashes=False, methods=['GET', 'POST'])
 @login_required
 def create_event():
+    """ Render the Create Event form """
     if current_user.is_confirmed is False:
         return redirect(url_for('verify_required'))
     form = CreateEventForm()
@@ -171,6 +172,7 @@ def create_event():
 
 
 def save_picture(form_picture, event=False, new_width=800, new_height=800):
+    """ Compress pictures and save them """
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_picture.filename)
     picture_fn = random_hex + f_ext
@@ -187,7 +189,7 @@ def save_picture(form_picture, event=False, new_width=800, new_height=800):
 @app.route('/profile', strict_slashes=False, methods=['GET', 'POST'])
 @login_required
 def profile():
-    """ Renders the dashboard page """
+    """ Renders the profile page """
     if current_user.is_confirmed is False:
         return redirect(url_for('verify_required'))
     form = UpdateProfileForm()
@@ -222,6 +224,7 @@ from event_plaza.send_email import SendEmail
 
 
 def send_reset_email(user):
+    """ Method to send reset password emails """
     token = user.get_reset_token()
     subject = 'EventPlaza - Password Reset Request'
     sender = 'noreply@demo.com'
@@ -235,6 +238,7 @@ def send_reset_email(user):
 
 
 def send_verify_email(user):
+    """ Method to send email verifications """
     token = user.email_token
     subject = 'EventPlaza - Email Verification'
     sender = 'noreply@demo.com'
@@ -251,6 +255,7 @@ def send_verify_email(user):
 
 @app.route("/reset_password", methods=['GET', 'POST'], strict_slashes=False)
 def reset_request():
+    """ Request a password reset """
     if current_user.is_authenticated:
         if current_user.is_confirmed is False:
             return redirect(url_for('verify_required'))
@@ -268,6 +273,9 @@ def reset_request():
 
 @app.route("/reset_password/<token>", methods=['GET', 'POST'], strict_slashes=False)
 def reset_token(token):
+    """ Check if the reset token is legit.
+        If it is, give let the user change his password
+    """
     if current_user.is_authenticated:
         if current_user.is_confirmed is False:
             return redirect(url_for('verify_required'))
@@ -289,6 +297,9 @@ def reset_token(token):
 
 @app.route("/verify/<token>", methods=['GET', 'POST'], strict_slashes=False)
 def verify_email(token):
+    """ Verify that the token is legit.
+        If it is, mark this user's email as confirmed.
+    """
     if current_user.is_authenticated:
         if current_user.is_confirmed:
             flash('Your email is already verified.', 'success')
@@ -307,6 +318,12 @@ def verify_email(token):
 @app.route("/verify", methods=['GET', 'POST'], strict_slashes=False)
 @login_required
 def verify_required():
+    """ After successful signup, the user can log in,
+        but he should verify his email to get access to the
+        application functionality. This route will always get rendered
+        when the user attempt to access application functionality until
+        he verifies his email.
+    """
     if current_user.is_confirmed:
         flash('Your email is already verified.', 'success')
         return redirect(url_for('home'))
