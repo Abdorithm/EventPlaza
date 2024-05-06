@@ -235,7 +235,7 @@ def send_reset_email(user):
 
 
 def send_verify_email(user):
-    token = user.get_reset_token()
+    token = user.email_token
     subject = 'EventPlaza - Email Verification'
     sender = 'noreply@demo.com'
     recipient = user.email
@@ -251,9 +251,9 @@ def send_verify_email(user):
 
 @app.route("/reset_password", methods=['GET', 'POST'], strict_slashes=False)
 def reset_request():
-    if current_user.is_confirmed is False:
-        return redirect(url_for('verify_required'))
     if current_user.is_authenticated:
+        if current_user.is_confirmed is False:
+            return redirect(url_for('verify_required'))
         flash('You are already logged in. Log out to reset your password.', 'success')
         return redirect(url_for('home'))
     form = RequestResetForm()
@@ -268,9 +268,9 @@ def reset_request():
 
 @app.route("/reset_password/<token>", methods=['GET', 'POST'], strict_slashes=False)
 def reset_token(token):
-    if current_user.is_confirmed is False:
-        return redirect(url_for('verify_required'))
     if current_user.is_authenticated:
+        if current_user.is_confirmed is False:
+            return redirect(url_for('verify_required'))
         flash('You are already logged in. Log out to reset your password.', 'success')
         return redirect(url_for('home'))
     user = User.verify_reset_token(token)
@@ -289,16 +289,18 @@ def reset_token(token):
 
 @app.route("/verify/<token>", methods=['GET', 'POST'], strict_slashes=False)
 def verify_email(token):
-    if current_user.is_confirmed:
-        flash('Your email is already verified.', 'success')
-        return redirect(url_for('home'))
-    user = User.verify_reset_token(token)
-    if user is None:
-        flash('That is an invalid or expired token. Please log in again to verify your email.', 'error')
-        return redirect(url_for('login'))
-    user.is_confirmed = True
-    db.session.commit()
-    flash('Your email is now verified! You can log in.', 'success')
+    if current_user.is_authenticated:
+        if current_user.is_confirmed:
+            flash('Your email is already verified.', 'success')
+            return redirect(url_for('home'))
+    user = User.query.filter_by(email_token=token).first()
+    if user and user.verify_email_token(token):
+        user.is_confirmed = True
+        db.session.commit()
+        flash('Your email is now verified!', 'success')
+    else:
+        flash('That is an invalid token. Please log in again to verify your email.', 'error')
+        return redirect(url_for('landing'))
     return redirect(url_for('landing'))
 
 
@@ -312,7 +314,8 @@ def verify_required():
     if form.validate_on_submit():
         if form.email.data != current_user.email:
             current_user.email = form.email.data
-            db.session.commit()
+        current_user.email_token = secrets.token_hex(32)    
+        db.session.commit()
         send_verify_email(current_user)
         flash('We sent a verification link to your email.', 'success')
         return redirect(url_for('landing'))
