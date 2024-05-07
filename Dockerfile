@@ -1,9 +1,9 @@
 # Incomplete. DO NOT run.
 # Use Ubuntu as the base image
-FROM ubuntu
+FROM ubuntu:22.04
 
 # Set the working directory in the container
-WORKDIR /code
+WORKDIR /EventPlaza
 
 # Install system-level dependencies
 RUN apt-get update && apt-get install -y mysql-server \
@@ -17,9 +17,6 @@ RUN service mysql start
 
 # Clone the Git repository into the container
 RUN git clone https://github.com/Abdorithm/EventPlaza.git .
-
-# Go to the project repo
-RUN cd EventPlaza
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
