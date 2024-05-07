@@ -106,12 +106,12 @@ Dropdown menu, show/hide based on menu state.
               <span class="absolute -inset-0.5"></span>
               <span class="sr-only">Open main menu</span>
               <!-- Menu open: "hidden", Menu closed: "block" -->
-              <svg class="menu-dash block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                <svg class="menu-dash {% if not form.errors %} block {% else %} hidden {% endif %} h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
               </svg>
               <!-- Menu open: "block", Menu closed: "hidden" -->
-              <svg class="menu-dash hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              <svg class="menu-dash {% if not form.errors %} hidden {% else %} block {% endif %} h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
@@ -121,20 +121,90 @@ Dropdown menu, show/hide based on menu state.
       </div>
 
       <!-- Mobile menu, show/hide based on menu state. -->
-      <div class="md:hidden hidden" id="mobile-menu">
-        <div class="space-y-1 px-2 pb-3 pt-2 sm:px-3">
+      <div class="md:hidden {% if not form.errors %} hidden {% endif %}" id="mobile-menu">
+        <div class="space-y-1 px-2 pt-2 sm:px-3">
           <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-          <a href="#" class="bg-cyan-950 text-white block rounded-md px-3 py-2 text-base font-medium"
+          <a href="#" class="bg-cyan-950 text-white block rounded-md px-3 py-2 text-base font-bold"
             aria-current="page">Tasks</a>
           <a href="{{ url_for('dashboard_review', event_name=event.name) }}"
-            class="text-slate-200 hover:bg-cyan-800 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Pending
+            class="block whitespace-nowrap text-clip overflow-hidden text-slate-200 hover:bg-cyan-950 hover:text-white rounded-md px-3 py-2 text-base mb-6 font-bold">Pending
             Review</a>
           <a href="{{ url_for('dashboard_done', event_name=event.name) }}"
-            class="text-slate-200 hover:bg-cyan-800 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Done</a>
+            class="block whitespace-nowrap text-clip overflow-hidden text-slate-200 hover:bg-cyan-950 hover:text-white rounded-md px-3 py-2 text-base mb-6 font-bold">Done</a>
           <a href="{{ url_for('create_task', event_name=event.name) }}"
-            class="text-slate-200 hover:bg-cyan-800 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Create
+            class="block whitespace-nowrap text-clip overflow-hidden text-slate-200 hover:bg-cyan-950 hover:text-white rounded-md px-3 py-2 text-base mb-6 font-bold">Create
             Task</a>
+          <a href="{{ url_for('home', event_name=event.name) }}"
+            class="block whitespace-nowrap text-clip overflow-hidden text-slate-200 hover:bg-cyan-950 hover:text-white rounded-md px-3 py-2 text-base mb-6 font-bold">Back
+            to Events</a>
         </div>
+        <div class="bg-cyan-800 p-4 text-gray-900 shadow">
+          <button id="add_people_toggle_mobile" type="button"
+            class="flex items-center w-full p-2 text-base text-gray-900 bg-white transition duration-75 rounded-lg group hover:bg-slate-100 dark:text-white"
+            aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M6.83333 11.8333C8.44167 11.8333 9.75 10.525 9.75 8.91667C9.75 7.30833 8.44167 6 6.83333 6C5.225 6 3.91667 7.30833 3.91667 8.91667C3.91667 10.525 5.225 11.8333 6.83333 11.8333ZM21 15.3333V12.8333H23.5V11.1667H21V8.66666H19.3333V11.1667H16.8333V12.8333H19.3333V15.3333H21ZM6.83333 13.2917C4.88333 13.2917 1 14.2667 1 16.2083V17.6667H12.6667V16.2083C12.6667 14.2667 8.78333 13.2917 6.83333 13.2917ZM6.83333 14.9583C5.34166 14.9583 3.65 15.5167 2.95 16H10.7167C10.0167 15.5167 8.325 14.9583 6.83333 14.9583ZM8.08333 8.91667C8.08333 8.225 7.525 7.66667 6.83333 7.66667C6.14167 7.66667 5.58333 8.225 5.58333 8.91667C5.58333 9.60833 6.14167 10.1667 6.83333 10.1667C7.525 10.1667 8.08333 9.60833 8.08333 8.91667ZM11 11.8333C12.6083 11.8333 13.9167 10.525 13.9167 8.91667C13.9167 7.30833 12.6083 6 11 6C10.8 6 10.6 6.01667 10.4083 6.05833C11.0417 6.84167 11.4167 7.83333 11.4167 8.91667C11.4167 10 11.025 10.9833 10.3917 11.7667C10.5917 11.8083 10.7917 11.8333 11 11.8333ZM14.3333 16.2083C14.3333 15.075 13.7667 14.1917 12.9333 13.5167C14.8 13.9083 16.8333 14.8 16.8333 16.2083V17.6667H14.3333V16.2083Z"
+                fill="#000000" />
+            </svg>
+            <span class="flex-1 ms-3 text-left text-black whitespace-nowrap text-clip overflow-hidden">Add People</span>
+            <svg class="w-3 h-3 text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+              viewBox="0 0 10 6">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="m1 1 4 4 4-4" />
+            </svg>
+          </button>
+          <div id="add_people_dropdown_mobile"
+            class="{% if not form.errors %} hidden {% endif %} py-2 space-y-2 rounded-lg my-2">
+            <form action="#" method="POST" enctype="multipart/form-data">
+              {{ form.hidden_tag() }}
+              <div class="mx-auto space-y-3 flex flex-col">
+                <div class="relative">
+                  <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-4">
+                    <svg class="flex-shrink-0 size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24"
+                      height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                    </svg>
+                  </div>
+                  {{ form.email.label(class="hidden") }}
+                  {{ form.email(class="w-full py-3 px-4 ps-11 block border-gray-200 shadow-sm rounded-lg text-sm
+                  focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50
+                  disabled:pointer-events-none") }}
+                </div>
+                {% if form.email.errors %}
+                <div>
+                  {% for error in form.email.errors %}
+                  <span class="text-sm text-slate-200">
+                    {{ error }}
+                  </span>
+                  <br>
+                  {% endfor %}
+                </div>
+                {% endif %}
+                {{ form.role.label(class="hidden") }}
+                {{ form.role(class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600
+                dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500") }}
+                </select>
+                {% if form.role.errors %}
+                <div>
+                  {% for error in form.role.errors %}
+                  <span class="text-sm text-slate-200">
+                    {{ error }}
+                  </span>
+                  <br>
+                  {% endfor %}
+                </div>
+                {% endif %}
+                {{ form.submit(class="bg-green-800 hover:bg-green-950 text-white rounded-md px-3 py-2 text-sm
+                font-medium self-end w-1/4") }}
+            </form>
+          </div>
+        </div>
+      </div>
         <div class="border-t border-gray-700 pb-3 pt-4">
           <div class="flex items-center px-5">
             <div class="flex-shrink-0">
@@ -167,11 +237,11 @@ Dropdown menu, show/hide based on menu state.
     </header>
     <main>
       <div class="flex">
-        <div class="h-screen bg-slate-200 p-4 text-gray-900 shadow w-1/6">
+        <div class="h-screen bg-slate-200 p-4 text-gray-900 shadow w-1/6 hidden md:block">
           <a href="{{ url_for('home', event_name=event.name) }}"
             class="block whitespace-nowrap text-clip overflow-hidden text-slate-200 bg-cyan-800 hover:bg-cyan-950 hover:text-white rounded-md px-3 py-2 text-base mb-6 font-bold">Back
             to Events</a>
-          <button id="toggleButton" type="button"
+          <button id="add_people_toggle" type="button"
             class="flex items-center w-full p-2 text-base text-gray-900 bg-white transition duration-75 rounded-lg group hover:bg-slate-100 dark:text-white"
             aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
 
@@ -191,7 +261,7 @@ Dropdown menu, show/hide based on menu state.
             class="{% if not form.errors %} hidden {% endif %} py-2 space-y-2 rounded-lg my-2">
             <form action="#" method="POST" enctype="multipart/form-data">
               {{ form.hidden_tag() }}
-              <div class="max-w-sm mx-auto space-y-3 f-fit">
+              <div class="max-w-sm mx-auto space-y-3 w-fit">
                 <div class="relative">
                   <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-4">
                     <svg class="flex-shrink-0 size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -275,17 +345,6 @@ Dropdown menu, show/hide based on menu state.
   </main>
   </div>
   <script src="{{ url_for('static', filename='js/app.js') }}"></script>
-  <script>
-    // Get reference to the button and the target div
-    const toggleButton = document.getElementById('toggleButton');
-    const targetDiv = document.getElementById('add_people_dropdown');
-
-    // Add click event listener to the button
-    toggleButton.addEventListener('click', () => {
-      // Toggle the 'bg-red-500' class using classList.toggle() method
-      targetDiv.classList.toggle('hidden');
-    });
-  </script>
 </body>
 
 </html>
