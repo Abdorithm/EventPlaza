@@ -1,12 +1,12 @@
 flask==3.0.2
-flask-wtf==3.1.2
+flask-wtf==1.2.1
 sqlalchemy==2.0.28
 email_validator==2.1.1
 flask_bcrypt==1.0.1
 flask_login==0.6.3
 flask-sqlalchemy==3.1.1
 Pillow==10.3.0
-mysqlclient==2.2.4
+mysqlclient
 google-api-python-client==2.127.0
 google-auth-httplib2==0.2.0
 google-auth-oauthlib==1.2.0
