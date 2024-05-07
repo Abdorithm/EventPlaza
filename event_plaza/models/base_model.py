@@ -2,7 +2,7 @@
 """Define the Base Module"""
 from uuid import uuid4
 from event_plaza import db
-from datetime import datetime, timezone
+from datetime import datetime
 
 time = "%Y-%m-%dT%H:%M:%S"
 
@@ -10,8 +10,8 @@ time = "%Y-%m-%dT%H:%M:%S"
 class BaseModel():
     """The base model class for all coming classes"""
     id = db.Column(db.String(60), primary_key=True)
-    created_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
-    updated_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
+    created_at = db.Column(db.DateTime, default=datetime.now())
+    updated_at = db.Column(db.DateTime, default=datetime.now())
 
     def __init__(self, **kwargs):
         """Initialization of the base model"""
@@ -28,15 +28,15 @@ class BaseModel():
             if 'created_at' in kwargs:
                 self.created_at = datetime.strptime(kwargs['created_at'], time)
             else:
-                self.created_at = datetime.now(timezone.utc)
+                self.created_at = datetime.now()
             if 'updated_at' in kwargs:
                 self.updated_at = datetime.strptime(kwargs['updated_at'], time)
             else:
-                self.updated_at = datetime.now(timezone.utc)
+                self.updated_at = datetime.now()
         else:
             self.id = str(uuid4())
-            self.created_at = datetime.now(timezone.utc)
-            self.updated_at = datetime.now(timezone.utc)
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
 
     def __str__(self):
         """Return the string representation of the object"""

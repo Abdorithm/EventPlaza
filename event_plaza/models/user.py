@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """This module defines the User model for EventPlaza"""
+import secrets
 from .base_model import BaseModel
 from itsdangerous import URLSafeTimedSerializer as Serializer
 from .event_tables import event_organizers, event_attendens
@@ -19,6 +20,7 @@ class User(BaseModel, db.Model, UserMixin):
     email = db.Column(db.String(128), nullable=False, unique=True)
     image_file = db.Column(db.String(32), nullable=False, default='default.jpg')
     password = db.Column(db.String(128), nullable=False)
+    email_token = db.Column(db.String(128), nullable=False, default='NOT INIT')
     is_confirmed = db.Column(db.Boolean, nullable=False, default=False)
     managed_events = db.relationship('Event', secondary='event_managers',
                                      back_populates='managers', lazy=True)
@@ -38,6 +40,9 @@ class User(BaseModel, db.Model, UserMixin):
     def get_reset_token(self):
         s = Serializer(app.config['SECRET_KEY'])
         return s.dumps({'user_id': self.id})
+    
+    def verify_email_token(self, token):
+        return self.email_token == token
 
     @staticmethod
     def verify_reset_token(token):

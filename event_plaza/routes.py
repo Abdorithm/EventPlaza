@@ -6,9 +6,11 @@ from flask import render_template, url_for, flash, redirect, request
 from event_plaza import app, bcrypt, db
 from event_plaza.forms import (RegistrationForm, LoginForm, UpdateProfileForm,
                                CreateEventForm, CreateTaskForm, RequestResetForm,
-                               ResetPasswordForm, VerifyEmailForm)
+                               ResetPasswordForm, VerifyEmailForm,
+                               AddUserToEventForm)
 from event_plaza.models import User, Event, Task
 from flask_login import login_user, current_user, logout_user, login_required
+from datetime import datetime
 
 
 with app.app_context():
@@ -82,10 +84,10 @@ def home():
     return render_template('your_events.html', image_file=image_file, events=events, current_user=current_user)
 
 
-@app.route('/<event_name>/dashboard', strict_slashes=False)
+@app.route('/<event_name>/dashboard', strict_slashes=False, methods=['GET', 'POST'])
 @login_required
 def dashboard(event_name: str):
-    """ Renders the dashboard page """
+    """ Renders the event dashboard page, showing new tasks """
     if current_user.is_confirmed is False:
         return redirect(url_for('verify_required'))
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
@@ -97,14 +99,106 @@ def dashboard(event_name: str):
     if current_user not in event.organizer:
         flash('You are not authorized to view this page', 'error')
         return redirect(url_for('home'))
-    tasks = Task.query.filter_by(event_id=event.id).all()
-    return render_template('dashboard.html', image_file=image_file, event=event, tasks=tasks)
+    tasks = Task.query.filter_by(event_id=event.id, status='new').all()
+
+    form = AddUserToEventForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        organizers = event.organizer
+
+        if user not in organizers:
+            event.organizer.append(user)
+            if form.role.data == 'organizer':
+                db.session.commit()
+                flash('User added as an organizer', 'success')
+            elif form.role.data == 'manager':
+                event.managers.append(user)
+                db.session.commit()
+                flash('User added as a manager', 'success')
+        else:
+            flash('User is already in the event', 'error')
+
+    return render_template('dashboard.html', image_file=image_file, event=event, tasks=tasks, form=form)
+
+
+@app.route('/<event_name>/dashboard/pendingreview', strict_slashes=False, methods=['GET', 'POST'])
+@login_required
+def dashboard_review(event_name: str):
+    """ Renders the event dashboard page, showing new tasks """
+    if current_user.is_confirmed is False:
+        return redirect(url_for('verify_required'))
+    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+    event = Event.query.filter_by(name=event_name).first()
+
+    if not event:
+        flash('Event not found', 'error')
+        return redirect(url_for('home'))
+    if current_user not in event.organizer:
+        flash('You are not authorized to view this page', 'error')
+        return redirect(url_for('home'))
+    tasks = Task.query.filter_by(event_id=event.id, status='review').all()
+
+    form = AddUserToEventForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        organizers = event.organizer
+
+        if user not in organizers:
+            event.organizer.append(user)
+            if form.role.data == 'organizer':
+                db.session.commit()
+                flash('User added as an organizer', 'success')
+            elif form.role.data == 'manager':
+                event.managers.append(user)
+                db.session.commit()
+                flash('User added as a manager', 'success')
+        else:
+            flash('User is already in the event', 'error')
+
+    return render_template('pending_review.html', image_file=image_file, event=event, tasks=tasks, form=form)
+
+
+@app.route('/<event_name>/dashboard/done', strict_slashes=False, methods=['GET', 'POST'])
+@login_required
+def dashboard_done(event_name: str):
+    """ Renders the event dashboard page, showing new tasks """
+    if current_user.is_confirmed is False:
+        return redirect(url_for('verify_required'))
+    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+    event = Event.query.filter_by(name=event_name).first()
+
+    if not event:
+        flash('Event not found', 'error')
+        return redirect(url_for('home'))
+    if current_user not in event.organizer:
+        flash('You are not authorized to view this page', 'error')
+        return redirect(url_for('home'))
+    tasks = Task.query.filter_by(event_id=event.id, status='done').all()
+
+    form = AddUserToEventForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        organizers = event.organizer
+
+        if user not in organizers:
+            event.organizer.append(user)
+            if form.role.data == 'organizer':
+                db.session.commit()
+                flash('User added as an organizer', 'success')
+            elif form.role.data == 'manager':
+                event.managers.append(user)
+                db.session.commit()
+                flash('User added as a manager', 'success')
+        else:
+            flash('User is already in the event', 'error')
+
+    return render_template('done.html', image_file=image_file, event=event, tasks=tasks, form=form)
 
 
 @app.route('/<event_name>/dashboard/create_task', strict_slashes=False , methods=['GET', 'POST'])
 @login_required
 def create_task(event_name):
-    """ Renders the dashboard page """
+    """ Renders the Create Task form """
     if current_user.is_confirmed is False:
         return redirect(url_for('verify_required'))
     form = CreateTaskForm()
@@ -126,9 +220,78 @@ def create_task(event_name):
     return render_template('create_task.html', image_file=image_file, event=event, form=form)
 
 
+@app.route('/<event_name>/dashboard/<task_id>/review', strict_slashes=False)
+@login_required
+def review_task(event_name, task_id):
+    """ Move task to pending review """
+    if current_user.is_confirmed is False:
+        return redirect(url_for('verify_required'))
+    event = Event.query.filter_by(name=event_name).first()
+    if not event:
+        flash('Event not found', 'error')
+        return redirect(url_for('home'))
+    if current_user not in event.organizer:
+        flash('You are not authorized to do this action', 'error')
+        return redirect(url_for('home'))
+    task = Task.query.filter_by(id=task_id).first()
+    if task is None:
+        flash('There is no such task', 'error')
+        return redirect(url_for('dashboard'))
+    task.status = 'review'
+    task.updated_at = task.reviewed_at = datetime.now()
+    db.session.commit()
+    return redirect(url_for('dashboard_review', event_name=event.name))
+
+
+@app.route('/<event_name>/dashboard/<task_id>/done', strict_slashes=False)
+@login_required
+def done_task(event_name, task_id):
+    """ Mark task as done """
+    if current_user.is_confirmed is False:
+        return redirect(url_for('verify_required'))
+    event = Event.query.filter_by(name=event_name).first()
+    if not event:
+        flash('Event not found', 'error')
+        return redirect(url_for('home'))
+    if current_user not in event.organizer:
+        flash('You are not authorized to do this action', 'error')
+        return redirect(url_for('home'))
+    task = Task.query.filter_by(id=task_id).first()
+    if task is None:
+        flash('There is no such task', 'error')
+        return redirect(url_for('dashboard'))
+    task.status = 'done'
+    task.updated_at = datetime.now()
+    db.session.commit()
+    return redirect(url_for('dashboard_done', event_name=event.name))
+
+
+@app.route('/<event_name>/dashboard/<task_id>/delete', strict_slashes=False)
+@login_required
+def delete_task(event_name, task_id):
+    """ Mark task as done """
+    if current_user.is_confirmed is False:
+        return redirect(url_for('verify_required'))
+    event = Event.query.filter_by(name=event_name).first()
+    if not event:
+        flash('Event not found', 'error')
+        return redirect(url_for('home'))
+    if current_user not in event.organizer:
+        flash('You are not authorized to do this action', 'error')
+        return redirect(url_for('home'))
+    task = Task.query.filter_by(id=task_id).first()
+    if task is None:
+        flash('There is no such task', 'error')
+        return redirect(url_for('dashboard'))
+    Task.query.filter_by(id=task_id).delete()
+    db.session.commit()
+    return redirect(url_for('dashboard_done', event_name=event.name))
+
+
 @app.route('/create_event', strict_slashes=False, methods=['GET', 'POST'])
 @login_required
 def create_event():
+    """ Render the Create Event form """
     if current_user.is_confirmed is False:
         return redirect(url_for('verify_required'))
     form = CreateEventForm()
@@ -151,6 +314,7 @@ def create_event():
 
 
 def save_picture(form_picture, event=False, new_width=800, new_height=800):
+    """ Compress pictures and save them """
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_picture.filename)
     picture_fn = random_hex + f_ext
@@ -167,7 +331,7 @@ def save_picture(form_picture, event=False, new_width=800, new_height=800):
 @app.route('/profile', strict_slashes=False, methods=['GET', 'POST'])
 @login_required
 def profile():
-    """ Renders the dashboard page """
+    """ Renders the profile page """
     if current_user.is_confirmed is False:
         return redirect(url_for('verify_required'))
     form = UpdateProfileForm()
@@ -202,6 +366,7 @@ from event_plaza.send_email import SendEmail
 
 
 def send_reset_email(user):
+    """ Method to send reset password emails """
     token = user.get_reset_token()
     subject = 'EventPlaza - Password Reset Request'
     sender = 'noreply@demo.com'
@@ -215,7 +380,8 @@ def send_reset_email(user):
 
 
 def send_verify_email(user):
-    token = user.get_reset_token()
+    """ Method to send email verifications """
+    token = user.email_token
     subject = 'EventPlaza - Email Verification'
     sender = 'noreply@demo.com'
     recipient = user.email
@@ -231,9 +397,18 @@ def send_verify_email(user):
 
 @app.route("/reset_password", methods=['GET', 'POST'], strict_slashes=False)
 def reset_request():
-    if current_user.is_confirmed is False:
-        return redirect(url_for('verify_required'))
+    """ Request a password reset.
+    
+        PASSWORD RESET LOGIC:
+        A token that contains the user_id (serialized) is generated and
+        sent to the user's email address.
+        When the user clicks on the link with the token. The application
+        checks which user_id was serialized into this token and gives access
+        to update the password accordingly.    
+    """
     if current_user.is_authenticated:
+        if current_user.is_confirmed is False:
+            return redirect(url_for('verify_required'))
         flash('You are already logged in. Log out to reset your password.', 'success')
         return redirect(url_for('home'))
     form = RequestResetForm()
@@ -248,9 +423,12 @@ def reset_request():
 
 @app.route("/reset_password/<token>", methods=['GET', 'POST'], strict_slashes=False)
 def reset_token(token):
-    if current_user.is_confirmed is False:
-        return redirect(url_for('verify_required'))
+    """ Check if the reset token is legit.
+        If it is, give let the user change his password
+    """
     if current_user.is_authenticated:
+        if current_user.is_confirmed is False:
+            return redirect(url_for('verify_required'))
         flash('You are already logged in. Log out to reset your password.', 'success')
         return redirect(url_for('home'))
     user = User.verify_reset_token(token)
@@ -269,22 +447,42 @@ def reset_token(token):
 
 @app.route("/verify/<token>", methods=['GET', 'POST'], strict_slashes=False)
 def verify_email(token):
-    if current_user.is_confirmed:
-        flash('Your email is already verified.', 'success')
-        return redirect(url_for('home'))
-    user = User.verify_reset_token(token)
-    if user is None:
-        flash('That is an invalid or expired token. Please log in again to verify your email.', 'error')
-        return redirect(url_for('login'))
-    user.is_confirmed = True
-    db.session.commit()
-    flash('Your email is now verified! You can log in.', 'success')
+    """ Verify that the token is legit.
+        If it is, mark this user's email as confirmed.
+    """
+    if current_user.is_authenticated:
+        if current_user.is_confirmed:
+            flash('Your email is already verified.', 'success')
+            return redirect(url_for('home'))
+    user = User.query.filter_by(email_token=token).first()
+    if user and user.verify_email_token(token):
+        user.is_confirmed = True
+        db.session.commit()
+        flash('Your email is now verified!', 'success')
+    else:
+        flash('That is an invalid token. Please log in again to verify your email.', 'error')
+        return redirect(url_for('landing'))
     return redirect(url_for('landing'))
 
 
 @app.route("/verify", methods=['GET', 'POST'], strict_slashes=False)
 @login_required
 def verify_required():
+    """ After successful signup, the user can log in,
+        but he should verify his email to get access to the
+        application functionality. This route will always get rendered
+        when the user attempt to access application functionality until
+        he verifies his email.
+        
+        EMAIL VERIFICATION LOGIC:
+        Every user has an attribute $(email_token), that gets updated
+        to a random 32-byte hex token every time the user needs to verify
+        his email.
+        Whenever the user sign up for the first time or change his email
+        address in profile settings, he should verify the new email address.
+        The token is sent to his address. Every time the user's email changes
+        the token gets regenerated.
+    """
     if current_user.is_confirmed:
         flash('Your email is already verified.', 'success')
         return redirect(url_for('home'))
@@ -292,7 +490,8 @@ def verify_required():
     if form.validate_on_submit():
         if form.email.data != current_user.email:
             current_user.email = form.email.data
-            db.session.commit()
+        current_user.email_token = secrets.token_hex(32)    
+        db.session.commit()
         send_verify_email(current_user)
         flash('We sent a verification link to your email.', 'success')
         return redirect(url_for('landing'))

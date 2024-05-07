@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard - Tasks</title>
+  <title>Dashboard - Done Tasks</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;1,800&display=swap"
@@ -56,13 +56,13 @@
             <div class="hidden md:block">
               <div class="ml-10 flex items-baseline space-x-4">
                 <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                <a href="#" class="bg-cyan-950 text-white rounded-md px-3 py-2 text-sm font-medium"
+                <a href="{{ url_for('dashboard', event_name=event.name) }}"
+                  class="text-slate-200 hover:bg-cyan-800 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                   aria-current="page">Tasks</a>
                 <a href="{{ url_for('dashboard_review', event_name=event.name) }}"
-                  class="text-slate-200 hover:bg-cyan-800 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Pending
-                  Review</a>
-                <a href="{{ url_for('dashboard_done', event_name=event.name) }}"
-                  class="text-slate-200 hover:bg-cyan-800 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Done</a>
+                  class="text-slate-200 hover:bg-cyan-800 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
+                  Pending Review</a>
+                <a href="#" class="bg-cyan-950 text-white rounded-md px-3 py-2 text-sm font-medium">Done</a>
                 <a href="{{ url_for('create_task', event_name=event.name) }}"
                   class="text-slate-200 hover:bg-cyan-800 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Create
                   Task</a>
@@ -127,12 +127,14 @@ Dropdown menu, show/hide based on menu state.
       <div class="md:hidden {% if not form.errors %} hidden {% endif %}" id="mobile-menu">
         <div class="space-y-1 px-2 pt-2 sm:px-3">
           <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-          <a href="#" class="bg-cyan-950 text-white block rounded-md px-3 py-2 text-base" aria-current="page">Tasks</a>
-          <a href="{{ url_for('dashboard_review', event_name=event.name) }}"
-            class="block whitespace-nowrap text-clip overflow-hidden text-slate-200 hover:bg-cyan-950 hover:text-white rounded-md px-3 py-2 text-base mb-6">Pending
-            Review</a>
-          <a href="{{ url_for('dashboard_done', event_name=event.name) }}"
-            class="block whitespace-nowrap text-clip overflow-hidden text-slate-200 hover:bg-cyan-950 hover:text-white rounded-md px-3 py-2 text-base mb-6">Done</a>
+          <a href="{{ url_for('dashboard', event_name=event.name) }}"
+            class="block whitespace-nowrap text-clip overflow-hidden text-slate-200 hover:bg-cyan-950 hover:text-white rounded-md px-3 py-2 text-base">
+            Tasks</a>
+          <a href=" {{ url_for('dashboard_review', event_name=event.name) }}"
+            class="block whitespace-nowrap text-clip overflow-hidden text-slate-200 hover:bg-cyan-950 hover:text-white rounded-md px-3 py-2 text-base mb-6">
+            Pending Review</a>
+
+          <a href="#" class="bg-cyan-950 text-white block rounded-md px-3 py-2 text-base" aria-current="page">Done</a>
           <a href="{{ url_for('create_task', event_name=event.name) }}"
             class="block whitespace-nowrap text-clip overflow-hidden text-slate-200 hover:bg-cyan-950 hover:text-white rounded-md px-3 py-2 text-base mb-6">Create
             Task</a>
@@ -230,12 +232,11 @@ Dropdown menu, show/hide based on menu state.
             out</a>
         </div>
       </div>
-
     </nav>
   </div>
   <header class="bg-slate-200 shadow">
     <div class="max-w-7xl px-16 py-6 sm:px-6 lg:px-20">
-      <h1 class="text-3xl font-bold tracking-tight text-gray-900">{{ event.name }} | Assigned Tasks</h1>
+      <h1 class="text-3xl font-bold tracking-tight text-gray-900">{{ event.name }} | Done Tasks</h1>
     </div>
   </header>
   <main>
@@ -327,10 +328,22 @@ Dropdown menu, show/hide based on menu state.
               Assigned on {{ task.created_at }}
             </span>
           </div>
+          <div class="px-5 py-1">
+            <span
+              class="inline-block bg-slate-300 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+              Moved to review on {{ task.reviewed_at }}
+            </span>
+          </div>
+          <div class="px-5 py-1">
+            <span
+              class="inline-block bg-slate-300 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+              Done on {{ task.updated_at }}
+            </span>
+          </div>
           <div class="px-5 pb-2">
-            <a href="{{ url_for('review_task', event_name=event.name, task_id=task.id) }}"
+            <a href="{{ url_for('delete_task', event_name=event.name, task_id=task.id) }}"
               class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-cyan-800 rounded-lg hover:bg-cyan-800 focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:bg-cyan-800 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800">
-              Transfer to review
+              Delete
               <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                 fill="none" viewBox="0 0 14 10">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

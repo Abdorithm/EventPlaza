@@ -131,9 +131,10 @@ if (mobile_menu && mobile_menu_button && menu_dashes) {
     mobile_menu_drop();
 }
 
-    var dropzone = document.getElementById('dropzone');
-    var imageTypes = ['image/png', 'image/jpeg'];
+const dropzone = document.getElementById('dropzone');
+const imageTypes = ['image/png', 'image/jpeg'];
 
+if (dropzone) {
     dropzone.addEventListener('dragover', e => {
       e.preventDefault();
       dropzone.classList.add('border-indigo-600');
@@ -185,4 +186,21 @@ if (mobile_menu && mobile_menu_button && menu_dashes) {
         preview.textContent = "";
       };
     }
+}
+// There must be a cleaner way
 
+var add_people_toggle = document.getElementById('add_people_toggle');
+var add_people_dropdown = document.getElementById('add_people_dropdown');
+var add_people_toggle_mobile = document.getElementById('add_people_toggle_mobile')
+var  add_people_dropdown_mobile = document.getElementById('add_people_dropdown_mobile');
+
+if (add_people_toggle) {
+  add_people_toggle.addEventListener('click', () => {
+    add_people_dropdown.classList.toggle('hidden');
+  });
+}
+if (add_people_toggle_mobile) {
+  add_people_toggle_mobile.addEventListener('click', () => {
+    add_people_dropdown_mobile.classList.toggle('hidden');
+  });
+}
