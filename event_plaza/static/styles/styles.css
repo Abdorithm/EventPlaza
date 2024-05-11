@@ -1017,11 +1017,6 @@ select {
   max-height: 6rem;
 }
 
-.max-h-fit {
-  max-height: -moz-fit-content;
-  max-height: fit-content;
-}
-
 .min-h-96 {
   min-height: 24rem;
 }
@@ -1324,6 +1319,11 @@ select {
 .bg-cyan-950 {
   --tw-bg-opacity: 1;
   background-color: rgb(8 51 68 / var(--tw-bg-opacity));
+}
+
+.bg-fuchsia-800 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(134 25 143 / var(--tw-bg-opacity));
 }
 
 .bg-gray-100 {
@@ -2196,11 +2196,6 @@ select {
     border-color: rgb(75 85 99 / var(--tw-border-opacity));
   }
 
-  .dark\:border-neutral-700 {
-    --tw-border-opacity: 1;
-    border-color: rgb(64 64 64 / var(--tw-border-opacity));
-  }
-
   .dark\:bg-cyan-800 {
     --tw-bg-opacity: 1;
     background-color: rgb(21 94 117 / var(--tw-bg-opacity));
@@ -2216,21 +2211,6 @@ select {
     background-color: rgb(22 163 74 / var(--tw-bg-opacity));
   }
 
-  .dark\:bg-neutral-900 {
-    --tw-bg-opacity: 1;
-    background-color: rgb(23 23 23 / var(--tw-bg-opacity));
-  }
-
-  .dark\:text-neutral-400 {
-    --tw-text-opacity: 1;
-    color: rgb(163 163 163 / var(--tw-text-opacity));
-  }
-
-  .dark\:text-neutral-600 {
-    --tw-text-opacity: 1;
-    color: rgb(82 82 82 / var(--tw-text-opacity));
-  }
-
   .dark\:text-white {
     --tw-text-opacity: 1;
     color: rgb(255 255 255 / var(--tw-text-opacity));
@@ -2244,16 +2224,6 @@ select {
   .dark\:placeholder-gray-400::placeholder {
     --tw-placeholder-opacity: 1;
     color: rgb(156 163 175 / var(--tw-placeholder-opacity));
-  }
-
-  .dark\:placeholder-neutral-500::-moz-placeholder {
-    --tw-placeholder-opacity: 1;
-    color: rgb(115 115 115 / var(--tw-placeholder-opacity));
-  }
-
-  .dark\:placeholder-neutral-500::placeholder {
-    --tw-placeholder-opacity: 1;
-    color: rgb(115 115 115 / var(--tw-placeholder-opacity));
   }
 
   .dark\:hover\:bg-cyan-700:hover {
@@ -2284,10 +2254,5 @@ select {
   .dark\:focus\:ring-green-800:focus {
     --tw-ring-opacity: 1;
     --tw-ring-color: rgb(22 101 52 / var(--tw-ring-opacity));
-  }
-
-  .dark\:focus\:ring-neutral-600:focus {
-    --tw-ring-opacity: 1;
-    --tw-ring-color: rgb(82 82 82 / var(--tw-ring-opacity));
   }
 }
