@@ -21,7 +21,7 @@ with app.app_context():
 @app.route('/', strict_slashes=False)
 def landing():
     """ Renders the landing page """
-    return render_template('landing.html')
+    return render_template('landing.html', landing_layout=True)
 
 
 @app.route('/login', strict_slashes=False, methods=['GET', 'POST'])
@@ -41,7 +41,7 @@ def login():
         else:
             flash('Login unsuccessful, please check email and password', 'error')
             return redirect(url_for('login'))
-    return render_template('log_in.html', form=form)
+    return render_template('log_in.html', form=form, page_title="Log In", landing_layout=True)
 
 
 @app.route('/signup', strict_slashes=False, methods=['GET', 'POST'])
@@ -81,7 +81,8 @@ def home():
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     events = Event.query.filter(Event.organizer.any(id=current_user.id)).all()
 
-    return render_template('your_events.html', image_file=image_file, events=events, current_user=current_user)
+    return render_template('your_events.html', image_file=image_file, events=events,
+                           current_user=current_user, page_title="Your Events")
 
 
 @app.route('/<event_name>/dashboard', strict_slashes=False, methods=['GET', 'POST'])
@@ -118,7 +119,8 @@ def dashboard(event_name: str):
         else:
             flash('User is already in the event', 'error')
 
-    return render_template('dashboard.html', image_file=image_file, event=event, tasks=tasks, form=form)
+    return render_template('dashboard.html', image_file=image_file, event=event,
+                            tasks=tasks, form=form, page_title="Tasks")
 
 
 @app.route('/<event_name>/dashboard/pendingreview', strict_slashes=False, methods=['GET', 'POST'])
@@ -155,7 +157,8 @@ def dashboard_review(event_name: str):
         else:
             flash('User is already in the event', 'error')
 
-    return render_template('pending_review.html', image_file=image_file, event=event, tasks=tasks, form=form)
+    return render_template('pending_review.html', image_file=image_file,
+                            event=event, tasks=tasks, form=form, page_title="Pending Review")
 
 
 @app.route('/<event_name>/dashboard/done', strict_slashes=False, methods=['GET', 'POST'])
@@ -192,7 +195,8 @@ def dashboard_done(event_name: str):
         else:
             flash('User is already in the event', 'error')
 
-    return render_template('done.html', image_file=image_file, event=event, tasks=tasks, form=form)
+    return render_template('done.html', image_file=image_file, event=event,
+                            tasks=tasks, form=form, page_title="Done")
 
 
 @app.route('/<event_name>/dashboard/create_task', strict_slashes=False , methods=['GET', 'POST'])
@@ -217,7 +221,8 @@ def create_task(event_name):
         flash('Task created successfully', 'success')
         return redirect(url_for('dashboard', event_name=event_name))
 
-    return render_template('create_task.html', image_file=image_file, event=event, form=form)
+    return render_template('create_task.html', image_file=image_file, event=event,
+                            form=form, page_title="Create Task")
 
 
 @app.route('/<event_name>/dashboard/<task_id>/review', strict_slashes=False)
@@ -310,7 +315,8 @@ def create_event():
 
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     event_image_file = url_for('static', filename='event_pics/' + current_user.image_file)
-    return render_template('create_event.html', image_file=image_file, event_image_file=event_image_file, form=form)
+    return render_template('create_event.html', image_file=image_file, event_image_file=event_image_file,
+                            form=form, page_title="Create Event")
 
 
 def save_picture(form_picture, event=False, new_width=800, new_height=800):
@@ -353,13 +359,7 @@ def profile():
         form.email.data = current_user.email
 
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
-    return render_template('profile.html', image_file=image_file, form=form)
-
-
-@app.route('/test', strict_slashes=False)
-def test():
-    """ Renders the dashboard page """
-    return render_template('test.html')
+    return render_template('profile.html', image_file=image_file, form=form, page_title="Profile")
 
 
 from event_plaza.send_email import SendEmail
@@ -418,7 +418,8 @@ def reset_request():
         send_reset_email(user)
         flash('An email has been sent with the link to reset your password.', 'success')
         return redirect(url_for('login'))
-    return render_template('reset_request.html', form=form)
+    return render_template('reset_request.html', form=form, page_title="Reset Password",
+                            landing_layout=True)
 
 
 @app.route("/reset_password/<token>", methods=['GET', 'POST'], strict_slashes=False)
@@ -442,7 +443,8 @@ def reset_token(token):
         db.session.commit()
         flash('Your password has been updated! You are now able to log in', 'success')
         return redirect(url_for('login'))
-    return render_template('reset_token.html', form=form)
+    return render_template('reset_token.html', form=form, page_title="Reset Password",
+                            landing_layout=True)
 
 
 @app.route("/verify/<token>", methods=['GET', 'POST'], strict_slashes=False)
@@ -497,4 +499,5 @@ def verify_required():
         return redirect(url_for('landing'))
     elif request.method == 'GET':
         form.email.data = current_user.email
-    return render_template('verify_email.html', form=form)
+    return render_template('verify_email.html', form=form, page_title="Verify Email",
+                            landing_layout=True)

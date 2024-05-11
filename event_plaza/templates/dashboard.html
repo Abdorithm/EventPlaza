@@ -1,250 +1,99 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard - Tasks</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;1,800&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/styles.css') }}">
-</head>
-
-<body class="font-[Poppins] bg-slate-300 h-full">
-  {% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-  {% for category, message in messages %}
-  {% if category == "error" %}
-  <div id="flash-body" class="bg-cyan-800 border-slate-200 text-slate-200 px-4 py-3 relative" role="alert">
-    <strong class="font-bold">
-      {{ message }}
-    </strong>
-    <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
-      <svg id="close-flash" class="fill-current h-6 w-6 text-slate-200" role="button" xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 20 20">
-        <title>Close</title>
-        <path
-          d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
-      </svg>
-    </span>
-  </div>
-  {% elif category == "success" %}
-  <div id="flash-body" class="bg-cyan-800 border-slate-200 text-slate-200 px-4 py-3 relative" role="alert">
-    <strong class="font-bold">
-      {{ message }}
-    </strong>
-    <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
-      <svg id="close-flash" class="fill-current h-6 w-6 text-slate-200" role="button" xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 20 20">
-        <title>Close</title>
-        <path
-          d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
-      </svg>
-    </span>
-  </div>
-  {% endif %}
-  {% endfor %}
-  {% endif %}
-  {% endwith %}
-  <div class="min-h-full">
-    <nav class="bg-cyan-800">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="flex h-16 items-center justify-between">
-          <div class="flex items-center">
-            <div class="hidden md:block">
-              <div class="ml-10 flex items-baseline space-x-4">
-                <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                <a href="#" class="bg-cyan-950 text-white rounded-md px-3 py-2 text-sm font-medium"
-                  aria-current="page">Tasks</a>
-                <a href="{{ url_for('dashboard_review', event_name=event.name) }}"
-                  class="text-slate-200 hover:bg-cyan-800 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Pending
-                  Review</a>
-                <a href="{{ url_for('dashboard_done', event_name=event.name) }}"
-                  class="text-slate-200 hover:bg-cyan-800 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Done</a>
-                <a href="{{ url_for('create_task', event_name=event.name) }}"
-                  class="text-slate-200 hover:bg-cyan-800 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Create
-                  Task</a>
-                <a href="{{ url_for('home', event_name=event.name) }}"
-                  class="text-slate-200 hover:bg-cyan-800 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Back
-                  to Events</a>
-              </div>
+{% extends "layout.html" %}
+{% block content %}
+<div class="min-h-full">
+  <nav class="bg-cyan-800">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex h-16 items-center justify-between">
+        <div class="flex items-center">
+          <div class="hidden md:block">
+            <div class="ml-10 flex items-baseline space-x-4">
+              <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+              <a href="#" class="bg-cyan-950 text-white rounded-md px-3 py-2 text-sm font-medium"
+                aria-current="page">Tasks</a>
+              <a href="{{ url_for('dashboard_review', event_name=event.name) }}"
+                class="text-slate-200 hover:bg-cyan-800 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Pending
+                Review</a>
+              <a href="{{ url_for('dashboard_done', event_name=event.name) }}"
+                class="text-slate-200 hover:bg-cyan-800 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Done</a>
+              <a href="{{ url_for('create_task', event_name=event.name) }}"
+                class="text-slate-200 hover:bg-cyan-800 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Create
+                Task</a>
+              <a href="{{ url_for('home', event_name=event.name) }}"
+                class="text-slate-200 hover:bg-cyan-800 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Back
+                to Events</a>
             </div>
           </div>
-          <div class="hidden md:block">
-            <div class="ml-4 flex items-center md:ml-6">
-              <!-- Profile dropdown -->
-              <div class="relative ml-3">
-                <div>
-                  <button type="button"
-                    class="relative flex max-w-xs items-center rounded-full bg-cyan-950 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                    id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                    <span class="absolute -inset-1.5"></span>
-                    <span class="sr-only">Open user menu</span>
-                    <img class="h-8 w-8 rounded-full object-cover" src="{{ image_file }}" alt="">
-                  </button>
-                </div>
+        </div>
+        <div class="hidden md:block">
+          <div class="ml-4 flex items-center md:ml-6">
+            <!-- Profile dropdown -->
+            <div class="relative ml-3">
+              <div>
+                <button type="button"
+                  class="relative flex max-w-xs items-center rounded-full bg-cyan-950 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                  id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                  <span class="absolute -inset-1.5"></span>
+                  <span class="sr-only">Open user menu</span>
+                  <img class="h-8 w-8 rounded-full object-cover" src="{{ image_file }}" alt="">
+                </button>
+              </div>
 
-                <!--
+              <!--
 Dropdown menu, show/hide based on menu state.
 -->
-                <div id="user-profile-menu"
-                  class="hidden profile-menu-leave absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-slate-200 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                  role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-                  <!-- Active: "bg-gray-100", Not Active: "" -->
-                  <a href="{{ url_for('profile') }}" target="_self" class="block px-4 py-2 text-sm text-gray-900"
-                    role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
-                  <a href="{{ url_for('logout') }}" class="block px-4 py-2 text-sm text-gray-900" role="menuitem"
-                    tabindex="-1" id="user-menu-item-2">Sign out</a>
-                </div>
+              <div id="user-profile-menu"
+                class="hidden profile-menu-leave absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-slate-200 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                <!-- Active: "bg-gray-100", Not Active: "" -->
+                <a href="{{ url_for('profile') }}" target="_self" class="block px-4 py-2 text-sm text-gray-900"
+                  role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
+                <a href="{{ url_for('logout') }}" class="block px-4 py-2 text-sm text-gray-900" role="menuitem"
+                  tabindex="-1" id="user-menu-item-2">Sign out</a>
               </div>
             </div>
           </div>
-          <div class="-mr-2 flex md:hidden">
-            <!-- Mobile menu button -->
-            <button id="mobile-menu-button" type="button"
-              class="relative inline-flex items-center justify-center rounded-md bg-cyan-950 p-2 text-slate-200 hover:bg-cyan-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-              aria-controls="mobile-menu" aria-expanded="false">
-              <span class="absolute -inset-0.5"></span>
-              <span class="sr-only">Open main menu</span>
-              <!-- Menu open: "hidden", Menu closed: "block" -->
-              <svg class="menu-dash {% if not form.errors %} block {% else %} hidden {% endif %} h-6 w-6" fill="none"
-                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-              </svg>
-              <!-- Menu open: "block", Menu closed: "hidden" -->
-              <svg class="menu-dash {% if not form.errors %} hidden {% else %} block {% endif %} h-6 w-6" fill="none"
-                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
         </div>
-      </div>
-
-      <!-- Mobile menu, show/hide based on menu state. -->
-      <div class="md:hidden {% if not form.errors %} hidden {% endif %}" id="mobile-menu">
-        <div class="space-y-1 px-2 pt-2 sm:px-3">
-          <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-          <a href="#" class="bg-cyan-950 text-white block rounded-md px-3 py-2 text-base" aria-current="page">Tasks</a>
-          <a href="{{ url_for('dashboard_review', event_name=event.name) }}"
-            class="block whitespace-nowrap text-clip overflow-hidden text-slate-200 hover:bg-cyan-950 hover:text-white rounded-md px-3 py-2 text-base mb-6">Pending
-            Review</a>
-          <a href="{{ url_for('dashboard_done', event_name=event.name) }}"
-            class="block whitespace-nowrap text-clip overflow-hidden text-slate-200 hover:bg-cyan-950 hover:text-white rounded-md px-3 py-2 text-base mb-6">Done</a>
-          <a href="{{ url_for('create_task', event_name=event.name) }}"
-            class="block whitespace-nowrap text-clip overflow-hidden text-slate-200 hover:bg-cyan-950 hover:text-white rounded-md px-3 py-2 text-base mb-6">Create
-            Task</a>
-          <a href="{{ url_for('home', event_name=event.name) }}"
-            class="block whitespace-nowrap text-clip overflow-hidden text-slate-200 hover:bg-cyan-950 hover:text-white rounded-md px-3 py-2 text-base mb-6">Back
-            to Events</a>
-        </div>
-        <div class="bg-cyan-800 p-4 text-gray-900 shadow">
-          <button id="add_people_toggle_mobile" type="button"
-            class="flex items-center w-full p-2 text-base text-gray-900 bg-white transition duration-75 rounded-lg group hover:bg-slate-100 dark:text-white"
-            aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
-
-            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" clip-rule="evenodd"
-                d="M6.83333 11.8333C8.44167 11.8333 9.75 10.525 9.75 8.91667C9.75 7.30833 8.44167 6 6.83333 6C5.225 6 3.91667 7.30833 3.91667 8.91667C3.91667 10.525 5.225 11.8333 6.83333 11.8333ZM21 15.3333V12.8333H23.5V11.1667H21V8.66666H19.3333V11.1667H16.8333V12.8333H19.3333V15.3333H21ZM6.83333 13.2917C4.88333 13.2917 1 14.2667 1 16.2083V17.6667H12.6667V16.2083C12.6667 14.2667 8.78333 13.2917 6.83333 13.2917ZM6.83333 14.9583C5.34166 14.9583 3.65 15.5167 2.95 16H10.7167C10.0167 15.5167 8.325 14.9583 6.83333 14.9583ZM8.08333 8.91667C8.08333 8.225 7.525 7.66667 6.83333 7.66667C6.14167 7.66667 5.58333 8.225 5.58333 8.91667C5.58333 9.60833 6.14167 10.1667 6.83333 10.1667C7.525 10.1667 8.08333 9.60833 8.08333 8.91667ZM11 11.8333C12.6083 11.8333 13.9167 10.525 13.9167 8.91667C13.9167 7.30833 12.6083 6 11 6C10.8 6 10.6 6.01667 10.4083 6.05833C11.0417 6.84167 11.4167 7.83333 11.4167 8.91667C11.4167 10 11.025 10.9833 10.3917 11.7667C10.5917 11.8083 10.7917 11.8333 11 11.8333ZM14.3333 16.2083C14.3333 15.075 13.7667 14.1917 12.9333 13.5167C14.8 13.9083 16.8333 14.8 16.8333 16.2083V17.6667H14.3333V16.2083Z"
-                fill="#000000" />
+        <div class="-mr-2 flex md:hidden">
+          <!-- Mobile menu button -->
+          <button id="mobile-menu-button" type="button"
+            class="relative inline-flex items-center justify-center rounded-md bg-cyan-950 p-2 text-slate-200 hover:bg-cyan-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+            aria-controls="mobile-menu" aria-expanded="false">
+            <span class="absolute -inset-0.5"></span>
+            <span class="sr-only">Open main menu</span>
+            <!-- Menu open: "hidden", Menu closed: "block" -->
+            <svg class="menu-dash {% if not form.errors %} block {% else %} hidden {% endif %} h-6 w-6" fill="none"
+              viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
             </svg>
-            <span class="flex-1 ms-3 text-left text-black whitespace-nowrap text-clip overflow-hidden">Add People</span>
-            <svg class="w-3 h-3 text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-              viewBox="0 0 10 6">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="m1 1 4 4 4-4" />
+            <!-- Menu open: "block", Menu closed: "hidden" -->
+            <svg class="menu-dash {% if not form.errors %} hidden {% else %} block {% endif %} h-6 w-6" fill="none"
+              viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
-          <div id="add_people_dropdown_mobile"
-            class="{% if not form.errors %} hidden {% endif %} py-2 space-y-2 rounded-lg my-2">
-            <form action="#" method="POST" enctype="multipart/form-data">
-              {{ form.hidden_tag() }}
-              <div class="mx-auto space-y-3 flex flex-col">
-                <div class="relative">
-                  <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-4">
-                    <svg class="flex-shrink-0 size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24"
-                      height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                      stroke-linecap="round" stroke-linejoin="round">
-                      <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                    </svg>
-                  </div>
-                  {{ form.email.label(class="hidden") }}
-                  {{ form.email(class="w-full py-3 px-4 ps-11 block border-gray-200 shadow-sm rounded-lg text-sm
-                  focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50
-                  disabled:pointer-events-none") }}
-                </div>
-                {% if form.email.errors %}
-                <div>
-                  {% for error in form.email.errors %}
-                  <span class="text-sm text-slate-200">
-                    {{ error }}
-                  </span>
-                  <br>
-                  {% endfor %}
-                </div>
-                {% endif %}
-                {{ form.role.label(class="hidden") }}
-                {{ form.role(class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
-                focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600
-                dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500") }}
-                </select>
-                {% if form.role.errors %}
-                <div>
-                  {% for error in form.role.errors %}
-                  <span class="text-sm text-slate-200">
-                    {{ error }}
-                  </span>
-                  <br>
-                  {% endfor %}
-                </div>
-                {% endif %}
-                {{ form.submit(class="bg-green-800 hover:bg-green-950 text-white rounded-md px-3 py-2 text-sm
-                font-medium self-end w-1/4") }}
-            </form>
-          </div>
         </div>
       </div>
-      <div class="border-t border-gray-700 pb-3 pt-4">
-        <div class="flex items-center px-5">
-          <div class="flex-shrink-0">
-            <img class="h-10 w-10 rounded-full" src="{{ image_file }}" alt="">
-          </div>
-          <div class="ml-3">
-            <div class="text-base font-medium leading-none text-white">
-              {{ current_user.first_name }} {{ current_user.last_name }}
-            </div>
-            <div class="text-sm font-medium leading-none text-slate-200">
-              {{ current_user.email }}
-            </div>
-          </div>
-        </div>
-        <div class="mt-3 space-y-1 px-2">
-          <a href="{{ url_for('profile') }}" target="_self"
-            class="block rounded-md px-3 py-2 text-base font-medium text-slate-200 hover:bg-cyan-800 hover:text-white">Your
-            Profile</a>
-          <a href="{{ url_for('logout') }}"
-            class="block rounded-md px-3 py-2 text-base font-medium text-slate-200 hover:bg-cyan-800 hover:text-white">Sign
-            out</a>
-        </div>
-      </div>
-
-    </nav>
-  </div>
-  <header class="bg-slate-200 shadow">
-    <div class="max-w-7xl px-16 py-6 sm:px-6 lg:px-20">
-      <h1 class="text-3xl font-bold tracking-tight text-gray-900">{{ event.name }} | Assigned Tasks</h1>
     </div>
-  </header>
-  <main>
-    <div class="flex">
-      <div class="h-screen bg-slate-200 p-4 text-gray-900 shadow w-1/6 hidden md:block">
+
+    <!-- Mobile menu, show/hide based on menu state. -->
+    <div class="md:hidden {% if not form.errors %} hidden {% endif %}" id="mobile-menu">
+      <div class="space-y-1 px-2 pt-2 sm:px-3">
+        <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+        <a href="#" class="bg-cyan-950 text-white block rounded-md px-3 py-2 text-base" aria-current="page">Tasks</a>
+        <a href="{{ url_for('dashboard_review', event_name=event.name) }}"
+          class="block whitespace-nowrap text-clip overflow-hidden text-slate-200 hover:bg-cyan-950 hover:text-white rounded-md px-3 py-2 text-base mb-6">Pending
+          Review</a>
+        <a href="{{ url_for('dashboard_done', event_name=event.name) }}"
+          class="block whitespace-nowrap text-clip overflow-hidden text-slate-200 hover:bg-cyan-950 hover:text-white rounded-md px-3 py-2 text-base mb-6">Done</a>
+        <a href="{{ url_for('create_task', event_name=event.name) }}"
+          class="block whitespace-nowrap text-clip overflow-hidden text-slate-200 hover:bg-cyan-950 hover:text-white rounded-md px-3 py-2 text-base mb-6">Create
+          Task</a>
         <a href="{{ url_for('home', event_name=event.name) }}"
-          class="block whitespace-nowrap text-clip overflow-hidden text-slate-200 bg-cyan-800 hover:bg-cyan-950 hover:text-white rounded-md px-3 py-2 text-base mb-6 font-bold">Back
+          class="block whitespace-nowrap text-clip overflow-hidden text-slate-200 hover:bg-cyan-950 hover:text-white rounded-md px-3 py-2 text-base mb-6">Back
           to Events</a>
-        <button id="add_people_toggle" type="button"
+      </div>
+      <div class="bg-cyan-800 p-4 text-gray-900 shadow">
+        <button id="add_people_toggle_mobile" type="button"
           class="flex items-center w-full p-2 text-base text-gray-900 bg-white transition duration-75 rounded-lg group hover:bg-slate-100 dark:text-white"
           aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
 
@@ -260,11 +109,11 @@ Dropdown menu, show/hide based on menu state.
               d="m1 1 4 4 4-4" />
           </svg>
         </button>
-        <div id="add_people_dropdown"
+        <div id="add_people_dropdown_mobile"
           class="{% if not form.errors %} hidden {% endif %} py-2 space-y-2 rounded-lg my-2">
           <form action="#" method="POST" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
-            <div class="max-w-sm mx-auto space-y-3 w-fit">
+            <div class="mx-auto space-y-3 flex flex-col">
               <div class="relative">
                 <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-4">
                   <svg class="flex-shrink-0 size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -282,7 +131,7 @@ Dropdown menu, show/hide based on menu state.
               {% if form.email.errors %}
               <div>
                 {% for error in form.email.errors %}
-                <span class="text-sm text-green-800">
+                <span class="text-sm text-slate-200">
                   {{ error }}
                 </span>
                 <br>
@@ -297,55 +146,153 @@ Dropdown menu, show/hide based on menu state.
               {% if form.role.errors %}
               <div>
                 {% for error in form.role.errors %}
-                <span class="text-sm text-green-800">
+                <span class="text-sm text-slate-200">
                   {{ error }}
                 </span>
                 <br>
                 {% endfor %}
               </div>
               {% endif %}
-              {{ form.submit(class="bg-cyan-800 hover:bg-cyan-950 text-white rounded-md px-3 py-2 text-sm
-              font-medium") }}
+              {{ form.submit(class="bg-green-800 hover:bg-green-950 text-white rounded-md px-3 py-2 text-sm
+              font-medium self-end w-1/4") }}
           </form>
         </div>
       </div>
     </div>
-    <div class="flex-1">
-      <div
-        class="place-self-center grid md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1 gap-3 max-w-7xl py-6 sm:px-6 lg:px-8">
-        {% for task in tasks %}
-        <div class="my-2 flex flex-col mx-auto xl:max-w-sm max-w-md rounded-xl overflow-hidden shadow-lg bg-slate-200">
-          <div class="px-6 py-4 mb-auto h-auto">
-            <div class="font-bold text-xl mb-2">{{ task.name }}</div>
-            <p class="text-gray-700 text-base text-ellipsis overflow-hidden w-11/12 max-h-24">
-              {{ task.description }}
-            </p>
+    <div class="border-t border-gray-700 pb-3 pt-4">
+      <div class="flex items-center px-5">
+        <div class="flex-shrink-0">
+          <img class="h-10 w-10 rounded-full" src="{{ image_file }}" alt="">
+        </div>
+        <div class="ml-3">
+          <div class="text-base font-medium leading-none text-white">
+            {{ current_user.first_name }} {{ current_user.last_name }}
           </div>
-          <div class="px-5 py-1">
-            <span
-              class="inline-block bg-slate-300 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-              Assigned on {{ task.created_at }}
-            </span>
-          </div>
-          <div class="px-5 pb-2">
-            <a href="{{ url_for('review_task', event_name=event.name, task_id=task.id) }}"
-              class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-cyan-800 rounded-lg hover:bg-cyan-800 focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:bg-cyan-800 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800">
-              Transfer to review
-              <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                fill="none" viewBox="0 0 14 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M1 5h12m0 0L9 1m4 4L9 9" />
-              </svg>
-            </a>
+          <div class="text-sm font-medium leading-none text-slate-200">
+            {{ current_user.email }}
           </div>
         </div>
-        {% endfor %}
+      </div>
+      <div class="mt-3 space-y-1 px-2">
+        <a href="{{ url_for('profile') }}" target="_self"
+          class="block rounded-md px-3 py-2 text-base font-medium text-slate-200 hover:bg-cyan-800 hover:text-white">Your
+          Profile</a>
+        <a href="{{ url_for('logout') }}"
+          class="block rounded-md px-3 py-2 text-base font-medium text-slate-200 hover:bg-cyan-800 hover:text-white">Sign
+          out</a>
       </div>
     </div>
-    </div>
-  </main>
-  </div>
-  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
-</body>
 
-</html>
+  </nav>
+</div>
+<header class="bg-slate-200 shadow">
+  <div class="max-w-7xl px-16 py-6 sm:px-6 lg:px-20">
+    <h1 class="text-3xl font-bold tracking-tight text-gray-900">{{ event.name }} | Assigned Tasks</h1>
+  </div>
+</header>
+<main>
+  <div class="flex">
+    <div class="h-screen bg-slate-200 p-4 text-gray-900 shadow w-1/6 hidden md:block">
+      <a href="{{ url_for('home', event_name=event.name) }}"
+        class="block whitespace-nowrap text-clip overflow-hidden text-slate-200 bg-cyan-800 hover:bg-cyan-950 hover:text-white rounded-md px-3 py-2 text-base mb-6 font-bold">Back
+        to Events</a>
+      <button id="add_people_toggle" type="button"
+        class="flex items-center w-full p-2 text-base text-gray-900 bg-white transition duration-75 rounded-lg group hover:bg-slate-100 dark:text-white"
+        aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+
+        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd"
+            d="M6.83333 11.8333C8.44167 11.8333 9.75 10.525 9.75 8.91667C9.75 7.30833 8.44167 6 6.83333 6C5.225 6 3.91667 7.30833 3.91667 8.91667C3.91667 10.525 5.225 11.8333 6.83333 11.8333ZM21 15.3333V12.8333H23.5V11.1667H21V8.66666H19.3333V11.1667H16.8333V12.8333H19.3333V15.3333H21ZM6.83333 13.2917C4.88333 13.2917 1 14.2667 1 16.2083V17.6667H12.6667V16.2083C12.6667 14.2667 8.78333 13.2917 6.83333 13.2917ZM6.83333 14.9583C5.34166 14.9583 3.65 15.5167 2.95 16H10.7167C10.0167 15.5167 8.325 14.9583 6.83333 14.9583ZM8.08333 8.91667C8.08333 8.225 7.525 7.66667 6.83333 7.66667C6.14167 7.66667 5.58333 8.225 5.58333 8.91667C5.58333 9.60833 6.14167 10.1667 6.83333 10.1667C7.525 10.1667 8.08333 9.60833 8.08333 8.91667ZM11 11.8333C12.6083 11.8333 13.9167 10.525 13.9167 8.91667C13.9167 7.30833 12.6083 6 11 6C10.8 6 10.6 6.01667 10.4083 6.05833C11.0417 6.84167 11.4167 7.83333 11.4167 8.91667C11.4167 10 11.025 10.9833 10.3917 11.7667C10.5917 11.8083 10.7917 11.8333 11 11.8333ZM14.3333 16.2083C14.3333 15.075 13.7667 14.1917 12.9333 13.5167C14.8 13.9083 16.8333 14.8 16.8333 16.2083V17.6667H14.3333V16.2083Z"
+            fill="#000000" />
+        </svg>
+        <span class="flex-1 ms-3 text-left text-black whitespace-nowrap text-clip overflow-hidden">Add People</span>
+        <svg class="w-3 h-3 text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+          viewBox="0 0 10 6">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="m1 1 4 4 4-4" />
+        </svg>
+      </button>
+      <div id="add_people_dropdown" class="{% if not form.errors %} hidden {% endif %} py-2 space-y-2 rounded-lg my-2">
+        <form action="#" method="POST" enctype="multipart/form-data">
+          {{ form.hidden_tag() }}
+          <div class="max-w-sm mx-auto space-y-3 w-fit">
+            <div class="relative">
+              <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-4">
+                <svg class="flex-shrink-0 size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24"
+                  height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                </svg>
+              </div>
+              {{ form.email.label(class="hidden") }}
+              {{ form.email(class="w-full py-3 px-4 ps-11 block border-gray-200 shadow-sm rounded-lg text-sm
+              focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50
+              disabled:pointer-events-none") }}
+            </div>
+            {% if form.email.errors %}
+            <div>
+              {% for error in form.email.errors %}
+              <span class="text-sm text-green-800">
+                {{ error }}
+              </span>
+              <br>
+              {% endfor %}
+            </div>
+            {% endif %}
+            {{ form.role.label(class="hidden") }}
+            {{ form.role(class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+            focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600
+            dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500") }}
+            </select>
+            {% if form.role.errors %}
+            <div>
+              {% for error in form.role.errors %}
+              <span class="text-sm text-green-800">
+                {{ error }}
+              </span>
+              <br>
+              {% endfor %}
+            </div>
+            {% endif %}
+            {{ form.submit(class="bg-cyan-800 hover:bg-cyan-950 text-white rounded-md px-3 py-2 text-sm
+            font-medium") }}
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="flex-1">
+    <div
+      class="place-self-center grid md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1 gap-3 max-w-7xl py-6 sm:px-6 lg:px-8">
+      {% for task in tasks %}
+      <div class="my-2 flex flex-col mx-auto xl:max-w-sm max-w-md rounded-xl overflow-hidden shadow-lg bg-slate-200">
+        <div class="px-6 py-4 mb-auto h-auto">
+          <div class="font-bold text-xl mb-2">{{ task.name }}</div>
+          <p class="text-gray-700 text-base text-ellipsis overflow-hidden w-11/12 max-h-24">
+            {{ task.description }}
+          </p>
+        </div>
+        <div class="px-5 py-1">
+          <span class="inline-block bg-slate-300 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+            Assigned on {{ task.created_at }}
+          </span>
+        </div>
+        <div class="px-5 pb-2">
+          <a href="{{ url_for('review_task', event_name=event.name, task_id=task.id) }}"
+            class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-cyan-800 rounded-lg hover:bg-cyan-800 focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:bg-cyan-800 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800">
+            Transfer to review
+            <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+              fill="none" viewBox="0 0 14 10">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M1 5h12m0 0L9 1m4 4L9 9" />
+            </svg>
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  </div>
+</main>
+</div>
+{% endblock content %}
