@@ -10,7 +10,7 @@ EventPlaza is still a work-in-progress. While the current version represents the
 
 ## Contributing
 
-We welcome contributions from the community to help us enhance and grow EventPlaza. Whether it's adding new features, fixing bugs, or providing feedback, your input is valuable to us. Please feel free to contribute or report any issues through our project's GitHub repository.
+Your input is valuable to us. Please feel free to contribute or report any issues through our project's GitHub repository.
 
 Thank you for your interest in EventPlaza!
 
@@ -34,9 +34,11 @@ To run EventPlaza in a development environment, follow these steps:
    docker build -t plaza .
    ```
 
-4. You will need to setup mysql server & put your google api (OAuth2) credentials in the container manually. Then run the setup script. OAuth credentials are needed for the email verification & password reset functionalities to work.
+4. You will need to setup mysql server & run the setup script.
     ```bash
     mysql < setup_mysql_dev.sql
     ```
+
+5. You will need to have a google OAuth2 api credentials for the email verification and password reset functionalities to work. For more info, check [Setting Up OAuth 2.0 from Google Cloud](https://support.google.com/cloud/answer/6158849). You might need to independently run the `send_email.py` script on an environment with GUI (your local machine) to generate the `gmail-python-email-send.json` file. Afterwards, transfer both files `client_secret.json` and `gmail-python-email-send.json` to the docker container. `client_secret.json` should be in `event_plaza/`, the app package directory. Modify the `event_plaza/send_email.py` script to make it find the `gmail-python-email-send.json` wherever you put it in your system. By default, `~/.credentials/gmail-python-email-send.json` is the path where it looks for that file. Contact us if you need help setting up this mess.
 
 Now you can start exploring and testing EventPlaza in your development environment. Happy coding!
